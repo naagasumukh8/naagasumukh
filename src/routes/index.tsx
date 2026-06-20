@@ -360,15 +360,13 @@ export function useLenis() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const lenis = new Lenis({
-      // lerp 0.09 = silky but responsive. 0.1 is too laggy, 0.2 is too snappy.
-      lerp: 0.09,
+      // lerp 0.12 gives a faster, more responsive feel without losing smoothness
+      lerp: 0.12,
       smoothWheel: true,
-      // 1.0 = natural trackpad/mouse wheel feel. Under 1 feels stuck.
-      wheelMultiplier: 1.0,
-      // 2.0 gives a responsive native-like feel on touch
-      touchMultiplier: 2.0,
-      // DO NOT set syncTouch:true in Lenis 1.x — it competes with iOS
-      // momentum scrolling and causes the cracky/stuttering the user feels.
+      // 1.25 increases the scroll distance per notch, eliminating the heavy "hardness" feel
+      wheelMultiplier: 1.25,
+      // 1.8 for balanced and natural touch scroll response
+      touchMultiplier: 1.8,
       infinite: false,
     });
     
