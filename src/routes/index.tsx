@@ -407,10 +407,8 @@ function Typing({ text, className = "", speed = 18 }: { text: string; className?
  * and starts on frame 1 — no async waterfall, no jank window.
  */
 export function useLenis() {
-  const { graphicsMode } = useGraphics();
   useEffect(() => {
     if (typeof window === "undefined") return;
-    if (graphicsMode !== "interactive-3d") return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     // Skip on mobile since touch events have native smooth inertia/momentum scroll
     if (window.matchMedia("(max-width: 767px)").matches) return;
@@ -469,7 +467,7 @@ export function useLenis() {
       delete (window as any).lenis;
       lenis.destroy();
     };
-  }, [graphicsMode]);
+  }, []);
 }
 
 export function useBgShifter() {
