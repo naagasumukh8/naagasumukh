@@ -201,7 +201,6 @@ function CSSMeshBg() {
           backgroundImage:
             "radial-gradient(40% 40% at 20% 30%, #5CBDB955 0%, transparent 60%), radial-gradient(45% 45% at 80% 20%, #7C6EFF55 0%, transparent 60%), radial-gradient(50% 50% at 60% 80%, #FFB34744 0%, transparent 65%), radial-gradient(35% 35% at 10% 85%, #0F254088 0%, transparent 70%)",
           animation: "splashMesh 22s ease-in-out infinite alternate",
-          filter: "blur(20px)",
         }}
       />
       <div className="absolute inset-0 bg-[#05080F]/82" />
@@ -356,6 +355,8 @@ export function useLenis() {
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // Skip on mobile since touch events have native smooth inertia/momentum scroll
+    if (window.matchMedia("(max-width: 767px)").matches) return;
 
     const lenis = new Lenis({
       // duration-mode scrolling uses a deterministic exponential easing curve, which feels much silkier than lerp
@@ -829,20 +830,16 @@ export function Marquee({ reverse = false }: { reverse?: boolean }) {
 
 /* ============ SCROLL PROGRESS BAR ============ */
 export function ScrollProgress() {
-  const ref = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const onScroll = () => {
-      const h = document.documentElement;
-      const p = h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight);
-      if (ref.current) ref.current.style.transform = `scaleX(${p})`;
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  const { scrollYProgress } = useScroll();
   return (
     <div className="fixed left-0 right-0 top-0 z-[80] h-[2px] bg-transparent">
-      <div ref={ref} className="h-full origin-left bg-violet" style={{ boxShadow: "0 0 10px #5CBDB9", transform: "scaleX(0)" }} />
+      <motion.div
+        className="h-full origin-left bg-violet"
+        style={{
+          boxShadow: "0 0 10px #5CBDB9",
+          scaleX: scrollYProgress,
+        }}
+      />
     </div>
   );
 }
@@ -902,7 +899,7 @@ export function CursorTrail() {
       cancelAnimationFrame(raf);
     };
   }, []);
-  return <canvas ref={canvasRef} className="pointer-events-none fixed inset-0 z-[95] hidden md:block" style={{ mixBlendMode: "screen" }} />;
+  return <canvas ref={canvasRef} className="pointer-events-none fixed inset-0 z-[95] hidden md:block" />;
 }
 
 /* ============ NOISE OVERLAY ============ */
@@ -911,7 +908,7 @@ export function NoiseOverlay() {
   return (
     <div
       className="pointer-events-none fixed inset-0 z-[9999]"
-      style={{ backgroundImage: `url("${svg}")`, opacity: 0.03, mixBlendMode: "overlay" }}
+      style={{ backgroundImage: `url("${svg}")`, opacity: 0.012 }}
       aria-hidden
     />
   );
@@ -937,11 +934,9 @@ export function Hero() {
         const event = lastPointerRef.current;
         if (!event) return;
         const host = splineHostRef.current;
-        const canvas = [...(host?.querySelectorAll("canvas") ?? [])]
-          .sort((a, b) => (b.getBoundingClientRect().width * b.getBoundingClientRect().height) - (a.getBoundingClientRect().width * a.getBoundingClientRect().height))[0];
-        if (!host || !canvas) return;
-        const rect = host.getBoundingClientRect();
-        if (rect.bottom < 0 || rect.top > window.innerHeight) return;
+        if (!host) return;
+        const canvas = host.querySelector("canvas");
+        if (!canvas) return;
 
         canvas.dispatchEvent(new MouseEvent("mousemove", {
           clientX: event.clientX,
@@ -1030,7 +1025,9 @@ export function Hero() {
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#05080F]" />
       </div>
 
-      <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" fill="white" />
+      <HeavyGate desktopOnly className="pointer-events-none absolute inset-0 z-[1] overflow-hidden">
+        <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" fill="white" />
+      </HeavyGate>
 
       <div className="pointer-events-none relative z-10 flex w-full md:w-1/2 max-w-[1600px] flex-col items-start px-6 md:px-12 text-left [&_a]:pointer-events-auto [&_button]:pointer-events-auto">
         <div
@@ -1108,7 +1105,9 @@ export function Live3D() {
 
         <Reveal delay={200}>
           <Card className="relative w-full overflow-hidden rounded-3xl border border-white/10 bg-black/60 backdrop-blur shadow-[0_30px_80px_-20px_rgba(124,110,255,0.45)]">
-            <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" fill="white" />
+            <HeavyGate desktopOnly className="pointer-events-none absolute inset-0 z-[1] overflow-hidden">
+              <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" fill="white" />
+            </HeavyGate>
             <div className="grid h-[78vh] min-h-[520px] grid-cols-1 md:grid-cols-2">
               {/* Left — copy */}
               <div className="relative z-10 flex flex-col justify-center gap-6 p-8 md:p-12">
@@ -2458,7 +2457,7 @@ export function Contact() {
 
 /* ============ ROOT ============ */
 export function PortfolioShell({ children }: { children: ReactNode }) {
-  // useLenis(); // Disabled virtual scrolling in favor of high-performance native compositor scrolling
+  useLenis();
   useBgShifter();
   return (
     <main className="relative min-h-screen bg-[#07121F] text-body">
