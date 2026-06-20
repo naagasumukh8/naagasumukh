@@ -2458,7 +2458,7 @@ export function Contact() {
 
 /* ============ ROOT ============ */
 export function PortfolioShell({ children }: { children: ReactNode }) {
-  useLenis(); // ← Lenis smooth scroll restored — was accidentally commented out
+  // useLenis(); // Disabled virtual scrolling in favor of high-performance native compositor scrolling
   useBgShifter();
   return (
     <main className="relative min-h-screen bg-[#07121F] text-body">

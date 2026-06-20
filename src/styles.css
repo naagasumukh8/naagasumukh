@@ -72,9 +72,7 @@
     border-color: var(--color-border);
   }
   html {
-    /* IMPORTANT: do NOT set scroll-behavior:smooth here — Lenis owns scrolling.
-       Native smooth + Lenis = double interpolation = jank. */
-    scroll-behavior: auto;
+    scroll-behavior: smooth;
     background: #000000;
     overflow-x: hidden;
     /* Prevent overscroll rubber-band on Windows/Chrome that causes visible pop */
@@ -439,25 +437,4 @@ a:active, button:active, [role="button"]:active,
 /* Keep essential UI transitions (opacity for modals, etc.) */
 [data-low-end="true"] .page-transition {
   transition: opacity 0.2s ease !important;
-}
-
-/* ============ LENIS RECOMMENDED SMOOTH SCROLL STYLES ============ */
-html.lenis, html.lenis body {
-  height: auto;
-}
-
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
-
-.lenis.lenis-stopped {
-  overflow: hidden;
-}
-
-.lenis.lenis-scrolling iframe {
-  pointer-events: none;
 }

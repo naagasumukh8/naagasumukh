@@ -171,25 +171,15 @@ function smoothScrollOnSamePage(e: React.MouseEvent, hash: string) {
   if (window.location.pathname !== "/") return;
   e.preventDefault();
   if (!hash) {
-    if ((window as any).lenis) {
-      (window as any).lenis.scrollTo(0, { duration: 1.2 });
-    } else {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
     history.replaceState(null, "", "/");
     return;
   }
   const el = document.getElementById(hash);
   if (el) {
-    if ((window as any).lenis) {
-      (window as any).lenis.scrollTo(el, {
-        offset: -80,
-        duration: 1.4,
-        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      });
-    } else {
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    const yOffset = -80;
+    const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+    window.scrollTo({ top: y, behavior: "smooth" });
     history.replaceState(null, "", `/#${hash}`);
   }
 }
