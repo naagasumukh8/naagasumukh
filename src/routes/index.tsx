@@ -3,6 +3,9 @@ import { lazy, useEffect, useRef, useState, type MouseEvent, type ReactNode } fr
 import { createPortal } from "react-dom";
 import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
 import Lenis from "lenis";
+import { DottedSurface } from "@/components/ui/dotted-surface";
+import { ImageTrail } from "@/components/ui/image-trail";
+import { SplineScene } from "@/components/ui/splite";
 import portrait from "@/assets/portrait-avatar.jpg.asset.json";
 import sachhaiVideo from "@/assets/sachhai-demo.mp4.asset.json";
 import { Spotlight } from "@/components/ui/spotlight";
@@ -109,12 +112,7 @@ function SectionBackdrop({ variant }: { variant: "paths" | "dots" | "aurora-viol
   );
 }
 
-/* Heavy WebGL/canvas components — code-split & mounted only when in view via <HeavyGate>.
-   ShaderAnimation, SpiralAnimation and MeshGradientBg were replaced with CSS-only
-   alternatives below to keep the main thread free (Spline robot stays as the hero effect). */
-const DottedSurface = lazy(() => import("@/components/ui/dotted-surface").then((m) => ({ default: m.DottedSurface })));
-const ImageTrail = lazy(() => import("@/components/ui/image-trail").then((m) => ({ default: m.ImageTrail })));
-const SplineScene = lazy(() => import("@/components/ui/splite").then((m) => ({ default: m.SplineScene })));
+/* Heavy WebGL/canvas components. Standard static imports at top of file prevent chunk-load freezes. */
 
 /* ============ LIGHTWEIGHT CSS EFFECTS (replace heavy WebGL backdrops) ============ */
 function WavingBalls({ count = 14 }: { count?: number }) {
@@ -360,13 +358,12 @@ export function useLenis() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const lenis = new Lenis({
-      // lerp 0.12 gives a faster, more responsive feel without losing smoothness
-      lerp: 0.12,
+      // duration-mode scrolling uses a deterministic exponential easing curve, which feels much silkier than lerp
+      duration: 1.3,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-      // 1.25 increases the scroll distance per notch, eliminating the heavy "hardness" feel
-      wheelMultiplier: 1.25,
-      // 1.8 for balanced and natural touch scroll response
-      touchMultiplier: 1.8,
+      wheelMultiplier: 1.15,
+      touchMultiplier: 1.5,
       infinite: false,
     });
     
@@ -1780,19 +1777,36 @@ export function Journey() {
   const ref = useRef<HTMLDivElement>(null);
   const progressLineRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
+    const el = ref.current; if (!el) return;
+    const line = progressLineRef.current; if (!line) return;
+
+    let elementTop = 0;
+    let elementHeight = 0;
+
+    const measure = () => {
+      const rect = el.getBoundingClientRect();
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      elementTop = rect.top + scrollTop;
+      elementHeight = rect.height;
+    };
+
+    measure();
+
     const onScroll = () => {
-      const el = ref.current; if (!el) return;
-      const line = progressLineRef.current; if (!line) return;
-      const r = el.getBoundingClientRect();
       const vh = window.innerHeight;
-      const total = r.height + vh;
-      const passed = vh - r.top;
+      const total = elementHeight + vh;
+      const passed = (window.scrollY || document.documentElement.scrollTop) + vh - elementTop;
       const pct = Math.max(0, Math.min(100, (passed / total) * 100));
       line.style.height = `${pct}%`;
     };
+
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("resize", measure);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", measure);
+    };
   }, []);
 
   return (
