@@ -81,6 +81,18 @@ export default function RadialOrbitalTimeline({
     });
   };
 
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      setInView(entry.isIntersecting);
+    }, { threshold: 0 });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   const rotationAngleRef = useRef(rotationAngle);
 
   useEffect(() => {
@@ -88,7 +100,7 @@ export default function RadialOrbitalTimeline({
   }, [rotationAngle]);
 
   useEffect(() => {
-    if (!autoRotate) return;
+    if (!autoRotate || !inView) return;
     let rafId: number;
     let currentAngle = rotationAngleRef.current;
 

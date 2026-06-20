@@ -59,7 +59,10 @@ export function GooeyText({
       setMorph(fraction);
     };
 
+    let isIntersecting = false;
+
     function animate() {
+      if (!isIntersecting) return;
       rafId = requestAnimationFrame(animate);
       const newTime = new Date();
       const shouldIncrementIndex = cooldown > 0;
@@ -80,8 +83,25 @@ export function GooeyText({
       }
     }
 
-    animate();
-    return () => cancelAnimationFrame(rafId);
+    const observer = new IntersectionObserver(([entry]) => {
+      const wasIntersecting = isIntersecting;
+      isIntersecting = entry.isIntersecting;
+      if (isIntersecting && !wasIntersecting) {
+        cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(animate);
+      } else if (!isIntersecting) {
+        cancelAnimationFrame(rafId);
+      }
+    }, { threshold: 0 });
+
+    if (text1Ref.current) {
+      observer.observe(text1Ref.current);
+    }
+
+    return () => {
+      observer.disconnect();
+      cancelAnimationFrame(rafId);
+    };
   }, [texts, morphTime, cooldownTime]);
 
   return (

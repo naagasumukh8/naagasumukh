@@ -72,16 +72,31 @@ export function WebGLShader({ className = "" }: { className?: string }) {
     };
     handleResize();
 
+    let isIntersecting = false;
     let raf = 0;
     const animate = () => {
+      if (!isIntersecting) return;
       uniforms.time.value += 0.01;
       renderer.render(scene, camera);
       raf = requestAnimationFrame(animate);
     };
-    animate();
+
+    const observer = new IntersectionObserver(([entry]) => {
+      const wasIntersecting = isIntersecting;
+      isIntersecting = entry.isIntersecting;
+      if (isIntersecting && !wasIntersecting) {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(animate);
+      } else if (!isIntersecting) {
+        cancelAnimationFrame(raf);
+      }
+    }, { threshold: 0 });
+    observer.observe(canvas);
+
     window.addEventListener("resize", handleResize);
 
     return () => {
+      observer.disconnect();
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", handleResize);
       geometry.dispose();

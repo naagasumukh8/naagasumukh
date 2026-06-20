@@ -246,31 +246,49 @@ const AnimatedGradientBackground: React.FC<AnimatedGradientBackgroundProps> = ({
 
    useEffect(() => {
 
+      const el = containerRef.current;
+
+      if (!el) return;
+
+
+
+      if (!Breathing) {
+
+         const gradientStopsString = gradientStops
+
+            .map((stop, index) => `${gradientColors[index]} ${stop}%`)
+
+            .join(", ");
+
+         const gradient = `radial-gradient(${startingGap}% ${startingGap+topOffset}% at 50% 20%, ${gradientStopsString})`;
+
+         el.style.background = gradient;
+
+         return;
+
+      }
+
+
+
       let animationFrame: number;
 
       let width = startingGap;
 
       let directionWidth = 1;
 
-
+      let isIntersecting = false;
 
 
 
       const animateGradient = () => {
 
+         if (!isIntersecting) return;
+
          if (width >= startingGap + breathingRange) directionWidth = -1;
 
          if (width <= startingGap - breathingRange) directionWidth = 1;
 
-
-
-
-
-         if (!Breathing) directionWidth = 0;
-
          width += directionWidth * animationSpeed;
-
-
 
 
 
@@ -282,21 +300,9 @@ const AnimatedGradientBackground: React.FC<AnimatedGradientBackgroundProps> = ({
 
 
 
-
-
          const gradient = `radial-gradient(${width}% ${width+topOffset}% at 50% 20%, ${gradientStopsString})`;
 
-
-
-
-
-         if (containerRef.current) {
-
-            containerRef.current.style.background = gradient;
-
-         }
-
-
+         el.style.background = gradient;
 
 
 
@@ -306,15 +312,37 @@ const AnimatedGradientBackground: React.FC<AnimatedGradientBackgroundProps> = ({
 
 
 
+      const observer = new IntersectionObserver(([entry]) => {
+
+         const wasIntersecting = isIntersecting;
+
+         isIntersecting = entry.isIntersecting;
+
+         if (isIntersecting && !wasIntersecting) {
+
+            cancelAnimationFrame(animationFrame);
+
+            animationFrame = requestAnimationFrame(animateGradient);
+
+         } else if (!isIntersecting) {
+
+            cancelAnimationFrame(animationFrame);
+
+         }
+
+      }, { threshold: 0 });
+
+      observer.observe(el);
 
 
-      animationFrame = requestAnimationFrame(animateGradient);
 
+      return () => {
 
+         observer.disconnect();
 
+         cancelAnimationFrame(animationFrame);
 
-
-      return () => cancelAnimationFrame(animationFrame); // Cleanup animation
+      };
 
    }, [startingGap, Breathing, gradientColors, gradientStops, animationSpeed, breathingRange, topOffset]);
 

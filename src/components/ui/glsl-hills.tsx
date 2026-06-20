@@ -122,15 +122,29 @@ export function GLSLHills({
     const ro = new ResizeObserver(resize);
     ro.observe(container);
 
+    let isIntersecting = false;
     let raf = 0;
     const loop = () => {
+      if (!isIntersecting) return;
       uniforms.time.value += clock.getDelta() * speed;
       renderer.render(scene, camera);
       raf = requestAnimationFrame(loop);
     };
-    loop();
+
+    const observer = new IntersectionObserver(([entry]) => {
+      const wasIntersecting = isIntersecting;
+      isIntersecting = entry.isIntersecting;
+      if (isIntersecting && !wasIntersecting) {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(loop);
+      } else if (!isIntersecting) {
+        cancelAnimationFrame(raf);
+      }
+    }, { threshold: 0 });
+    observer.observe(canvas);
 
     return () => {
+      observer.disconnect();
       cancelAnimationFrame(raf);
       ro.disconnect();
       geometry.dispose();

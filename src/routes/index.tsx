@@ -449,8 +449,10 @@ function NeuralCanvas() {
     canvas.addEventListener("mousemove", onMove);
     canvas.addEventListener("mouseleave", onLeave);
 
+    let isIntersecting = false;
     let raf = 0;
     const draw = () => {
+      if (!isIntersecting) return;
       ctx.clearRect(0, 0, w, h);
       for (const p of particles) {
         const dx = mouse.x - p.x, dy = mouse.y - p.y;
@@ -491,11 +493,24 @@ function NeuralCanvas() {
       }
       raf = requestAnimationFrame(draw);
     };
-    draw();
+
+    const observer = new IntersectionObserver(([entry]) => {
+      const wasIntersecting = isIntersecting;
+      isIntersecting = entry.isIntersecting;
+      if (isIntersecting && !wasIntersecting) {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(draw);
+      } else if (!isIntersecting) {
+        cancelAnimationFrame(raf);
+      }
+    }, { threshold: 0 });
+    observer.observe(canvas);
+
     return () => {
       window.removeEventListener("resize", resize);
       canvas.removeEventListener("mousemove", onMove);
       canvas.removeEventListener("mouseleave", onLeave);
+      observer.disconnect();
       cancelAnimationFrame(raf);
     };
   }, []);
@@ -800,24 +815,39 @@ export function CursorTrail() {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
     resize();
-    const trail: { x: number; y: number }[] = [];
-    const onMove = (e: globalThis.MouseEvent) => {
-      trail.push({ x: e.clientX, y: e.clientY });
-      if (trail.length > 10) trail.shift();
-    };
+    let trail: { x: number; y: number; age: number }[] = [];
+    let active = false;
     let raf = 0;
     const draw = () => {
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-      trail.forEach((p, i) => {
-        const f = (i + 1) / trail.length;
-        ctx.fillStyle = `rgba(92,189,185,${f * 0.4})`;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, 1 + f * 3, 0, Math.PI * 2);
-        ctx.fill();
+      let alive = false;
+      trail.forEach((p) => {
+        p.age += 0.08;
+        if (p.age < 1) {
+          alive = true;
+          const f = 1 - p.age;
+          ctx.fillStyle = `rgba(92,189,185,${f * 0.4})`;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, 1 + f * 3, 0, Math.PI * 2);
+          ctx.fill();
+        }
       });
-      raf = requestAnimationFrame(draw);
+      trail = trail.filter((p) => p.age < 1);
+      if (alive) {
+        raf = requestAnimationFrame(draw);
+      } else {
+        active = false;
+      }
     };
-    draw();
+    const onMove = (e: globalThis.MouseEvent) => {
+      trail.push({ x: e.clientX, y: e.clientY, age: 0 });
+      if (trail.length > 12) trail.shift();
+      if (!active) {
+        active = true;
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(draw);
+      }
+    };
     window.addEventListener("mousemove", onMove);
     window.addEventListener("resize", resize);
     return () => {
@@ -2182,7 +2212,7 @@ export function Contact() {
 
 /* ============ ROOT ============ */
 export function PortfolioShell({ children }: { children: ReactNode }) {
-  useLenis();
+  // useLenis();
   useBgShifter();
   return (
     <main className="relative min-h-screen bg-[#07121F] text-body">

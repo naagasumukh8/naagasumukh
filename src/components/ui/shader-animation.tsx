@@ -90,8 +90,11 @@ export function ShaderAnimation() {
     onWindowResize()
     window.addEventListener("resize", onWindowResize, false)
 
+    let isIntersecting = false;
+
     // Animation loop
     const animate = () => {
+      if (!isIntersecting) return;
       const animationId = requestAnimationFrame(animate)
       uniforms.time.value += 0.05
       renderer.render(scene, camera)
@@ -110,11 +113,25 @@ export function ShaderAnimation() {
       animationId: 0,
     }
 
-    // Start animation
-    animate()
+    const observer = new IntersectionObserver(([entry]) => {
+      const wasIntersecting = isIntersecting;
+      isIntersecting = entry.isIntersecting;
+      if (isIntersecting && !wasIntersecting) {
+        if (sceneRef.current) {
+          cancelAnimationFrame(sceneRef.current.animationId);
+        }
+        animate();
+      } else if (!isIntersecting) {
+        if (sceneRef.current) {
+          cancelAnimationFrame(sceneRef.current.animationId);
+        }
+      }
+    }, { threshold: 0 });
+    observer.observe(container);
 
     // Cleanup function
     return () => {
+      observer.disconnect()
       window.removeEventListener("resize", onWindowResize)
 
       if (sceneRef.current) {
