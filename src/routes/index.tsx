@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { lazy, useEffect, useRef, useState, type MouseEvent, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
+import Lenis from "lenis";
 import portrait from "@/assets/portrait-avatar.jpg.asset.json";
 import sachhaiVideo from "@/assets/sachhai-demo.mp4.asset.json";
 import { Spotlight } from "@/components/ui/spotlight";
@@ -19,7 +20,6 @@ import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { PaperShaderBackdrop } from "@/components/ui/paper-shader-backdrop";
 import { GLSLHills } from "@/components/ui/glsl-hills";
 import { LampContainer } from "@/components/ui/lamp";
-
 
 /* ============ PREMIUM SECTION BACKDROPS ============
    Each backdrop fades in via IntersectionObserver when its section enters
@@ -349,86 +349,58 @@ function Typing({ text, className = "", speed = 18 }: { text: string; className?
   );
 }
 
-/* ============ SECTION BG SHIFTER ============ */
 /* ============ LENIS SMOOTH SCROLL ============ */
+/**
+ * Lenis is imported at top-level (not dynamic) so it's bundled with the page
+ * and starts on frame 1 — no async waterfall, no jank window.
+ */
 export function useLenis() {
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    let lenis: {
-      destroy: () => void;
-      raf: (t: number) => void;
-      on: (e: string, cb: () => void) => void;
-      scrollTo: (target: string | number | HTMLElement, opts?: Record<string, unknown>) => void;
-    } | null = null;
-    let cancelled = false;
 
-    (async () => {
-      const [{ default: Lenis }, gsapMod, stMod] = await Promise.all([
-        import("lenis"),
-        import("gsap"),
-        import("gsap/ScrollTrigger"),
-      ]);
-      if (cancelled) return;
-      const gsap = gsapMod.default;
-      const ScrollTrigger = stMod.ScrollTrigger;
-      gsap.registerPlugin(ScrollTrigger);
+    const lenis = new Lenis({
+      // lerp 0.09 = silky but responsive. 0.1 is too laggy, 0.2 is too snappy.
+      lerp: 0.09,
+      smoothWheel: true,
+      // 1.0 = natural trackpad/mouse wheel feel. Under 1 feels stuck.
+      wheelMultiplier: 1.0,
+      // 2.0 gives a responsive native-like feel on touch
+      touchMultiplier: 2.0,
+      // DO NOT set syncTouch:true in Lenis 1.x — it competes with iOS
+      // momentum scrolling and causes the cracky/stuttering the user feels.
+      infinite: false,
+    });
 
-      const instance = new Lenis({
-        // lerp 0.1 = silky water-like momentum (lower = more lag, higher = snappier)
-        lerp: 0.1,
-        // Keep duration undefined so lerp governs — avoids double easing
-        smoothWheel: true,
-        // Slightly under 1 so the wheel doesn't overshoot on fast flicks
-        wheelMultiplier: 0.9,
-        // 1.8 gives a responsive native-iOS feel on touch screens
-        touchMultiplier: 1.8,
-        // Sync Lenis with touch inertia (iOS Safari momentum)
-        syncTouch: true,
-        infinite: false,
+    // Lean RAF loop — no GSAP dependency, starts immediately on mount
+    let rafId = 0;
+    function raf(time: number) {
+      lenis.raf(time);
+      rafId = requestAnimationFrame(raf);
+    }
+    rafId = requestAnimationFrame(raf);
+
+    // Intercept anchor clicks so Lenis handles the scroll (no native jump)
+    const handleAnchorClick = (e: Event) => {
+      const anchor = (e.target as HTMLElement)?.closest("a[href^='#']");
+      if (!anchor) return;
+      const href = anchor.getAttribute("href");
+      if (!href) return;
+      const target = document.querySelector(href);
+      if (!target) return;
+      e.preventDefault();
+      lenis.scrollTo(target as HTMLElement, {
+        offset: -80,
+        duration: 1.4,
+        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       });
-
-      lenis = instance as unknown as typeof lenis;
-
-      // Keep GSAP ScrollTrigger synced with Lenis position
-      instance.on("scroll", ScrollTrigger.update);
-      gsap.ticker.add((time) => instance.raf(time * 1000));
-      gsap.ticker.lagSmoothing(0);
-
-      // Intercept anchor clicks so Lenis handles the scroll (no native jump)
-      const handleAnchorClick = (e: Event) => {
-        const anchor = (e.target as HTMLElement)?.closest("a[href^='#']");
-        if (!anchor) return;
-        const href = anchor.getAttribute("href");
-        if (!href) return;
-        const target = document.querySelector(href);
-        if (!target) return;
-        e.preventDefault();
-        instance.scrollTo(target as HTMLElement, {
-          offset: -80, // account for fixed top-bar height
-          duration: 1.4,
-          easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // exponential ease-out
-        });
-      };
-
-      document.addEventListener("click", handleAnchorClick);
-
-      // Cleanup
-      const origDestroy = instance.destroy.bind(instance);
-      (lenis as typeof lenis & { _anchClean: () => void })._anchClean = () =>
-        document.removeEventListener("click", handleAnchorClick);
-
-      // Store cleanup on lenis proxy
-      void origDestroy; // keep reference
-    })();
+    };
+    document.addEventListener("click", handleAnchorClick);
 
     return () => {
-      cancelled = true;
-      if (lenis) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (lenis as any)._anchClean?.();
-        lenis.destroy();
-      }
+      cancelAnimationFrame(rafId);
+      document.removeEventListener("click", handleAnchorClick);
+      lenis.destroy();
     };
   }, []);
 }
