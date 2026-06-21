@@ -1,9 +1,5 @@
 import { useRef, useState, useEffect } from "react";
 import { Briefcase, Trophy, GraduationCap, Award, BarChart3 } from "lucide-react";
-import { useGraphics } from "./PortfolioShell";
-import { HeavyGate } from "@/components/HeavyGate";
-import { GLSLHills } from "@/components/ui/glsl-hills";
-import { SparklesCore } from "@/components/ui/sparkles";
 import DisplayCards from "@/components/ui/display-cards";
 
 import {
@@ -193,7 +189,6 @@ export function Journey() {
 
 // ============ RECOGNITION ============
 export function Recognition() {
-  const { graphicsMode } = useGraphics();
   const items: Array<{
     v: number;
     suffix?: string;
@@ -218,11 +213,6 @@ export function Recognition() {
       id="recognition"
       className="relative overflow-hidden px-5 py-20 sm:px-6 sm:py-28 md:px-12 md:py-40"
     >
-      {graphicsMode === "interactive-3d" && (
-        <HeavyGate desktopOnly className="pointer-events-none absolute inset-0 opacity-60">
-          <GLSLHills speed={0.35} />
-        </HeavyGate>
-      )}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60" />
       <div className="relative mx-auto max-w-[1300px]">
         <Reveal>
@@ -325,31 +315,14 @@ export function Certs() {
       style={{ background: "#080808" }}
     >
       <div className="pointer-events-none absolute inset-0 z-0">
-        <HeavyGate
-          desktopOnly
-          rootMargin="100px"
-          className="absolute inset-0"
-          fallback={
-            <div
-              className="absolute inset-0 opacity-60"
-              style={{
-                backgroundImage:
-                  "radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.5) 0%, transparent 100%), radial-gradient(1px 1px at 40% 60%, rgba(255,255,255,0.4) 0%, transparent 100%), radial-gradient(1px 1px at 70% 30%, rgba(255,255,255,0.5) 0%, transparent 100%), radial-gradient(1px 1px at 85% 75%, rgba(255,255,255,0.3) 0%, transparent 100%), radial-gradient(1px 1px at 25% 85%, rgba(255,255,255,0.4) 0%, transparent 100%), radial-gradient(1px 1px at 60% 15%, rgba(255,255,255,0.35) 0%, transparent 100%)",
-                backgroundSize: "100% 100%",
-              }}
-            />
-          }
-        >
-          <SparklesCore
-            background="transparent"
-            minSize={0.4}
-            maxSize={1.2}
-            particleDensity={60}
-            particleColor="#ffffff"
-            speed={1}
-            className="h-full w-full"
-          />
-        </HeavyGate>
+        <div
+          className="absolute inset-0 opacity-60"
+          style={{
+            backgroundImage:
+              "radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.5) 0%, transparent 100%), radial-gradient(1px 1px at 40% 60%, rgba(255,255,255,0.4) 0%, transparent 100%), radial-gradient(1px 1px at 70% 30%, rgba(255,255,255,0.5) 0%, transparent 100%), radial-gradient(1px 1px at 85% 75%, rgba(255,255,255,0.3) 0%, transparent 100%), radial-gradient(1px 1px at 25% 85%, rgba(255,255,255,0.4) 0%, transparent 100%), radial-gradient(1px 1px at 60% 15%, rgba(255,255,255,0.35) 0%, transparent 100%)",
+            backgroundSize: "100% 100%",
+          }}
+        />
         <div
           className="absolute inset-0"
           style={{

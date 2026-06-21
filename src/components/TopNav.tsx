@@ -16,17 +16,28 @@ export function TopNav() {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 80);
+    let active = true;
+    let frameId: number;
+    const onScroll = () => {
+      if (!active) return;
+      frameId = requestAnimationFrame(() => {
+        setScrolled(window.scrollY > 80);
+      });
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      active = false;
+      cancelAnimationFrame(frameId);
+      window.removeEventListener("scroll", onScroll);
+    };
   }, []);
 
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "[backdrop-filter:blur(16px)_saturate(140%)] bg-background/55 border-b border-white/[0.08]"
+          ? "bg-[#07121F]/95 border-b border-white/[0.08]"
           : "bg-transparent border-b border-transparent"
       }`}
     >
@@ -40,7 +51,7 @@ export function TopNav() {
           </span>
         </Link>
 
-        <ul className="hidden md:flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-2 py-1 backdrop-blur-md">
+        <ul className="hidden md:flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-2 py-1">
           {links.map((l) => {
             return (
               <li key={l.label}>
@@ -67,7 +78,7 @@ export function TopNav() {
 
         <button
           onClick={() => setOpen((v) => !v)}
-          className="md:hidden relative inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-foreground [backdrop-filter:blur(10px)]"
+          className="md:hidden relative inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-foreground"
           aria-label="Toggle menu"
           aria-expanded={open}
         >
@@ -100,8 +111,7 @@ export function TopNav() {
           clipPath: open
             ? "circle(160% at calc(100% - 28px) 0%)"
             : "circle(0% at calc(100% - 28px) 0%)",
-          background: "linear-gradient(180deg, rgba(7,18,31,0.96) 0%, rgba(7,18,31,0.92) 100%)",
-          backdropFilter: "blur(20px) saturate(140%)",
+          background: "linear-gradient(180deg, rgba(7,18,31,0.99) 0%, rgba(7,18,31,0.97) 100%)",
         }}
       >
         <ul className="mx-4 mt-4 flex flex-col gap-1 rounded-2xl border border-white/10 bg-white/[0.03] p-2">

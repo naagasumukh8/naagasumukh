@@ -12,14 +12,10 @@ import {
   Zap,
   Trophy,
 } from "lucide-react";
-import { HeavyGate } from "@/components/HeavyGate";
-import { ImageTrail } from "@/components/ui/image-trail";
-import { DottedSurface } from "@/components/ui/dotted-surface";
 import { HoverButton } from "@/components/ui/hover-button";
 
 import {
   Reveal,
-  WavingBalls,
   GlowTile,
   SectionLabel,
 } from "./PortfolioUtils";
@@ -466,9 +462,6 @@ export function Achievements() {
       id="achievements"
       className="relative overflow-hidden px-5 py-20 sm:px-6 sm:py-28 md:px-12 md:py-40"
     >
-      <HeavyGate desktopOnly className="pointer-events-none absolute inset-0 opacity-30">
-        <DottedSurface />
-      </HeavyGate>
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black/60" />
       <div className="relative mx-auto max-w-[1300px]">
         <Reveal>
@@ -537,43 +530,26 @@ export function Achievements() {
 
 // ============ VIBE ============
 export function Vibe() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const tokens = ["AI", "ML", "Py", "GenAI", "NLP", "N8N", "React", "SQL", "Auto", "✦", "◉", "→"];
   return (
     <section
-      ref={containerRef}
       id="vibe"
       className="relative h-[80vh] w-full overflow-hidden border-y border-white/[0.04]"
     >
+      {/* Static gradient background — replaces WavingBalls + ImageTrail */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#1a1f3a] via-[#0F2540] to-black" />
-      <WavingBalls
-        count={
-          typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches ? 5 : 16
-        }
+      <div
+        className="absolute inset-0 opacity-40"
+        style={{
+          background:
+            "radial-gradient(ellipse at 30% 40%, rgba(255,255,255,0.08), transparent 55%), radial-gradient(ellipse at 75% 65%, rgba(255,255,255,0.05), transparent 50%)",
+        }}
       />
       <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/70" />
-
-      <HeavyGate desktopOnly className="pointer-events-none absolute inset-0">
-        <ImageTrail
-          containerRef={containerRef as React.RefObject<HTMLElement>}
-          interval={70}
-          rotationRange={25}
-        >
-          {tokens.map((t, i) => (
-            <div
-              key={i}
-              className="flex h-14 w-14 items-center justify-center rounded-full border border-violet/40 bg-black/60 font-mono text-xs uppercase tracking-widest text-body backdrop-blur-md shadow-[0_0_30px_rgba(124,110,255,0.5)]"
-            >
-              {t}
-            </div>
-          ))}
-        </ImageTrail>
-      </HeavyGate>
 
       <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center">
         <Reveal>
           <div className="mb-6 font-mono text-[11px] uppercase tracking-[0.3em] text-gold">
-            [ INTERLUDE — MOVE YOUR CURSOR ]
+            [ INTERLUDE ]
           </div>
         </Reveal>
         <Reveal delay={120}>

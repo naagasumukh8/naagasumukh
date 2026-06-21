@@ -22,162 +22,33 @@ export function useInView<T extends HTMLElement>(threshold = 0.15) {
   return { ref, inView };
 }
 
-// ============ PREMIUM SECTION BACKDROPS ============
-import { FloatingPaths } from "@/components/ui/background-paths";
-
-export function AuroraBackdrop({ hue = "violet" }: { hue?: "violet" | "gold" | "cyan" }) {
-  const c =
-    hue === "gold"
-      ? ["rgba(244,196,107,0.35)", "rgba(255,140,90,0.25)", "rgba(124,110,255,0.18)"]
-      : hue === "cyan"
-        ? ["rgba(64,200,255,0.35)", "rgba(124,110,255,0.22)", "rgba(92,189,185,0.18)"]
-        : ["rgba(124,110,255,0.38)", "rgba(244,196,107,0.18)", "rgba(64,200,255,0.22)"];
-  return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden">
-      <div
-        className="absolute -inset-[20%] opacity-80 blur-3xl"
-        style={{
-          background: `radial-gradient(40% 40% at 20% 30%, ${c[0]}, transparent 70%),
-                       radial-gradient(35% 45% at 80% 20%, ${c[1]}, transparent 70%),
-                       radial-gradient(50% 40% at 50% 90%, ${c[2]}, transparent 70%)`,
-          animation: "auroraDrift 18s ease-in-out infinite alternate",
-        }}
-      />
-      <style>{`@keyframes auroraDrift { 0%{transform:translate3d(0,0,0) scale(1);} 50%{transform:translate3d(-3%,2%,0) scale(1.06);} 100%{transform:translate3d(3%,-2%,0) scale(1.02);} }`}</style>
-    </div>
-  );
-}
-
+// ============ STATIC SECTION BACKDROP (no animation, no blur) ============
 export function SectionBackdrop({
   variant,
 }: {
   variant: "paths" | "dots" | "aurora-violet" | "aurora-gold" | "aurora-cyan" | "grid";
 }) {
   const { ref, inView } = useInView<HTMLDivElement>(0.05);
+
+  // All variants now use a simple static radial gradient — no animation, no blur
+  const gradients: Record<string, string> = {
+    paths: "radial-gradient(50% 50% at 20% 30%, rgba(255,255,255,0.06), transparent 70%), radial-gradient(40% 50% at 80% 70%, rgba(255,255,255,0.04), transparent 70%)",
+    dots: "radial-gradient(50% 50% at 50% 50%, rgba(255,255,255,0.05), transparent 70%)",
+    "aurora-violet": "radial-gradient(50% 50% at 30% 40%, rgba(255,255,255,0.06), transparent 70%)",
+    "aurora-gold": "radial-gradient(50% 50% at 70% 30%, rgba(255,255,255,0.05), transparent 70%)",
+    "aurora-cyan": "radial-gradient(50% 50% at 40% 60%, rgba(255,255,255,0.05), transparent 70%)",
+    grid: "radial-gradient(50% 50% at 50% 40%, rgba(255,255,255,0.04), transparent 70%)",
+  };
+
   return (
     <div
       ref={ref}
-      className={`pointer-events-none absolute inset-0 overflow-hidden transition-opacity duration-[1400ms] ${inView ? "opacity-100" : "opacity-0"}`}
+      className={`pointer-events-none absolute inset-0 overflow-hidden transition-opacity duration-700 ${inView ? "opacity-100" : "opacity-0"}`}
     >
-      {variant === "paths" && (
-        <>
-          <FloatingPaths position={1} />
-          <FloatingPaths position={-1} />
-          <AuroraBackdrop hue="violet" />
-        </>
-      )}
-      {variant === "dots" && (
-        <>
-          <AuroraBackdrop hue="cyan" />
-          <div
-            className="absolute -inset-[26px] opacity-[0.22]"
-            style={{
-              backgroundImage:
-                "radial-gradient(circle, rgba(255,255,255,0.55) 1px, transparent 1.4px)",
-              backgroundSize: "26px 26px",
-              maskImage: "radial-gradient(ellipse at center, black 30%, transparent 75%)",
-              animation: "dotsDrift 16s linear infinite",
-              willChange: "transform",
-            }}
-          />
-          <style>{`@keyframes dotsDrift { from{transform:translate3d(0,0,0)} to{transform:translate3d(26px,26px,0)} }`}</style>
-        </>
-      )}
-      {variant === "aurora-violet" && <AuroraBackdrop hue="violet" />}
-      {variant === "aurora-gold" && <AuroraBackdrop hue="gold" />}
-      {variant === "aurora-cyan" && <AuroraBackdrop hue="cyan" />}
-      {variant === "grid" && (
-        <>
-          <AuroraBackdrop hue="gold" />
-          <div
-            className="absolute -inset-[60px] opacity-[0.18]"
-            style={{
-              backgroundImage:
-                "linear-gradient(rgba(244,196,107,0.35) 1px, transparent 1px), linear-gradient(90deg, rgba(244,196,107,0.35) 1px, transparent 1px)",
-              backgroundSize: "60px 60px",
-              maskImage: "radial-gradient(ellipse at center, black 35%, transparent 80%)",
-              animation: "gridPan 22s linear infinite",
-              willChange: "transform",
-            }}
-          />
-          <style>{`@keyframes gridPan { from{transform:translate3d(0,0,0)} to{transform:translate3d(60px,60px,0)} }`}</style>
-        </>
-      )}
-    </div>
-  );
-}
-
-// ============ LIGHTWEIGHT CSS EFFECTS ============
-export function WavingBalls({ count = 14 }: { count?: number }) {
-  const balls = Array.from({ length: count });
-  return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden">
-      {balls.map((_, i) => {
-        const size = 40 + ((i * 13) % 80);
-        const left = (i * 37) % 100;
-        const top = (i * 53) % 100;
-        const dur = 6 + (i % 5);
-        const delay = (i % 7) * -0.8;
-        const hue = i % 3 === 0 ? "#5CBDB9" : i % 3 === 1 ? "#7C6EFF" : "#FFB347";
-        return (
-          <span
-            key={i}
-            className="absolute rounded-full blur-2xl opacity-60"
-            style={{
-              width: size,
-              height: size,
-              left: `${left}%`,
-              top: `${top}%`,
-              background: `radial-gradient(circle, ${hue}aa 0%, transparent 70%)`,
-              animation: `splashFloat ${dur}s ease-in-out ${delay}s infinite alternate`,
-            }}
-          />
-        );
-      })}
-      <style>{`@keyframes splashFloat {
-        0% { transform: translate3d(0,0,0) scale(1); }
-        50% { transform: translate3d(20px,-30px,0) scale(1.15); }
-        100% { transform: translate3d(-15px,25px,0) scale(0.9); }
-      }`}</style>
-    </div>
-  );
-}
-
-export function OrbitingDots() {
-  const rings = [
-    { size: 320, count: 6, dur: 18, hue: "#5CBDB9" },
-    { size: 480, count: 8, dur: 28, hue: "#7C6EFF" },
-    { size: 640, count: 10, dur: 40, hue: "#FFB347" },
-  ];
-  return (
-    <div className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden">
-      {rings.map((r, ri) => (
-        <div
-          key={ri}
-          className="absolute rounded-full"
-          style={{
-            width: r.size,
-            height: r.size,
-            animation: `splashSpin ${r.dur}s linear infinite`,
-          }}
-        >
-          {Array.from({ length: r.count }).map((_, i) => {
-            const angle = (360 / r.count) * i;
-            return (
-              <span
-                key={i}
-                className="absolute left-1/2 top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full blur-[2px]"
-                style={{
-                  background: r.hue,
-                  boxShadow: `0 0 18px ${r.hue}`,
-                  transform: `rotate(${angle}deg) translateY(-${r.size / 2}px)`,
-                }}
-              />
-            );
-          })}
-        </div>
-      ))}
-      <style>{`@keyframes splashSpin { to { transform: rotate(360deg); } }`}</style>
+      <div
+        className="absolute inset-0"
+        style={{ background: gradients[variant] || gradients.paths }}
+      />
     </div>
   );
 }
@@ -230,7 +101,7 @@ export function Typing({
     <span ref={ref} className={className}>
       {shown}
       <span
-        className="ml-0.5 inline-block h-[1em] w-[2px] -mb-1 bg-violet align-middle"
+        className="ml-0.5 inline-block h-[1em] w-[2px] -mb-1 bg-white align-middle"
         style={{ opacity: done ? 0 : 1, animation: done ? "none" : "blink 0.8s steps(2) infinite" }}
       />
       <style>{`@keyframes blink { 50% { opacity: 0; } }`}</style>
@@ -271,9 +142,8 @@ export function Reveal({
       className={className}
       style={{
         opacity: vis ? 1 : 0,
-        transform: vis ? "translateY(0)" : "translateY(32px)",
-        transition: `opacity 0.75s cubic-bezier(0.16,1,0.3,1) ${delay}ms, transform 0.85s cubic-bezier(0.34,1.2,0.64,1) ${delay}ms`,
-        willChange: "transform, opacity",
+        transform: vis ? "translateY(0)" : "translateY(24px)",
+        transition: `opacity 0.5s ease ${delay}ms, transform 0.5s cubic-bezier(0.22,1,0.36,1) ${delay}ms`,
       }}
     >
       {children}
@@ -285,37 +155,20 @@ export function Reveal({
 export function SplitWord({
   word,
   delay = 0,
-  glitch = false,
   gradient = false,
 }: {
   word: string;
   delay?: number;
-  glitch?: boolean;
+  glitch?: boolean; // kept for API compat, ignored
   gradient?: boolean;
 }) {
-  const ref = useRef<HTMLSpanElement>(null);
   const [vis, setVis] = useState(false);
-  const [glitching, setGlitching] = useState(false);
   useEffect(() => {
     const t = setTimeout(() => setVis(true), delay);
     return () => clearTimeout(t);
   }, [delay]);
-  useEffect(() => {
-    if (!glitch) return;
-    const iv = setInterval(
-      () => {
-        setGlitching(true);
-        setTimeout(() => setGlitching(false), 400);
-      },
-      5000 + Math.random() * 3000,
-    );
-    return () => clearInterval(iv);
-  }, [glitch]);
   return (
-    <span
-      ref={ref}
-      className={`inline-block overflow-hidden align-bottom ${glitching ? "animate-glitch" : ""}`}
-    >
+    <span className="inline-block overflow-hidden align-bottom">
       {word.split("").map((c, i) => (
         <span
           key={i}
@@ -323,7 +176,7 @@ export function SplitWord({
           style={{
             transform: vis ? "translateY(0)" : "translateY(110%)",
             opacity: vis ? 1 : 0,
-            transition: `transform 1s cubic-bezier(0.16,1,0.3,1) ${i * 35}ms, opacity 0.8s ease ${i * 35}ms`,
+            transition: `transform 0.6s cubic-bezier(0.22,1,0.36,1) ${i * 30}ms, opacity 0.5s ease ${i * 30}ms`,
           }}
         >
           {c}
@@ -418,9 +271,7 @@ export function TiltCard({ children, className = "" }: { children: ReactNode; cl
     const py = e.clientY - r.top;
     const x = px / r.width - 0.5;
     const y = py / r.height - 0.5;
-    el.style.transform = `perspective(1000px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg) translateY(-6px)`;
-    el.style.setProperty("--mx", `${px}px`);
-    el.style.setProperty("--my", `${py}px`);
+    el.style.transform = `perspective(1000px) rotateY(${x * 6}deg) rotateX(${-y * 6}deg) translateY(-4px)`;
   };
   const onLeave = () => {
     if (ref.current)
@@ -460,17 +311,17 @@ export function SectionLabel({ num, text }: { num: string; text: string }) {
       [ {num} — {text} ]
       <span
         aria-hidden
-        className="absolute left-0 bottom-0 h-px bg-violet/70"
+        className="absolute left-0 bottom-0 h-px bg-white/50"
         style={{
           width: seen ? "100%" : "0%",
-          transition: "width 600ms cubic-bezier(0.22,1,0.36,1) 120ms",
+          transition: "width 500ms cubic-bezier(0.22,1,0.36,1) 100ms",
         }}
       />
     </div>
   );
 }
 
-// ============ GLOW TILE ============
+// ============ GLOW TILE (simplified — no infinite border spin) ============
 export function GlowTile({
   children,
   className = "",
@@ -492,44 +343,20 @@ export function GlowTile({
     <div
       ref={ref}
       onMouseMove={handleMove}
-      className={`group relative h-full overflow-hidden rounded-2xl transition-transform duration-300 motion-safe:hover:-translate-y-1 ${className}`}
+      className={`group relative h-full overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.03] transition-transform duration-200 motion-safe:hover:-translate-y-1 ${className}`}
       style={{ ["--mx" as string]: "50%", ["--my" as string]: "50%" }}
     >
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-        style={{
-          background:
-            "conic-gradient(from var(--angle,0deg), rgba(167,139,250,0.9), rgba(244,196,107,0.7), rgba(64,200,255,0.6), rgba(167,139,250,0.9))",
-          WebkitMask: "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
-          WebkitMaskComposite: "xor",
-          maskComposite: "exclude",
-          padding: "1px",
-          animation: "tile-spin 6s linear infinite",
-        }}
-      />
-      <div
-        className={`relative h-full rounded-2xl border border-white/[0.08] bg-surface/70 backdrop-blur-sm ${padding} transition-colors duration-300 group-hover:border-transparent`}
-      >
+      <div className={`relative h-full ${padding}`}>
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
           style={{
             background:
-              "radial-gradient(220px circle at var(--mx) var(--my), rgba(167,139,250,0.28), transparent 60%)",
-          }}
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 rounded-2xl opacity-60"
-          style={{
-            background:
-              "radial-gradient(120% 80% at 50% -20%, rgba(255,255,255,0.06), transparent 60%)",
+              "radial-gradient(200px circle at var(--mx) var(--my), rgba(255,255,255,0.08), transparent 60%)",
           }}
         />
         <div className="relative">{children}</div>
       </div>
-      <style>{`@keyframes tile-spin { to { --angle: 360deg; } } @property --angle { syntax: "<angle>"; initial-value: 0deg; inherits: false; }`}</style>
     </div>
   );
 }

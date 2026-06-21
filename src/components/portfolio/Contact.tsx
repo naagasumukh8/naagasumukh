@@ -4,7 +4,6 @@ import { LampContainer } from "@/components/ui/lamp";
 import {
   Reveal,
   SectionLabel,
-  OrbitingDots,
 } from "./PortfolioUtils";
 
 // ============ CONTACT ============
@@ -42,9 +41,6 @@ export function Contact() {
     >
       <div className="pointer-events-none absolute inset-x-0 top-0 h-[420px] opacity-70">
         <LampContainer className="h-[420px]" />
-      </div>
-      <div className="pointer-events-none absolute inset-0 opacity-40 mix-blend-screen">
-        <OrbitingDots />
       </div>
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black/80" />
       <div className="relative mx-auto max-w-[1300px]">

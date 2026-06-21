@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PortfolioShell } from "@/components/portfolio/PortfolioShell";
-import { Projects, Live3D } from "@/components/portfolio/Work";
+import { Projects } from "@/components/portfolio/Work";
 import { Marquee } from "@/components/portfolio/PortfolioUtils";
 
 export const Route = createFileRoute("/work")({
@@ -26,7 +26,6 @@ export const Route = createFileRoute("/work")({
       <h1 className="sr-only">Selected Projects and Work</h1>
       <Projects />
       <Marquee />
-      <Live3D />
     </PortfolioShell>
   ),
 });
