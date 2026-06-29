@@ -3,6 +3,9 @@ import portrait from "@/assets/portrait-avatar.jpg.asset.json";
 
 import { PortfolioShell } from "@/components/portfolio/PortfolioShell";
 import { Hero } from "@/components/portfolio/Hero";
+import { About, Skills, SkillsChips } from "@/components/portfolio/About";
+import { Services } from "@/components/portfolio/Services";
+import { Projects } from "@/components/portfolio/Work";
 import { Contact } from "@/components/portfolio/Contact";
 
 export const Route = createFileRoute("/")({
@@ -33,6 +36,11 @@ function Portfolio() {
   return (
     <PortfolioShell>
       <Hero />
+      <About />
+      <Skills />
+      <SkillsChips />
+      <Services />
+      <Projects />
       <Contact />
     </PortfolioShell>
   );
@@ -47,3 +55,5 @@ export { Journey, Experience, Recognition, Certs, Testimonials } from "@/compone
 export { Vibe, Achievements } from "@/components/portfolio/Vibe";
 export { Contact } from "@/components/portfolio/Contact";
 export { Marquee } from "@/components/portfolio/PortfolioUtils";
+export { Services } from "@/components/portfolio/Services";
+

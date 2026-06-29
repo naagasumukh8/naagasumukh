@@ -72,7 +72,7 @@
     border-color: var(--color-border);
   }
   html {
-    scroll-behavior: smooth;
+    /* scroll-behavior removed — Lenis handles smooth scroll with physics */
     background: #000000;
     overflow-x: hidden;
     /* Prevent overscroll rubber-band on Windows/Chrome that causes visible pop */
@@ -371,37 +371,33 @@
 
 /* ============ Batch 1 polish: tap spring + ticker fade masks ============ */
 
-/* iOS spring tap feedback — applied on ALL devices (not just touch).
-   Gives every button a satisfying press-then-spring-back feel.
-   The spring overshoot (1.56) mimics Apple's UIKit spring physics. */
-a,
-button,
-[role="button"],
+/* Tap spring — scoped ONLY to explicitly tagged elements to avoid
+   conflicting with component-level transitions on cards and glass elements. */
 .tap-spring,
-[data-hover],
 [data-tap] {
   transition:
     transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
     opacity 0.2s ease;
 }
 a:active,
-button:active,
-[role="button"]:active,
+button:active {
+  opacity: 0.85;
+  transition: opacity 0.08s ease-out;
+}
 .tap-spring:active,
-[data-hover]:active,
 [data-tap]:active {
   transform: scale(0.95);
   transition:
     transform 0.08s ease-out,
     opacity 0.08s ease-out;
 }
-/* Stronger spring on coarse-pointer (mobile) — bigger press = more satisfying */
+/* Stronger press feedback on coarse-pointer (mobile) */
 @media (hover: none) and (pointer: coarse) {
   a:active,
-  button:active,
-  [role="button"]:active,
+  button:active {
+    opacity: 0.75;
+  }
   .tap-spring:active,
-  [data-hover]:active,
   [data-tap]:active {
     transform: scale(0.92);
   }

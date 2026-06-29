@@ -41,7 +41,6 @@ function MobileScrollProgress() {
           transform: "scaleX(0)",
           background: "linear-gradient(90deg, #7C6EFF, #FFB347)",
           boxShadow: "0 0 8px rgba(124,110,255,0.6)",
-          transition: "transform 80ms linear",
         }}
       />
     </div>

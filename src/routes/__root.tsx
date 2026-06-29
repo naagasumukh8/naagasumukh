@@ -7,7 +7,7 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -341,6 +341,45 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const lenisRef = useRef<import('lenis').default | null>(null);
+
+  useEffect(() => {
+    // Lenis smooth scroll — replaces discrete native scroll with liquid momentum physics
+    let lenis: import('lenis').default;
+    let rafId: number;
+
+    const init = async () => {
+      try {
+        const LenisClass = (await import('lenis')).default;
+        lenis = new LenisClass({
+          duration: 1.1,
+          easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          smoothWheel: true,
+          touchMultiplier: 1.8,
+          infinite: false,
+        });
+        lenisRef.current = lenis;
+
+        const raf = (time: number) => {
+          lenis.raf(time);
+          rafId = requestAnimationFrame(raf);
+        };
+        rafId = requestAnimationFrame(raf);
+      } catch {
+        // If Lenis fails, native scroll still works fine
+      }
+    };
+
+    // Skip on mobile — native momentum scroll is already good there
+    const isMobile = window.matchMedia('(max-width: 767px)').matches;
+    if (!isMobile) init();
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      lenisRef.current?.destroy();
+      lenisRef.current = null;
+    };
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>

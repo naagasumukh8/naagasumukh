@@ -1,211 +1,263 @@
-import { useState } from "react";
-import { createPortal } from "react-dom";
+import { useRef, useState } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { Mail, ArrowUpRight, Play, ExternalLink } from "lucide-react";
 import sachhaiVideo from "@/assets/sachhai-demo.mp4.asset.json";
+import FadeIn from "./FadeIn";
 
-import {
-  Reveal,
-  SectionLabel,
-  SectionBackdrop,
-} from "./PortfolioUtils";
+interface ProjectData {
+  number: string;
+  category: string;
+  name: string;
+  badge: string;
+  desc: string;
+  tags: string[];
+  liveUrl: string;
+  ctaText: string;
+  media: {
+    kind: "video" | "iframe" | "graphic";
+    src: string;
+  };
+}
 
-// ============ SELECTED WORK / PROJECTS ============
-export function Projects() {
-  const projects = [
-    {
-      n: "01",
-      name: "SacchAI",
-      desc: "Browser extension for real-time detection of unauthorized AI assistance during online interviews — monitors behavioural signals, clipboard activity, tab-switching and speech/response patterns. Custom ensemble classifier generates recruiter-facing reports with genuineness scores, suspicious-activity flags and plagiarism analysis.",
-      badge: "88.4% accuracy",
-      tags: [
-        "JavaScript",
-        "TypeScript",
-        "React",
-        "Chrome APIs",
-        "Python",
-        "Scikit-learn",
-        "Node.js",
-        "REST APIs",
-      ],
-      link: "https://github.com/naagasumukh8",
-      cta: "Watch demo",
-      media: { kind: "video" as const, src: sachhaiVideo.url },
-    },
-    {
-      n: "02",
-      name: "MediConnect",
-      desc: "Full-stack HealthcareOS: multi-hospital management, role-based access, appointment scheduling, digital prescriptions, inter-department referrals, pharmacy inventory and AI-assisted patient support. Automated follow-ups, shared medical memory, family accounts and secure file storage via Supabase RLS, validated end-to-end with Playwright + TypeScript.",
-      badge: "Live product",
-      tags: [
-        "React",
-        "TypeScript",
-        "Tailwind",
-        "Supabase RLS",
-        "Google Calendar API",
-        "Playwright",
-      ],
-      link: "https://easyhospital.lovable.app",
-      cta: "Visit live site",
-      media: { kind: "iframe" as const, src: "https://easyhospital.lovable.app" },
-    },
-    {
-      n: "03",
-      name: "JobShield — AI-Powered Fake Job Detection",
-      desc: "Final-year project. Multi-stage fraud detector: NLP + ML on job posts, recruiter verification via email domains, WHOIS and company sites. Explainable verdicts — Likely Genuine, Suspicious, or High Scam Risk.",
-      badge: "Multi-level verification",
-      tags: [
-        "Python",
-        "Scikit-learn",
-        "spaCy",
-        "BeautifulSoup",
-        "WHOIS",
-        "Pandas",
-        "TF-IDF",
-        "Random Forest",
-      ],
-      link: "https://github.com/naagasumukh8/Job_Verify_FYP",
-      cta: "View on GitHub",
-      media: { kind: "none" as const, src: "" },
-    },
-  ];
+const PROJECTS: ProjectData[] = [
+  {
+    number: "01",
+    category: "Browser Extension · Machine Learning",
+    name: "SacchAI",
+    badge: "88.4% Accuracy",
+    desc: "Browser extension for real-time detection of unauthorized AI assistance during online interviews. Monitors behavioral signals, clipboard activity, tab-switching, and speech/response patterns. A custom ensemble classifier generates recruiter-facing reports with genuineness scores and suspicious-activity flags.",
+    tags: ["JavaScript", "TypeScript", "React", "Chrome APIs", "Python", "Scikit-learn", "Node.js"],
+    liveUrl: "https://github.com/naagasumukh8",
+    ctaText: "Watch Demo",
+    media: { kind: "video", src: sachhaiVideo.url },
+  },
+  {
+    number: "02",
+    category: "Full-Stack Web Application · Supabase",
+    name: "MediConnect",
+    badge: "Live Product",
+    desc: "Full-stack HealthcareOS: multi-hospital management, role-based access, appointment scheduling, digital prescriptions, pharmacy inventory, and AI-assisted patient support. Integrated Google Calendar, automated follow-ups, and secure file storage with Supabase RLS.",
+    tags: ["React", "TypeScript", "Tailwind CSS", "Supabase RLS", "Google Calendar API", "Playwright"],
+    liveUrl: "https://easyhospital.lovable.app",
+    ctaText: "Visit Live Site",
+    media: { kind: "iframe", src: "https://easyhospital.lovable.app" },
+  },
+  {
+    number: "03",
+    category: "NLP · Fraud Detection",
+    name: "JobShield",
+    badge: "Multi-level verification",
+    desc: "Multi-stage fraud detector classifying job listings using Natural Language Processing (NLP) and Machine Learning. Verifies recruiters via email domains, WHOIS registrations, and automated company website checks to output clear confidence scores.",
+    tags: ["Python", "Scikit-learn", "spaCy", "BeautifulSoup", "WHOIS", "Pandas", "Random Forest"],
+    liveUrl: "https://github.com/naagasumukh8/Job_Verify_FYP",
+    ctaText: "View on GitHub",
+    media: { kind: "graphic", src: "JobShield" },
+  },
+];
 
-  const [demoOpen, setDemoOpen] = useState(false);
+interface ProjectCardProps {
+  project: ProjectData;
+  index: number;
+  total: number;
+  containerRef: React.RefObject<HTMLDivElement | null>;
+}
+
+const ProjectCard = ({ project, index, total, containerRef }: ProjectCardProps) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const [loadIframe, setLoadIframe] = useState(false);
+
+  const { scrollYProgress } = useScroll({
+    target: cardRef,
+    offset: ["start end", "end start"],
+  });
+
+  // Scale down cards beneath the active one — increased differential for visible depth
+  const targetScale = 1 - (total - 1 - index) * 0.04;
+  const scale = useTransform(scrollYProgress, [0, 0.5], [0.92, targetScale]);
 
   return (
-    <section id="work" className="relative overflow-hidden">
-      <SectionBackdrop variant="grid" />
-      <div className="px-5 pt-16 sm:px-6 sm:pt-20 md:px-12 md:pt-24">
-        <div className="mx-auto max-w-[1300px]">
-          <Reveal>
-            <SectionLabel num="03" text="Selected Work" />
-          </Reveal>
-          <Reveal delay={100}>
-            <h2 className="mb-8 font-display text-4xl font-bold text-body md:mb-10 md:text-6xl">
-              Each project is <span className="text-violet">its own world</span>.
-            </h2>
-          </Reveal>
-        </div>
-      </div>
+    <div
+      ref={cardRef}
+      className="sticky h-[85vh] w-full"
+      style={{ top: `${86 + index * 24}px` }}
+    >
+      <motion.article
+        style={{ scale }}
+        className="origin-top mx-auto h-full w-full flex flex-col gap-4 sm:gap-6 rounded-[30px] sm:rounded-[40px] border-2 border-white/10 bg-[#07121F] p-5 sm:p-6 md:p-8 shadow-[0_24px_80px_rgba(0,0,0,0.8)]"
+      >
+        {/* Card Header Row */}
+        <div className="flex flex-col sm:flex-row items-start sm:justify-between gap-3 sm:gap-6 border-b border-white/10 pb-4">
+          <div className="flex items-start gap-4 md:gap-8 min-w-0 flex-1">
+            <div
+              className="font-display font-black text-white/10 leading-none select-none"
+              style={{ fontSize: "clamp(2rem, 8vw, 100px)" }}
+            >
+              {project.number}
+            </div>
+            <div className="flex flex-col gap-1 pt-1 md:pt-2">
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="font-mono text-[10px] uppercase tracking-widest text-white/50">
+                  {project.category}
+                </span>
+                <span className="rounded-full border border-white/15 bg-white/5 px-2 py-0.5 font-mono text-[9px] uppercase tracking-wider text-[#ff8a3d]">
+                  {project.badge}
+                </span>
+              </div>
+              <h3 className="font-display text-xl sm:text-2xl md:text-3xl font-black uppercase text-body">
+                {project.name}
+              </h3>
+            </div>
+          </div>
 
-      <div className="px-5 pb-20 sm:px-6 md:px-12 md:pb-24">
-        <div className="mx-auto grid max-w-[1300px] gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {projects.map((p, i) => (
-            <Reveal key={p.n} delay={i * 80}>
-              <article
-                data-hover
-                className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-[#0F2540] via-[#0B1A2E] to-[#07121F] shadow-[0_20px_60px_-20px_rgba(0,0,0,0.8)] transition-transform duration-200 hover:-translate-y-1"
-              >
-                <div className="relative aspect-video w-full overflow-hidden bg-black/40">
-                  {p.media.kind === "video" && (
-                    <video
-                      src={p.media.src}
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                      preload="metadata"
-                      className="h-full w-full object-cover"
-                    />
-                  )}
-                  {p.media.kind === "iframe" && (
+          <a
+            href={project.liveUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="shrink-0 self-start sm:self-auto inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/[0.04] px-5 py-2.5 font-mono text-xs uppercase tracking-widest text-body hover:bg-white/15 hover:text-white transition-all duration-300 active:scale-95"
+          >
+            {project.ctaText} <ArrowUpRight className="w-4 h-4" />
+          </a>
+        </div>
+
+        {/* Content Body Row (Double Column layout) */}
+        <div className="grid grid-cols-1 md:grid-cols-[45%_55%] gap-6 flex-1 min-h-0 overflow-y-auto md:overflow-hidden">
+          {/* Info Column */}
+          <div className="flex flex-col justify-between gap-4 py-2">
+            <div>
+              <p className="text-sm sm:text-base leading-relaxed text-muted-soft mb-6">
+                {project.desc}
+              </p>
+              <div className="flex flex-wrap gap-1.5">
+                {project.tags.map((t) => (
+                  <span
+                    key={t}
+                    className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 font-mono text-[9px] sm:text-[10px] uppercase tracking-wider text-body"
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Custom Interactive Elements */}
+            {project.media.kind === "video" && (
+              <div className="hidden md:block">
+                <button
+                  onClick={() => setIsPlaying(!isPlaying)}
+                  className="inline-flex items-center gap-2 rounded-full bg-[#ff8a3d] text-black font-semibold text-xs uppercase tracking-widest px-6 py-3 hover:bg-[#ff9d5c] transition-colors"
+                >
+                  <Play className="w-3.5 h-3.5 fill-black" />
+                  {isPlaying ? "Pause Demo In Card" : "Preview Demo"}
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Interactive Screen Preview Column */}
+          <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/40 min-h-[220px] md:h-full flex items-center justify-center">
+            {project.media.kind === "video" && (
+              <video
+                src={project.media.src}
+                autoPlay={isPlaying}
+                controls={isPlaying}
+                muted
+                loop
+                playsInline
+                className="w-full h-full object-cover"
+              />
+            )}
+            
+            {project.media.kind === "iframe" && (
+              <div className="w-full h-full relative group flex flex-col items-center justify-center bg-gradient-to-br from-[#0A1224] to-[#07121F] p-6 text-center select-none">
+                {loadIframe ? (
+                  <>
                     <iframe
-                      src={p.media.src}
-                      title={p.name}
+                      src={project.media.src}
+                      title={project.name}
                       loading="lazy"
                       sandbox="allow-scripts allow-same-origin allow-popups"
-                      className="pointer-events-none h-full w-full origin-top-left scale-[0.65] border-0"
-                      style={{ width: "153.8%", height: "153.8%" }}
+                      className="w-full h-full border-0"
                     />
-                  )}
-                  {p.media.kind === "none" && (
-                    <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-white/5 to-white/[0.02]">
-                      <span className="font-display text-8xl font-bold text-white/10">{p.n}</span>
-                    </div>
-                  )}
-                </div>
-                <div className="flex flex-1 flex-col p-5 md:p-6">
-                  <div className="mb-2 flex items-center justify-between gap-2">
-                    <div className="font-mono text-[10px] uppercase tracking-widest text-gold">
-                      Project {p.n} / 0{projects.length}
-                    </div>
-                    {p.badge && (
-                      <span className="rounded-full border border-white/20 bg-white/10 px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-white">
-                        {p.badge}
-                      </span>
-                    )}
-                  </div>
-                  <h3 className="mb-2 font-display text-2xl font-bold leading-tight text-body group-hover:text-violet">
-                    {p.name}
-                  </h3>
-                  <p className="mb-3 line-clamp-3 text-sm text-muted-soft">{p.desc}</p>
-                  <div className="mb-4 flex flex-wrap gap-1.5">
-                    {p.tags.slice(0, 8).map((t) => (
-                      <span
-                        key={t}
-                        className="rounded-full border border-white/10 bg-white/[0.05] px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-body"
-                      >
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                  {p.cta === "Watch demo" && p.media.kind === "video" ? (
                     <button
-                      type="button"
-                      onClick={() => setDemoOpen(true)}
-                      className="mt-auto inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full border border-white/20 bg-white/[0.06] px-5 py-2.5 text-sm font-semibold text-body transition-colors duration-200 hover:bg-white/15 hover:text-white"
+                      onClick={() => setLoadIframe(false)}
+                      className="absolute top-3 right-3 z-20 bg-black/75 hover:bg-black/95 text-white border border-white/15 rounded-lg px-2.5 py-1 text-[9px] font-mono uppercase tracking-wider transition-colors cursor-pointer active:scale-95"
                     >
-                      {p.cta} <span aria-hidden>▶</span>
+                      Deactivate Sandbox
                     </button>
-                  ) : (
-                    <a
-                      href={p.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-auto inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full border border-white/20 bg-white/[0.06] px-5 py-2.5 text-sm font-semibold text-body transition-colors duration-200 hover:bg-white/15 hover:text-white"
+                  </>
+                ) : (
+                  <div className="flex flex-col items-center justify-center max-w-sm">
+                    <div className="h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-2xl flex mb-4 text-[#ff8a3d]">
+                      🏥
+                    </div>
+                    <h4 className="font-display text-lg font-black uppercase text-white mb-2">
+                      MediConnect Sandbox
+                    </h4>
+                    <p className="text-xs text-muted-soft mb-6 leading-relaxed">
+                      To prevent background script execution and main-thread stutter, this interactive demo is offline. Click below to activate.
+                    </p>
+                    <button
+                      onClick={() => setLoadIframe(true)}
+                      className="glass-pill text-[10px] font-bold uppercase tracking-widest px-6 py-3"
                     >
-                      {p.cta} <span aria-hidden>↗</span>
-                    </a>
-                  )}
-                </div>
-              </article>
-            </Reveal>
-          ))}
-        </div>
-      </div>
+                      Initialize Live Preview
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
 
-      {demoOpen &&
-        typeof document !== "undefined" &&
-        createPortal(
-          <div
-            className="fixed inset-0 z-[200] flex items-center justify-center bg-black/85 p-4"
-            onClick={() => setDemoOpen(false)}
-          >
-            <div
-              className="relative w-full max-w-5xl overflow-hidden rounded-2xl border border-white/10 bg-black shadow-2xl"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <button
-                type="button"
-                onClick={() => setDemoOpen(false)}
-                aria-label="Close demo"
-                className="absolute right-3 top-3 z-10 grid h-10 w-10 place-items-center rounded-full bg-black/70 text-white hover:bg-white/20"
-              >
-                ✕
-              </button>
-              <video
-                src={sachhaiVideo.url}
-                autoPlay
-                controls
-                playsInline
-                className="aspect-video w-full bg-black"
-              />
-            </div>
-          </div>,
-          document.body,
-        )}
+            {project.media.kind === "graphic" && (
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-[#0F2540] to-[#07121F] p-6 text-center select-none">
+                <div className="h-16 w-16 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-2xl flex mb-4 text-[#ff8a3d]">
+                  🛡️
+                </div>
+                <h4 className="font-display text-xl font-black uppercase text-white mb-2">
+                  JobShield Platform
+                </h4>
+                <p className="text-xs text-muted-soft max-w-sm">
+                  Security-first verification dashboard utilizing spaCy NLP entity mapping and DNS/WHOIS scrapers.
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+      </motion.article>
+    </div>
+  );
+};
+
+export function Projects() {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  return (
+    <section
+      id="work"
+      className="relative z-10 -mt-10 sm:-mt-12 md:-mt-14 w-full rounded-t-[40px] sm:rounded-t-[50px] md:rounded-t-[60px] bg-[#05080F] px-4 sm:px-6 md:px-10 pt-20 sm:pt-24 md:pt-32 pb-24"
+    >
+      <FadeIn y={40}>
+        <h2
+          className="text-center font-display font-black uppercase tracking-tight leading-none mb-16 sm:mb-20 md:mb-28 text-white"
+          style={{ fontSize: "clamp(3rem, 10vw, 120px)" }}
+        >
+          Selected Projects
+        </h2>
+      </FadeIn>
+
+      <div ref={containerRef} className="mx-auto max-w-7xl flex flex-col gap-10">
+        {PROJECTS.map((project, i) => (
+          <ProjectCard
+            key={project.number}
+            project={project}
+            index={i}
+            total={PROJECTS.length}
+            containerRef={containerRef}
+          />
+        ))}
+      </div>
     </section>
   );
 }
-
-// Live3D removed — was loading Spline 3D runtime (~300KB+), creating a WebGL context,
-// and running a continuous render loop for an interactive 3D scene.
-// The performance cost far outweighed the visual value.
+export default Projects;

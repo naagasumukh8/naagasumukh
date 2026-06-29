@@ -124,12 +124,20 @@ export function Journey() {
 
     measure();
 
+    let ticking = false;
     const onScroll = () => {
-      const vh = window.innerHeight;
-      const total = elementHeight + vh;
-      const passed = (window.scrollY || document.documentElement.scrollTop) + vh - elementTop;
-      const pct = Math.max(0, Math.min(100, (passed / total) * 100));
-      line.style.height = `${pct}%`;
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const vh = window.innerHeight;
+        const total = elementHeight + vh;
+        const passed = (window.scrollY || document.documentElement.scrollTop) + vh - elementTop;
+        const pct = Math.max(0, Math.min(100, (passed / total) * 100));
+        if (line) {
+          line.style.height = `${pct}%`;
+        }
+        ticking = false;
+      });
     };
 
     onScroll();
@@ -166,7 +174,7 @@ export function Journey() {
               height: "0%",
               background: "linear-gradient(180deg, #5CBDB9, #7DD3FC)",
               boxShadow: "0 0 12px #5CBDB9",
-              transition: "height 0.1s linear",
+              willChange: "height",
             }}
           />
           {items.map((it, i) => (
@@ -256,18 +264,19 @@ export function Recognition() {
           ))}
         </div>
         <style>{`
-          @property --mon-angle { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
-          .monument-card { position: relative; border: 1px solid rgba(255,255,255,0.05); isolation: isolate; }
-          .monument-card::before {
-            content: ""; position: absolute; inset: 0; padding: 1px; border-radius: 1rem; z-index: -1;
-            background: conic-gradient(from var(--mon-angle), transparent 0deg, rgba(124,110,255,0.85) 80deg, rgba(244,196,107,0.85) 160deg, transparent 240deg);
-            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-                    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-            -webkit-mask-composite: xor; mask-composite: exclude;
-            opacity: 0; transition: opacity 300ms ease;
+          .monument-card {
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.06);
+            isolation: isolate;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, border-color, box-shadow;
+            transform: translate3d(0, 0, 0);
           }
-          .monument-card:hover::before { opacity: 1; animation: monAngleSpin 3.5s linear infinite; }
-          @keyframes monAngleSpin { to { --mon-angle: 360deg; } }
+          .monument-card:hover {
+            border-color: rgba(255,255,255,0.18);
+            transform: translate3d(0, -4px, 0);
+            box-shadow: 0 12px 30px -10px rgba(255,179,71,0.15), 0 0 0 1px rgba(255,255,255,0.1);
+          }
         `}</style>
       </div>
     </section>

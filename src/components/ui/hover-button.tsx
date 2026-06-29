@@ -29,6 +29,7 @@ const HoverButton = React.forwardRef<HTMLButtonElement, HoverButtonProps>(
     const [isListening, setIsListening] = React.useState(false);
     const [circles, setCircles] = React.useState<Circle[]>([]);
     const lastAdded = React.useRef(0);
+    const rectRef = React.useRef<DOMRect | null>(null);
 
     const createCircle = React.useCallback((x: number, y: number) => {
       const w = innerRef.current?.offsetWidth || 1;
@@ -40,13 +41,27 @@ const HoverButton = React.forwardRef<HTMLButtonElement, HoverButtonProps>(
       ]);
     }, []);
 
+    const handlePointerEnter = (e: React.PointerEvent<HTMLButtonElement>) => {
+      setIsListening(true);
+      rectRef.current = e.currentTarget.getBoundingClientRect();
+    };
+
+    const handlePointerLeave = () => {
+      setIsListening(false);
+      rectRef.current = null;
+    };
+
     const handlePointerMove = React.useCallback(
       (e: React.PointerEvent<HTMLButtonElement>) => {
         if (!isListening) return;
         const now = Date.now();
         if (now - lastAdded.current < 90) return;
         lastAdded.current = now;
-        const rect = e.currentTarget.getBoundingClientRect();
+        let rect = rectRef.current;
+        if (!rect) {
+          rect = e.currentTarget.getBoundingClientRect();
+          rectRef.current = rect;
+        }
         createCircle(e.clientX - rect.left, e.clientY - rect.top);
       },
       [isListening, createCircle],
@@ -75,8 +90,8 @@ const HoverButton = React.forwardRef<HTMLButtonElement, HoverButtonProps>(
       <button
         ref={innerRef}
         data-hover
-        onPointerEnter={() => setIsListening(true)}
-        onPointerLeave={() => setIsListening(false)}
+        onPointerEnter={handlePointerEnter}
+        onPointerLeave={handlePointerLeave}
         onPointerMove={handlePointerMove}
         className={cn(
           // Apple liquid-glass shell with iOS spring physics

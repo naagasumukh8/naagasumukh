@@ -1,0 +1,307 @@
+.heroContainer {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+  background-color: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-sans);
+  padding: 80px 0;
+}
+
+/* Static, high-performance ambient wash (completely GPU-friendly) */
+.ambientWash {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: 
+    radial-gradient(circle at 85% 50%, rgba(255, 138, 61, 0.12) 0%, transparent 60%),
+    radial-gradient(circle at 15% 20%, rgba(124, 110, 255, 0.08) 0%, transparent 50%);
+}
+
+.gridContainer {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 4rem;
+  align-items: center;
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Left Content Column */
+.contentLeft {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.tagline {
+  font-family: var(--font-mono);
+  font-size: clamp(10px, 1.2vw, 13px);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.35em;
+  color: #ff8a3d;
+  margin-bottom: 1.25rem;
+  opacity: 0;
+  transform: translateY(15px);
+}
+
+.nameWrapper {
+  display: flex;
+  flex-direction: column;
+  line-height: 0.9;
+  margin-bottom: 1.75rem;
+}
+
+.nameRow {
+  font-family: var(--font-display);
+  font-size: clamp(44px, 8.5vw, 105px);
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #ffffff;
+  overflow: hidden;
+  display: block;
+}
+
+.nameSpan {
+  display: inline-block;
+  transform: translateY(105%);
+}
+
+.nameGradient {
+  background: linear-gradient(135deg, #ffffff 40%, #ff8a3d 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  font-family: var(--font-sans);
+  font-size: clamp(14px, 1.6vw, 18px);
+  font-weight: 400;
+  color: #a1a1b5;
+  max-width: 580px;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  opacity: 0;
+  transform: translateY(15px);
+}
+
+/* Call to action button row */
+.ctaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  opacity: 0;
+  transform: translateY(15px);
+}
+
+/* Right Media Column */
+.mediaRight {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+/* Apple-style Premium Video Window Frame */
+.videoFrame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: 24px;
+  background: rgba(10, 10, 20, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    0 4px 30px rgba(0, 0, 0, 0.5),
+    0 30px 80px -20px rgba(0, 0, 0, 0.9),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+  will-change: transform;
+}
+
+.videoFrame:hover {
+  transform: translateY(-6px) scale(1.01);
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow: 
+    0 10px 40px rgba(0, 0, 0, 0.6),
+    0 40px 100px -20px rgba(255, 138, 61, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.videoElement {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  background: #000000;
+}
+
+.videoReady {
+  opacity: 0.85;
+}
+
+/* Integrated, sleek glass control overlay on the bottom of the video frame */
+.controlsOverlay {
+  position: absolute;
+  bottom: 1.25rem;
+  right: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+.glassButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: rgba(10, 10, 15, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glassButton:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  transform: scale(1.05);
+}
+
+.glassButton:active {
+  transform: scale(0.95);
+}
+
+/* Ambient glow orb behind the video frame (100% lightweight CSS) */
+.mediaGlow {
+  position: absolute;
+  width: 120%;
+  height: 120%;
+  top: -10%;
+  left: -10%;
+  background: radial-gradient(circle at center, rgba(255, 138, 61, 0.08) 0%, transparent 60%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Bottom scroll indicator */
+.scrollIndicator {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  pointer-events: auto;
+  opacity: 0;
+}
+
+.scrollLine {
+  width: 1px;
+  height: 50px;
+  background: rgba(255, 255, 255, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.scrollPulse {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 25px;
+  background: linear-gradient(to bottom, transparent, #ff8a3d, transparent);
+  animation: scrollDown 2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+@keyframes scrollDown {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  70% {
+    transform: translateY(210%);
+    opacity: 1;
+  }
+  85% {
+    transform: translateY(210%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+.scrollText {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: rgba(255, 255, 255, 0.5);
+  transition: color 0.3s ease;
+}
+
+.scrollIndicator:hover .scrollText {
+  color: #ffffff;
+}
+
+/* Responsive adjustments */
+@media (max-width: 991px) {
+  .heroContainer {
+    padding: 100px 0 60px 0;
+    min-height: auto;
+  }
+  .gridContainer {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    padding: 0 1.5rem;
+  }
+  .contentLeft {
+    align-items: center;
+    text-align: center;
+  }
+  .nameWrapper {
+    align-items: center;
+  }
+  .subtitle {
+    max-width: 580px;
+  }
+  .ctaRow {
+    justify-content: center;
+  }
+  .scrollIndicator {
+    display: none; /* Hide bottom indicator on stacked tablets/phones */
+  }
+}

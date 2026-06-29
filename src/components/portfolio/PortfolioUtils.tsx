@@ -43,7 +43,8 @@ export function SectionBackdrop({
   return (
     <div
       ref={ref}
-      className={`pointer-events-none absolute inset-0 overflow-hidden transition-opacity duration-700 ${inView ? "opacity-100" : "opacity-0"}`}
+      className={`pointer-events-none absolute inset-0 overflow-hidden transition-opacity duration-500 ${inView ? "opacity-100" : "opacity-0"}`}
+      style={{ transitionDelay: inView ? "0ms" : "0ms" }}
     >
       <div
         className="absolute inset-0"
@@ -124,6 +125,11 @@ export function Reveal({
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    // Skip if user prefers reduced motion
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setVis(true);
+      return;
+    }
     const io = new IntersectionObserver(
       ([e]) => {
         if (e.isIntersecting) {
@@ -131,7 +137,7 @@ export function Reveal({
           io.disconnect();
         }
       },
-      { threshold: 0.1, rootMargin: "0px 0px -40px 0px" },
+      { threshold: 0.08, rootMargin: "0px 0px 60px 0px" },
     );
     io.observe(el);
     return () => io.disconnect();
@@ -142,8 +148,13 @@ export function Reveal({
       className={className}
       style={{
         opacity: vis ? 1 : 0,
-        transform: vis ? "translateY(0)" : "translateY(24px)",
-        transition: `opacity 0.5s ease ${delay}ms, transform 0.5s cubic-bezier(0.22,1,0.36,1) ${delay}ms`,
+        transform: vis ? "translateY(0) scale(1)" : "translateY(32px) scale(0.98)",
+        filter: vis ? "blur(0px)" : "blur(4px)",
+        transition: [
+          `opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms`,
+          `transform 0.65s cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms`,
+          `filter 0.55s ease ${delay}ms`,
+        ].join(", "),
       }}
     >
       {children}
@@ -263,22 +274,43 @@ export function Counter({
 // ============ TILT CARD ============
 export function TiltCard({ children, className = "" }: { children: ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
+  const rectRef = useRef<DOMRect | null>(null);
+
+  const onEnter = () => {
+    if (ref.current) {
+      rectRef.current = ref.current.getBoundingClientRect();
+    }
+  };
+
   const onMove = (e: MouseEvent<HTMLDivElement>) => {
     const el = ref.current;
+    let r = rectRef.current;
     if (!el) return;
-    const r = el.getBoundingClientRect();
+    if (!r) {
+      r = el.getBoundingClientRect();
+      rectRef.current = r;
+    }
     const px = e.clientX - r.left;
     const py = e.clientY - r.top;
     const x = px / r.width - 0.5;
     const y = py / r.height - 0.5;
     el.style.transform = `perspective(1000px) rotateY(${x * 6}deg) rotateX(${-y * 6}deg) translateY(-4px)`;
   };
+
   const onLeave = () => {
+    rectRef.current = null;
     if (ref.current)
       ref.current.style.transform = "perspective(1000px) rotateY(0) rotateX(0) translateY(0)";
   };
+
   return (
-    <div ref={ref} onMouseMove={onMove} onMouseLeave={onLeave} className={`tilt-card ${className}`}>
+    <div
+      ref={ref}
+      onMouseEnter={onEnter}
+      onMouseMove={onMove}
+      onMouseLeave={onLeave}
+      className={`tilt-card ${className}`}
+    >
       {children}
     </div>
   );
@@ -311,10 +343,10 @@ export function SectionLabel({ num, text }: { num: string; text: string }) {
       [ {num} — {text} ]
       <span
         aria-hidden
-        className="absolute left-0 bottom-0 h-px bg-white/50"
+        className="absolute left-0 bottom-0 h-px w-full bg-white/50 origin-left"
         style={{
-          width: seen ? "100%" : "0%",
-          transition: "width 500ms cubic-bezier(0.22,1,0.36,1) 100ms",
+          transform: seen ? "scaleX(1)" : "scaleX(0)",
+          transition: "transform 600ms cubic-bezier(0.16, 1, 0.3, 1) 80ms",
         }}
       />
     </div>
@@ -332,17 +364,36 @@ export function GlowTile({
   padding?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
+  const rectRef = useRef<DOMRect | null>(null);
+
+  const handleEnter = () => {
+    if (ref.current) {
+      rectRef.current = ref.current.getBoundingClientRect();
+    }
+  };
+
   const handleMove = (e: MouseEvent<HTMLDivElement>) => {
     const el = ref.current;
+    let r = rectRef.current;
     if (!el) return;
-    const r = el.getBoundingClientRect();
+    if (!r) {
+      r = el.getBoundingClientRect();
+      rectRef.current = r;
+    }
     el.style.setProperty("--mx", `${e.clientX - r.left}px`);
     el.style.setProperty("--my", `${e.clientY - r.top}px`);
   };
+
+  const handleLeave = () => {
+    rectRef.current = null;
+  };
+
   return (
     <div
       ref={ref}
+      onMouseEnter={handleEnter}
       onMouseMove={handleMove}
+      onMouseLeave={handleLeave}
       className={`group relative h-full overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.03] transition-transform duration-200 motion-safe:hover:-translate-y-1 ${className}`}
       style={{ ["--mx" as string]: "50%", ["--my" as string]: "50%" }}
     >

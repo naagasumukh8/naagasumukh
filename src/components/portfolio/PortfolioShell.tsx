@@ -34,7 +34,6 @@ export function ScrollProgress() {
           background: "#ffffff",
           boxShadow: "0 0 8px rgba(255,255,255,0.4)",
           transform: "scaleX(0)",
-          transition: "transform 80ms linear",
         }}
       />
     </div>

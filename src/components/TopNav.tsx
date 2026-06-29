@@ -3,17 +3,18 @@ import { useEffect, useState } from "react";
 import portrait from "../assets/portrait-avatar.jpg.asset.json";
 
 const links = [
-  { to: "/", label: "Home" },
-  { to: "/about", label: "About" },
-  { to: "/work", label: "Work" },
+  { to: "/", hash: "hero", label: "Home" },
+  { to: "/", hash: "about", label: "About" },
+  { to: "/", hash: "work", label: "Work" },
   { to: "/journey", label: "Journey" },
   { to: "/vibe", label: "Vibe" },
-  { to: "/contact", label: "Contact" },
+  { to: "/", hash: "contact", label: "Contact" },
 ] as const;
 
 export function TopNav() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [activeHash, setActiveHash] = useState("");
 
   useEffect(() => {
     let active = true;
@@ -21,7 +22,8 @@ export function TopNav() {
     const onScroll = () => {
       if (!active) return;
       frameId = requestAnimationFrame(() => {
-        setScrolled(window.scrollY > 80);
+        const isScrolled = window.scrollY > 80;
+        setScrolled((prev) => (prev !== isScrolled ? isScrolled : prev));
       });
     };
     onScroll();
@@ -33,6 +35,30 @@ export function TopNav() {
     };
   }, []);
 
+  // Update active hash based on intersection
+  useEffect(() => {
+    if (typeof window === "undefined" || window.location.pathname !== "/") return;
+
+    const sections = ["hero", "about", "work", "contact"];
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            setActiveHash(e.target.id);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+
+    sections.forEach((s) => {
+      const el = document.getElementById(s);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -42,7 +68,7 @@ export function TopNav() {
       }`}
     >
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
-        <Link to="/" className="group flex items-center gap-2.5">
+        <Link to="/" hash="hero" className="group flex items-center gap-2.5">
           <span className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full ring-2 ring-primary/40 shadow-lg shadow-primary/20 active:scale-[0.94] transition-transform duration-200">
             <img src={portrait.url} alt="Naaga Sumukh" className="h-full w-full object-cover" />
           </span>
@@ -53,21 +79,33 @@ export function TopNav() {
 
         <ul className="hidden md:flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-2 py-1">
           {links.map((l) => {
+            const isHashActive = l.hash && activeHash === l.hash;
             return (
               <li key={l.label}>
                 <Link
                   to={l.to}
-                  activeOptions={{ exact: l.to === "/" }}
+                  hash={l.hash}
+                  activeOptions={{ exact: l.to === "/" && !l.hash }}
                   className="relative inline-flex items-center rounded-full px-3 py-1.5 text-xs font-medium transition-all"
                   activeProps={{
-                    className: "text-white shadow-[0_0_22px_rgba(124,110,255,0.65)] ring-1 ring-[rgba(167,139,250,0.7)]",
-                    style: {
+                    className: l.hash ? "text-foreground/75 hover:text-foreground hover:bg-white/10" : "text-white shadow-[0_0_22px_rgba(124,110,255,0.65)] ring-1 ring-[rgba(167,139,250,0.7)]",
+                    style: l.hash ? {} : {
                       background: "linear-gradient(135deg, rgba(124,110,255,0.35), rgba(255,255,255,0.06))",
                     }
                   }}
                   inactiveProps={{
                     className: "text-foreground/70 hover:text-foreground hover:bg-white/10"
                   }}
+                  style={
+                    isHashActive
+                      ? {
+                          color: "#white",
+                          background: "linear-gradient(135deg, rgba(124,110,255,0.35), rgba(255,255,255,0.06))",
+                          boxShadow: "0 0 22px rgba(124,110,255,0.65)",
+                          border: "1px solid rgba(167,139,250,0.7)",
+                        }
+                      : {}
+                  }
                 >
                   {l.label}
                 </Link>
@@ -116,6 +154,7 @@ export function TopNav() {
       >
         <ul className="mx-4 mt-4 flex flex-col gap-1 rounded-2xl border border-white/10 bg-white/[0.03] p-2">
           {links.map((l, idx) => {
+            const isHashActive = l.hash && activeHash === l.hash;
             return (
               <li
                 key={l.label}
@@ -127,15 +166,26 @@ export function TopNav() {
               >
                 <Link
                   to={l.to}
-                  activeOptions={{ exact: l.to === "/" }}
+                  hash={l.hash}
+                  activeOptions={{ exact: l.to === "/" && !l.hash }}
                   onClick={() => setOpen(false)}
                   className="block rounded-xl px-4 py-3 text-base font-medium transition-colors active:scale-[0.96]"
                   activeProps={{
-                    className: "text-white bg-[linear-gradient(135deg,rgba(124,110,255,0.35),rgba(255,255,255,0.06))] shadow-[0_0_22px_rgba(124,110,255,0.55)] ring-1 ring-[rgba(167,139,250,0.7)]"
+                    className: l.hash ? "text-foreground/85 hover:bg-white/10" : "text-white bg-[linear-gradient(135deg,rgba(124,110,255,0.35),rgba(255,255,255,0.06))] shadow-[0_0_22px_rgba(124,110,255,0.55)] ring-1 ring-[rgba(167,139,250,0.7)]"
                   }}
                   inactiveProps={{
                     className: "text-foreground/85 hover:bg-white/10"
                   }}
+                  style={
+                    isHashActive
+                      ? {
+                          color: "#ffffff",
+                          background: "linear-gradient(135deg, rgba(124,110,255,0.35), rgba(255,255,255,0.06))",
+                          boxShadow: "0 0 22px rgba(124,110,255,0.55)",
+                          border: "1px solid rgba(167,139,250,0.7)",
+                        }
+                      : {}
+                  }
                 >
                   {l.label}
                 </Link>
