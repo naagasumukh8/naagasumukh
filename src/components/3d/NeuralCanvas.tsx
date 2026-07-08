@@ -119,10 +119,11 @@ export function NeuralCanvas() {
     const lines = new THREE.LineSegments(lgeo, lmat);
     scene.add(lines);
 
-    // ── Scroll + Cursor Interactivity ─────────────────────────────────────
+    // ── Interaction state ──────────────────────────────────────────────────
     let mouseX = 0;
     let mouseY = 0;
     let scrollProgress = 0;
+    let isCovered = false;
 
     const onMouse = (e: MouseEvent) => {
       mouseX = (e.clientX / window.innerWidth  - 0.5) * 2;
@@ -136,6 +137,25 @@ export function NeuralCanvas() {
 
     window.addEventListener("mousemove", onMouse, { passive: true });
     window.addEventListener("scroll",    onScroll, { passive: true });
+
+    // ── Intersection Observer to pause rendering when covered by Services ──
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          // If the solid services section covers the entire viewport height,
+          // the canvas is invisible. Account for sub-pixels with -2 safety margin.
+          isCovered = entry.isIntersecting && entry.intersectionRect.height >= window.innerHeight - 2;
+        });
+      },
+      {
+        threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+      }
+    );
+
+    const servicesEl = document.getElementById("services");
+    if (servicesEl) {
+      observer.observe(servicesEl);
+    }
 
     // ── Resize ─────────────────────────────────────────────────────────────
     const onResize = () => {
@@ -151,6 +171,10 @@ export function NeuralCanvas() {
 
     const animate = () => {
       rafId = requestAnimationFrame(animate);
+
+      // Skip render and math calculations when canvas is covered or tab is hidden
+      if (isCovered || document.hidden) return;
+
       const elapsed = clock.getElapsedTime();
 
       // Organic drift
@@ -178,6 +202,7 @@ export function NeuralCanvas() {
       window.removeEventListener("mousemove", onMouse);
       window.removeEventListener("scroll",    onScroll);
       window.removeEventListener("resize",    onResize);
+      observer.disconnect();
       renderer.dispose();
       geo.dispose();
       mat.dispose();

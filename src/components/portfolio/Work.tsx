@@ -261,7 +261,7 @@ export function Projects() {
         scrollTrigger: {
           trigger: wrapper,
           pin: true,
-          scrub: 1,
+          scrub: 0.5,
           start: "top top",
           end: () => `+=${(count - 1) * window.innerWidth}`,
           invalidateOnRefresh: true,
