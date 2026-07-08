@@ -53,7 +53,7 @@ export function Contact() {
           </h2>
         </Reveal>
         <Reveal delay={200}>
-          <p className="mb-20 max-w-2xl text-lg text-muted-soft">
+          <p className="mb-10 sm:mb-16 md:mb-20 max-w-2xl text-lg text-muted-soft">
             Available for opportunities, freelance automation, and collaborations.
           </p>
         </Reveal>
@@ -174,7 +174,7 @@ export function Contact() {
         </div>
 
         <div
-          className="mt-20 h-px w-full origin-left bg-gradient-to-r from-white/20 via-white/10 to-transparent"
+          className="mt-12 sm:mt-16 md:mt-20 h-px w-full origin-left bg-gradient-to-r from-white/20 via-white/10 to-transparent"
           style={{ animation: "drawLine 1.5s 0.3s cubic-bezier(0.16,1,0.3,1) backwards" }}
         />
         <footer className="mt-6 flex flex-col items-center justify-between gap-4 font-mono text-[10px] uppercase tracking-widest text-muted-soft md:flex-row">

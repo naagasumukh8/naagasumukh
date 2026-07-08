@@ -331,7 +331,7 @@ export function Projects() {
 
         {/* Scroll hint */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2 animate-bounce animate-duration-1000" style={{ opacity: 0.3 }}>
-          <span className="font-mono text-[9px] uppercase tracking-widest text-white/40">scroll</span>
+          <span className="font-mono text-[9px] uppercase tracking-widest text-white/60">scroll</span>
           <div className="w-px h-8 bg-white/20" />
         </div>
       </div>

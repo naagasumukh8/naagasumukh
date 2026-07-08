@@ -229,7 +229,7 @@ export function Skills() {
             key={i}
             className="flex items-center gap-4 whitespace-nowrap font-display text-3xl font-bold text-body md:text-5xl"
           >
-            {s} <span className="text-white/40">✦</span>
+            {s} <span className="text-white/60">✦</span>
           </span>
         ))}
       </div>
@@ -398,7 +398,7 @@ export function Education() {
       <SectionBackdrop variant="aurora-gold" />
       <div className="relative mx-auto max-w-[1100px]">
         <Reveal>
-          <SectionLabel num="04b" text="Education" />
+          <SectionLabel num="03" text="Education" />
         </Reveal>
         <Reveal delay={100}>
           <h2 className="mb-14 font-display text-4xl font-bold text-body md:text-6xl">
@@ -509,7 +509,7 @@ export function BeyondCode() {
       <SectionBackdrop variant="aurora-violet" />
       <div className="relative mx-auto max-w-[1200px]">
         <Reveal>
-          <SectionLabel num="07" text="Beyond Code" />
+          <SectionLabel num="04" text="Beyond Code" />
         </Reveal>
         <Reveal delay={100}>
           <h2 className="mb-14 font-display text-4xl font-bold text-body md:text-6xl">

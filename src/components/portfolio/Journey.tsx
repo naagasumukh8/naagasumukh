@@ -44,7 +44,7 @@ export function Experience() {
       <SectionBackdrop variant="aurora-cyan" />
       <div className="relative mx-auto max-w-[1100px]">
         <Reveal>
-          <SectionLabel num="04a" text="Experience" />
+          <SectionLabel num="01" text="Experience" />
         </Reveal>
         <Reveal delay={100}>
           <h2 className="mb-16 font-display text-4xl font-bold text-body md:text-6xl">
@@ -224,7 +224,7 @@ export function Recognition() {
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60" />
       <div className="relative mx-auto max-w-[1300px]">
         <Reveal>
-          <SectionLabel num="05" text="Monuments" />
+          <SectionLabel num="02" text="Monuments" />
         </Reveal>
         <Reveal delay={100}>
           <h2 className="mb-16 font-display text-4xl font-bold text-body md:text-6xl">
@@ -343,10 +343,10 @@ export function Certs() {
 
       <div className="relative z-10 mx-auto max-w-[1100px]">
         <div className="mb-14 flex items-end justify-between">
-          <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#5a5a5a]">
+          <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-soft">
             Certifications
           </div>
-          <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#2e2e2e]">
+          <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/50">
             03 verified
           </div>
         </div>
@@ -399,7 +399,7 @@ export function Testimonials() {
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black/60" />
       <div className="relative mx-auto max-w-[1300px]">
         <Reveal>
-          <SectionLabel num="06" text="Endorsements" />
+          <SectionLabel num="03" text="Endorsements" />
         </Reveal>
         <Reveal delay={100}>
           <h2 className="mb-14 font-display text-4xl font-bold text-body md:text-6xl">
