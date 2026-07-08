@@ -80,13 +80,11 @@
     overflow-x: hidden;
     /* Prevent overscroll rubber-band on Windows/Chrome that causes visible pop */
     overscroll-behavior: none;
-    cursor: none;
   }
   body {
     background-color: #00000a;
     color: #ffffff;
     font-family: var(--font-sans);
-    cursor: none;
     overflow-x: hidden;
     overscroll-behavior: none;
     -webkit-font-smoothing: antialiased;

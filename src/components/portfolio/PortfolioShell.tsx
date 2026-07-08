@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { NeuralCanvas } from "@/components/3d/NeuralCanvas";
-import { CustomCursor } from "@/components/ui/custom-cursor";
 import { PaperShaderBackdrop } from "@/components/ui/paper-shader-backdrop";
 
 // ============ SCROLL PROGRESS BAR (CSS-only, no Framer Motion) ============
@@ -111,7 +110,6 @@ export function PortfolioShell({ children }: { children: ReactNode }) {
     <main className="relative min-h-screen bg-[#00000a] text-body">
       <NeuralCanvas />
       <PaperShaderBackdrop />
-      <CustomCursor />
       <div className="relative z-10">
         <ScrollProgress />
         <DotsNav />

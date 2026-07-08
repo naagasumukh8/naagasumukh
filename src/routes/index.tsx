@@ -52,7 +52,6 @@ export { Hero } from "@/components/portfolio/Hero";
 export { About, Skills, SkillsChips, Education } from "@/components/portfolio/About";
 export { Projects } from "@/components/portfolio/Work";
 export { Journey, Experience, Recognition, Certs, Testimonials } from "@/components/portfolio/Journey";
-export { Vibe, Achievements } from "@/components/portfolio/Vibe";
 export { Contact } from "@/components/portfolio/Contact";
 export { Marquee } from "@/components/portfolio/PortfolioUtils";
 export { Services } from "@/components/portfolio/Services";

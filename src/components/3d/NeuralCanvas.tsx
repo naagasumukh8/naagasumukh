@@ -52,7 +52,7 @@ export function NeuralCanvas() {
     ];
 
     // ── Particle Field (Decreased count for maximum smoothness) ────────────
-    const COUNT = 2500;
+    const COUNT = 1200;
     const positions = new Float32Array(COUNT * 3);
     const colors    = new Float32Array(COUNT * 3);
 
@@ -84,7 +84,7 @@ export function NeuralCanvas() {
     scene.add(points);
 
     // ── Synapse Lines (static decorative segments) ─────────────────────────
-    const segCount = 100;
+    const segCount = 40;
     const lPos = new Float32Array(segCount * 2 * 3);
     const lCol = new Float32Array(segCount * 2 * 3);
 

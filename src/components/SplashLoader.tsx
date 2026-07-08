@@ -3,6 +3,103 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
+// ============ SYNTHESIZED TECH BOOT SOUND (ASUS ROG/THX style) ============
+function playBootSound() {
+  const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+  if (!AudioContextClass) return;
+  const ctx = new AudioContextClass();
+
+  const triggerSynth = (audioCtx: AudioContext) => {
+    // 1. Create a master gain node with volume envelope
+    const masterGain = audioCtx.createGain();
+    masterGain.gain.setValueAtTime(0, audioCtx.currentTime);
+    // Smooth ramp up
+    masterGain.gain.linearRampToValueAtTime(0.35, audioCtx.currentTime + 0.35);
+    // Smooth ramp down
+    masterGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2.3);
+    masterGain.connect(audioCtx.destination);
+
+    // 2. Detuned sci-fi chord notes (a warm, powerful major/suspended chord: C2, C3, G3, C4, D4, G4)
+    const frequencies = [65.41, 130.81, 196.00, 261.63, 293.66, 392.00];
+
+    frequencies.forEach((freq, idx) => {
+      const osc = audioCtx.createOscillator();
+      const oscGain = audioCtx.createGain();
+      
+      // Mix waveform shapes: warm triangles and buzzy sawtooths
+      osc.type = idx % 2 === 0 ? "sawtooth" : "triangle";
+      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+      
+      // ASUS ROG-style pitch sweep/bend: rises then settles
+      osc.frequency.exponentialRampToValueAtTime(freq * 1.45, audioCtx.currentTime + 0.6);
+      osc.frequency.exponentialRampToValueAtTime(freq, audioCtx.currentTime + 2.0);
+
+      // Slightly detune to create a lush, rich chorus effect
+      osc.detune.setValueAtTime((Math.random() - 0.5) * 12, audioCtx.currentTime);
+
+      oscGain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+
+      // Biquad filter for a sweeping lowpass frequency envelope
+      const filter = audioCtx.createBiquadFilter();
+      filter.type = "lowpass";
+      filter.frequency.setValueAtTime(60, audioCtx.currentTime);
+      filter.frequency.exponentialRampToValueAtTime(1600, audioCtx.currentTime + 0.55);
+      filter.frequency.exponentialRampToValueAtTime(320, audioCtx.currentTime + 2.1);
+
+      osc.connect(filter);
+      filter.connect(oscGain);
+      oscGain.connect(masterGain);
+
+      osc.start();
+      osc.stop(audioCtx.currentTime + 2.4);
+    });
+
+    // 3. Synthesize a white noise chime/whoosh at the start
+    const bufferSize = audioCtx.sampleRate * 1.5;
+    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      data[i] = Math.random() * 2 - 1;
+    }
+    const noise = audioCtx.createBufferSource();
+    noise.buffer = buffer;
+
+    const noiseFilter = audioCtx.createBiquadFilter();
+    noiseFilter.type = "bandpass";
+    noiseFilter.frequency.setValueAtTime(800, audioCtx.currentTime);
+    noiseFilter.frequency.exponentialRampToValueAtTime(7000, audioCtx.currentTime + 0.3);
+    noiseFilter.frequency.exponentialRampToValueAtTime(1500, audioCtx.currentTime + 1.1);
+
+    const noiseGain = audioCtx.createGain();
+    noiseGain.gain.setValueAtTime(0, audioCtx.currentTime);
+    noiseGain.gain.linearRampToValueAtTime(0.06, audioCtx.currentTime + 0.08);
+    noiseGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.1);
+
+    noise.connect(noiseFilter);
+    noiseFilter.connect(noiseGain);
+    noiseGain.connect(masterGain);
+    
+    noise.start();
+  };
+
+  // If AudioContext is suspended, wait for user interaction to resume
+  if (ctx.state === "suspended") {
+    const resumeAndPlay = () => {
+      ctx.resume().then(() => {
+        if (ctx.state === "running") {
+          triggerSynth(ctx);
+        }
+      });
+      window.removeEventListener("click", resumeAndPlay);
+      window.removeEventListener("touchstart", resumeAndPlay);
+    };
+    window.addEventListener("click", resumeAndPlay);
+    window.addEventListener("touchstart", resumeAndPlay);
+  } else {
+    triggerSynth(ctx);
+  }
+}
+
 /**
  * Lightweight CSS-only splash. No WebGL, no Three.js.
  * 2.5s duration. Shows once per session. Desktop/tablet only.
@@ -19,6 +116,9 @@ export function SplashLoader() {
 
     setShow(true);
     sessionStorage.setItem("splash:v6", "1");
+
+    // Play synthesized boot sound
+    playBootSound();
 
     const timer = setTimeout(() => setShow(false), 2500);
     return () => clearTimeout(timer);
