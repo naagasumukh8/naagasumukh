@@ -54,7 +54,7 @@ export function Contact() {
         </Reveal>
         <Reveal delay={200}>
           <p className="mb-20 max-w-2xl text-lg text-muted-soft">
-            Open to AI/ML roles, freelance automation, and collaborations.
+            Available for opportunities, freelance automation, and collaborations.
           </p>
         </Reveal>
 

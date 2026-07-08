@@ -229,6 +229,16 @@ export function Hero() {
         <div ref={mediaRightRef} className={styles.mediaRight}>
           <div className={styles.videoFrame}>
             <div className={styles.mediaGlow} />
+            
+            {/* Glowing Live AI Avatar Badge */}
+            <div className="absolute top-4 left-4 z-20 flex items-center gap-2 rounded-full border border-green-500/30 bg-black/60 px-3 py-1 font-mono text-[9px] uppercase tracking-[0.18em] text-green-400 backdrop-blur-md shadow-lg shadow-green-500/10">
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500"></span>
+              </span>
+              AI Avatar Presenter
+            </div>
+
             <video
               ref={videoRef}
               src={harshTalkingAsset.url}
@@ -239,6 +249,25 @@ export function Hero() {
               onCanPlayThrough={handleVideoCanPlay}
               className={`${styles.videoElement} ${isVideoReady ? styles.videoReady : ""}`}
             />
+
+            {/* Click to Unmute / Speaker Attention Overlay */}
+            {isMuted && isVideoReady && (
+              <div 
+                onClick={toggleMute}
+                className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/10 cursor-pointer transition-colors hover:bg-black/25 group/overlay"
+              >
+                <div className="flex flex-col items-center gap-3 rounded-2xl border border-white/10 bg-black/65 px-5 py-4 text-center backdrop-blur-md shadow-2xl transition-all duration-300 group-hover/overlay:scale-105 group-hover/overlay:border-white/20">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white animate-pulse">
+                    <VolumeX className="w-5 h-5 text-[#ff8a3d]" />
+                  </div>
+                  <div className="flex flex-col gap-0.5">
+                    <span className="font-display text-[11px] font-bold uppercase tracking-widest text-white">Tap to unmute & listen</span>
+                    <span className="font-mono text-[8px] uppercase tracking-wider text-white/50">Hear my digital presenter speak</span>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Integrated, clean glass controllers */}
             <div className={styles.controlsOverlay}>
               <button

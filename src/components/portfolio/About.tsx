@@ -41,7 +41,7 @@ export function About() {
     { label: "Cleve AI Users", value: "Top 0.095%", sub: "Global rank", accent: "gold" },
     { label: "CGPA · NMIT", value: "7.95", sub: "B.E. Information Science", accent: "gold" },
     { label: "Projects Shipped", value: "3+", sub: "Production systems", accent: "gold" },
-    { label: "Based in", value: "Bengaluru", sub: "Open to roles", accent: "violet" },
+    { label: "Based in", value: "Bengaluru", sub: "Available for opportunities", accent: "violet" },
   ];
 
   const focus = [
@@ -141,7 +141,7 @@ export function About() {
                     >
                       {t.value}
                     </div>
-                    {t.sub && <div className="mt-1 text-[11px] text-muted-soft/80">{t.sub}</div>}
+                    {t.sub && <div className="mt-1 text-[10px] sm:text-[11px] leading-tight text-muted-soft/80">{t.sub}</div>}
                   </GlowTile>
                 </Reveal>
               ))}
