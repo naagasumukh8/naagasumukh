@@ -45,7 +45,7 @@ export function Contact() {
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black/80" />
       <div className="relative mx-auto max-w-[1300px]">
         <Reveal>
-          <SectionLabel num="07" text="Transmission" />
+          <SectionLabel num="05" text="Transmission" />
         </Reveal>
         <Reveal delay={100}>
           <h2 className="mb-8 font-display text-5xl font-bold leading-[0.95] text-body md:text-8xl">
@@ -67,22 +67,22 @@ export function Contact() {
                   target={it.h.startsWith("http") ? "_blank" : undefined}
                   rel="noopener noreferrer"
                   data-hover
-                  className="contact-row glass-row group flex items-center justify-between gap-4 px-6 md:px-8"
+                  className="contact-row glass-row group flex items-center justify-between gap-3 sm:gap-4 px-4 sm:px-6 md:px-8"
                 >
-                  <div className="flex items-center gap-6">
-                    <span className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] font-mono text-sm text-violet backdrop-blur-md transition-all group-hover:bg-violet group-hover:text-white">
+                  <div className="flex items-center gap-3 sm:gap-6 min-w-0">
+                    <span className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] font-mono text-sm text-violet backdrop-blur-md transition-all group-hover:bg-violet group-hover:text-white">
                       {it.i}
                     </span>
                     <div className="min-w-0">
-                      <div className="font-mono text-[10px] uppercase tracking-widest text-muted-soft">
+                      <div className="font-mono text-[9px] sm:text-[10px] uppercase tracking-widest text-muted-soft">
                         {it.l}
                       </div>
-                      <div className="truncate font-display text-xl font-bold text-body transition-colors group-hover:text-violet md:text-3xl">
+                      <div className="truncate font-display text-[13px] sm:text-xl font-bold text-body transition-colors group-hover:text-violet md:text-3xl">
                         {it.v}
                       </div>
                     </div>
                   </div>
-                  <span className="glass-pill shrink-0 !py-2 !px-4 !text-[10px]">
+                  <span className="glass-pill shrink-0 !py-1.5 !px-3 sm:!py-2 sm:!px-4 !text-[9px] sm:!text-[10px]">
                     Open <span className="transition-transform group-hover:translate-x-1">↗</span>
                   </span>
                 </a>

@@ -36,6 +36,11 @@ export function Services() {
       <div className="mx-auto max-w-7xl">
         {/* Heading */}
         <FadeIn y={40}>
+          <div className="flex flex-col items-center mb-3">
+            <span className="font-mono text-[10px] uppercase tracking-[0.3em]" style={{ color: "#ff8a3d" }}>
+              [ 03 — Services ]
+            </span>
+          </div>
           <h2
             className="text-center font-display font-black uppercase tracking-tight leading-none mb-12 sm:mb-16 md:mb-20 text-[#07121F]"
             style={{ fontSize: "clamp(3rem, 10vw, 120px)" }}

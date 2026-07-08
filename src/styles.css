@@ -149,7 +149,9 @@
   .bg-gold { background-color: var(--gold); }
   .bg-surface { background-color: #0a0a12; }
   .border-violet { border-color: var(--violet); }
-  .text-muted-soft { color: #6e6e8a; }
+  .text-muted-soft {
+    color: #a3a3c2;
+  }
   .text-body { color: #ffffff; }
 
   .glow-violet {
