@@ -38,35 +38,32 @@
 
 :root {
   --radius: 0.125rem;
-  --background: #00000a;
+  --background: oklch(0 0 0);
   --foreground: oklch(1 0 0);
-  --surface: #0a0a12;
-  --card: #0a0a12;
+  --surface: oklch(0.10 0 0);
+  --card: oklch(0.10 0 0);
   --card-foreground: oklch(1 0 0);
-  --popover: #050508;
+  --popover: oklch(0.08 0 0);
   --popover-foreground: oklch(1 0 0);
   --primary: oklch(1 0 0);
   --primary-foreground: oklch(0 0 0);
-  /* Restored accent variables */
-  --orange: #ff8a3d;
-  --cyan: #00d4ff;
-  --violet: #7c6eff;
-  --gold: #ffb347;
-  --secondary: #0f0f1a;
+  --violet: oklch(1 0 0);
+  --gold: oklch(1 0 0);
+  --secondary: oklch(0.16 0 0);
   --secondary-foreground: oklch(1 0 0);
-  --muted: #0f0f1a;
-  --muted-foreground: oklch(0.55 0 0);
+  --muted: oklch(0.16 0 0);
+  --muted-foreground: oklch(0.65 0 0);
   --accent: oklch(1 0 0);
   --accent-foreground: oklch(0 0 0);
   --destructive: oklch(0.6 0.24 27);
   --destructive-foreground: oklch(1 0 0);
-  --border: oklch(1 0 0 / 10%);
-  --input: #0f0f1a;
+  --border: oklch(1 0 0 / 14%);
+  --input: oklch(0.16 0 0);
   --ring: oklch(1 0 0);
 }
 
 .dark {
-  --background: #00000a;
+  --background: oklch(0 0 0);
   --foreground: oklch(1 0 0);
 }
 
@@ -75,27 +72,20 @@
     border-color: var(--color-border);
   }
   html {
-    /* scroll-behavior removed — Lenis handles smooth scroll with physics */
-    background: #00000a;
+    scroll-behavior: smooth;
+    background: #000000;
     overflow-x: hidden;
-    /* Prevent overscroll rubber-band on Windows/Chrome that causes visible pop */
-    overscroll-behavior: none;
   }
   body {
-    background-color: #00000a;
+    background-color: #000000;
     color: #ffffff;
     font-family: var(--font-sans);
+    cursor: auto;
     overflow-x: hidden;
-    overscroll-behavior: none;
     -webkit-font-smoothing: antialiased;
-    /* Hint browser to keep body on its own GPU layer */
-    transform: translateZ(0);
   }
   /* Custom cursor disabled — was causing flicker/lag on some setups. Default cursor is clean and reliable. */
-  h1,
-  h2,
-  h3,
-  h4 {
+  h1, h2, h3, h4 {
     font-family: var(--font-display);
     letter-spacing: -0.02em;
     text-transform: uppercase;
@@ -105,69 +95,43 @@
     color: #000000;
   }
   ::-webkit-scrollbar {
-    width: 4px;
+    width: 8px;
   }
   ::-webkit-scrollbar-track {
-    background: transparent;
+    background: #000000;
   }
   ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 9999px;
-    transition: background 0.2s ease;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.35);
-  }
-  /* iOS spring for ALL interactive elements — feels tactile and native */
-  a,
-  button,
-  [role="button"],
-  summary,
-  label[for],
-  [data-hover] {
-    -webkit-tap-highlight-color: transparent;
-    touch-action: manipulation;
+    background: #ffffff;
+    border-radius: 0;
   }
 }
 
 @layer utilities {
-  .font-display {
-    font-family: var(--font-display);
-    font-weight: 400;
-    letter-spacing: -0.02em;
-  }
-  .font-mono {
-    font-family: var(--font-mono);
-  }
+  .font-display { font-family: var(--font-display); font-weight: 400; letter-spacing: -0.02em; }
+  .font-mono { font-family: var(--font-mono); }
 
-  /* ===== ACCENT PALETTE ===== */
-  .text-violet { color: var(--violet); }
-  .text-gold { color: var(--gold); }
-  .text-orange { color: var(--orange); }
-  .text-cyan { color: var(--cyan); }
-  .bg-violet { background-color: var(--violet); }
-  .bg-gold { background-color: var(--gold); }
-  .bg-surface { background-color: #0a0a12; }
-  .border-violet { border-color: var(--violet); }
-  .text-muted-soft {
-    color: #a3a3c2;
-  }
+  /* Monochrome remap of legacy accent utilities — keeps 1276-line page coherent */
+  .text-violet { color: #ffffff; }
+  .text-gold { color: #ffffff; }
+  .bg-violet { background-color: #ffffff; }
+  .bg-gold { background-color: #ffffff; }
+  .bg-surface { background-color: #0a0a0a; }
+  .border-violet { border-color: #ffffff; }
+  .text-muted-soft { color: #8a8a8a; }
   .text-body { color: #ffffff; }
 
   .glow-violet {
-    box-shadow:
-      0 0 0 1px rgba(124, 110, 255, 0.4),
-      0 20px 60px -20px rgba(124, 110, 255, 0.25);
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.9), 0 20px 60px -20px rgba(255,255,255,0.25);
   }
   .glow-gold {
-    box-shadow: 0 0 10px 1px rgba(255, 179, 71, 0.35);
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.7);
   }
   .text-glow-violet {
-    text-shadow: 0 0 30px rgba(124, 110, 255, 0.4);
+    text-shadow: 0 0 30px rgba(255,255,255,0.35);
   }
 
   .gradient-text {
-    background: linear-gradient(135deg, #ffffff 0%, var(--orange) 60%, var(--gold) 100%);
+    background: linear-gradient(180deg, #ffffff 0%, #bdbdbd 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -175,8 +139,8 @@
 
   .grid-bg {
     background-image:
-      linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
     background-size: 60px 60px;
   }
 
@@ -190,59 +154,55 @@
     mix-blend-mode: overlay;
   }
 
+  @keyframes glitch {
+    0%, 100% { transform: translate(0); text-shadow: 0 0 0 transparent; }
+    20% { transform: translate(-2px, 1px); text-shadow: 2px 0 #ffffff, -2px 0 #ffffff; }
+    40% { transform: translate(2px, -1px); text-shadow: -2px 0 #ffffff, 2px 0 #ffffff; }
+    60% { transform: translate(0); text-shadow: 0 0 0 transparent; }
+  }
+  .animate-glitch { animation: glitch 0.4s ease-in-out; }
+
   @keyframes ticker {
-    from {
-      transform: translateX(0);
-    }
-    to {
-      transform: translateX(-50%);
-    }
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
   }
   @keyframes ticker-reverse {
-    from {
-      transform: translateX(-50%);
-    }
-    to {
-      transform: translateX(0);
-    }
+    from { transform: translateX(-50%); }
+    to { transform: translateX(0); }
   }
-  .animate-ticker {
-    animation: ticker 40s linear infinite;
-    will-change: transform;
-    transform: translateZ(0);
+  .animate-ticker { animation: ticker 40s linear infinite; will-change: transform; transform: translateZ(0); }
+  .animate-ticker-reverse { animation: ticker-reverse 40s linear infinite; will-change: transform; transform: translateZ(0); }
+
+  @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  .animate-spin-slow { animation: spin-slow 12s linear infinite; will-change: transform; transform: translateZ(0); }
+
+  @keyframes orbit {
+    from { transform: rotate(0deg) translateX(140px) rotate(0deg); }
+    to { transform: rotate(360deg) translateX(140px) rotate(-360deg); }
   }
-  .animate-ticker-reverse {
-    animation: ticker-reverse 40s linear infinite;
-    will-change: transform;
-    transform: translateZ(0);
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(255,255,255,0.6); }
+    50% { opacity: 0.7; box-shadow: 0 0 0 8px rgba(255,255,255,0); }
   }
+  .pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }
+
+  @keyframes scroll-line {
+    0% { transform: scaleY(0); transform-origin: top; }
+    50% { transform: scaleY(1); transform-origin: top; }
+    51% { transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+  .scroll-line { animation: scroll-line 2s ease-in-out infinite; }
 
   .tilt-card {
     transform-style: preserve-3d;
-    /* Spring physics: settles with micro-bounce so the 3D tilt feels physical */
-    transition: transform 0.6s cubic-bezier(0.34, 1.28, 0.64, 1);
-    will-change: transform;
-    backface-visibility: hidden;
-  }
-
-  /* GPU promotion utility — use on elements that animate frequently */
-  .gpu {
-    transform: translateZ(0);
-    backface-visibility: hidden;
-    perspective: 1000px;
-  }
-
-  /* Smooth reveal base — pre-promotes element to its own layer before animation */
-  .will-reveal {
-    will-change: transform, opacity;
-    transform: translateZ(0);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
@@ -250,35 +210,25 @@
 }
 
 @media (hover: none) {
-  .tilt-card {
-    transform: none !important;
-  }
+  .tilt-card { transform: none !important; }
 }
 
 @keyframes spotlight {
-  0% {
-    opacity: 0;
-    transform: translate(-72%, -62%) scale(0.5);
-  }
-  100% {
-    opacity: 1;
-    transform: translate(-50%, -40%) scale(1);
-  }
+  0% { opacity: 0; transform: translate(-72%, -62%) scale(0.5); }
+  100% { opacity: 1; transform: translate(-50%, -40%) scale(1); }
 }
-.animate-spotlight {
-  animation: spotlight 2s ease 0.75s 1 forwards;
-}
+.animate-spotlight { animation: spotlight 2s ease 0.75s 1 forwards; }
 
 /* ============ APPLE LIQUID GLASS UTILITIES (site-wide) ============ */
 @utility glass-surface {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+  background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
   backdrop-filter: blur(8px) saturate(130%);
   -webkit-backdrop-filter: blur(8px) saturate(130%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255,255,255,0.12);
   box-shadow:
-    0 12px 40px -12px rgba(0, 0, 0, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.22),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+    0 12px 40px -12px rgba(0,0,0,0.5),
+    inset 0 1px 0 rgba(255,255,255,0.22),
+    inset 0 -1px 0 rgba(0,0,0,0.3);
 }
 
 @utility glass-pill {
@@ -292,264 +242,95 @@
   font-size: 11px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.95);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.03) 100%);
+  color: rgba(255,255,255,0.95);
+  background: linear-gradient(180deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 100%);
   backdrop-filter: blur(6px) saturate(140%);
   -webkit-backdrop-filter: blur(6px) saturate(140%);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255,255,255,0.18);
   box-shadow:
-    0 6px 20px -8px rgba(0, 0, 0, 0.55),
-    inset 0 1px 0 rgba(255, 255, 255, 0.28),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.35);
-  /* iOS spring — feels alive on press/release */
-  transition:
-    transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
-    box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-    border-color 0.3s ease,
-    background 0.3s ease;
+    0 6px 20px -8px rgba(0,0,0,0.55),
+    inset 0 1px 0 rgba(255,255,255,0.28),
+    inset 0 -1px 0 rgba(0,0,0,0.35);
+  transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), box-shadow 0.35s, border-color 0.35s;
   cursor: pointer;
-  will-change: transform;
 }
 @utility glass-pill {
   &:hover {
-    transform: translateY(-3px) scale(1.02);
-    border-color: rgba(255, 255, 255, 0.32);
+    transform: translateY(-2px);
+    border-color: rgba(255,255,255,0.3);
     box-shadow:
-      0 18px 48px -10px rgba(124, 110, 255, 0.5),
-      inset 0 1px 0 rgba(255, 255, 255, 0.38);
+      0 14px 40px -10px rgba(124,110,255,0.45),
+      inset 0 1px 0 rgba(255,255,255,0.35);
   }
-  &:active {
-    transform: translateY(1px) scale(0.97);
-    transition:
-      transform 0.08s ease-out,
-      box-shadow 0.08s ease-out;
-  }
+  &:active { transform: translateY(0) scale(0.98); }
 }
 
 @utility glass-row {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+  background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
   backdrop-filter: blur(5px) saturate(125%);
   -webkit-backdrop-filter: blur(5px) saturate(125%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255,255,255,0.08);
   border-radius: 1.25rem;
-  /* Spring easing — lifts smoothly, settles with a micro-bounce */
-  transition:
-    transform 0.55s cubic-bezier(0.34, 1.45, 0.64, 1),
-    border-color 0.35s ease,
-    box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-    background 0.35s ease;
-  will-change: transform;
+  transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), border-color 0.35s, box-shadow 0.35s, background 0.35s;
 }
 @utility glass-row {
   &:hover {
-    transform: translateY(-3px) scale(1.005);
-    border-color: rgba(255, 255, 255, 0.18);
-    background: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.07) 0%,
-      rgba(255, 255, 255, 0.02) 100%
-    );
-    box-shadow:
-      0 24px 64px -20px rgba(0, 0, 0, 0.6),
-      0 0 0 1px rgba(255, 255, 255, 0.12);
-  }
-  &:active {
-    transform: translateY(0) scale(0.99);
-    transition: transform 0.1s ease-out;
+    transform: translateY(-2px);
+    border-color: rgba(124,110,255,0.35);
+    background: linear-gradient(180deg, rgba(124,110,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
+    box-shadow: 0 20px 60px -20px rgba(124,110,255,0.45);
   }
 }
 
 /* ============ Batch 1 polish: tap spring + ticker fade masks ============ */
 
-/* Tap spring — scoped ONLY to explicitly tagged elements to avoid
-   conflicting with component-level transitions on cards and glass elements. */
-.tap-spring,
-[data-tap] {
-  transition:
-    transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
-    opacity 0.2s ease;
-}
-a:active,
-button:active {
-  opacity: 0.85;
-  transition: opacity 0.08s ease-out;
-}
-.tap-spring:active,
-[data-tap]:active {
-  transform: scale(0.95);
-  transition:
-    transform 0.08s ease-out,
-    opacity 0.08s ease-out;
-}
-/* Stronger press feedback on coarse-pointer (mobile) */
+/* Mobile-only tap feedback — native iOS spring. Desktop unaffected.
+   Targets common interactive elements; designers can add .tap-spring manually. */
 @media (hover: none) and (pointer: coarse) {
-  a:active,
-  button:active {
-    opacity: 0.75;
+  a, button, [role="button"], .tap-spring,
+  [data-hover], [data-tap] {
+    transition: transform 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
   }
-  .tap-spring:active,
-  [data-tap]:active {
-    transform: scale(0.92);
+  a:active, button:active, [role="button"]:active,
+  .tap-spring:active, [data-hover]:active, [data-tap]:active {
+    transform: scale(0.94);
+    transition: transform 80ms ease-out;
   }
 }
 
 /* Ticker / marquee fade masks — soft edge-out on both sides. */
 .ticker-fade {
-  -webkit-mask-image: linear-gradient(
-    90deg,
-    transparent 0,
-    #000 60px,
-    #000 calc(100% - 60px),
-    transparent 100%
-  );
-  mask-image: linear-gradient(
-    90deg,
-    transparent 0,
-    #000 60px,
-    #000 calc(100% - 60px),
-    transparent 100%
-  );
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 60px, #000 calc(100% - 60px), transparent 100%);
+          mask-image: linear-gradient(90deg, transparent 0, #000 60px, #000 calc(100% - 60px), transparent 100%);
 }
 
-/* Contact rows — hover expand + soft wash (desktop). Spring easing. */
+/* Contact rows — hover expand + violet wash (desktop). Mobile keeps tap-spring. */
 @media (hover: hover) {
   .glass-row.contact-row {
-    padding-top: 1.5rem;
-    padding-bottom: 1.5rem;
-    transition:
-      padding 380ms cubic-bezier(0.34, 1.2, 0.64, 1),
-      background 280ms ease,
-      transform 0.55s cubic-bezier(0.34, 1.45, 0.64, 1),
-      border-color 0.35s ease,
-      box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    padding-top: 1.5rem; padding-bottom: 1.5rem;
+    transition: padding 280ms cubic-bezier(0.4,0,0.2,1),
+                background 280ms cubic-bezier(0.4,0,0.2,1),
+                transform 0.35s cubic-bezier(0.16,1,0.3,1),
+                border-color 0.35s, box-shadow 0.35s;
   }
   .glass-row.contact-row:hover {
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-    background: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.07) 0%,
-      rgba(255, 255, 255, 0.02) 100%
-    ) !important;
+    padding-top: 1.95rem; padding-bottom: 1.95rem;
+    background: linear-gradient(180deg, rgba(124,110,255,0.10) 0%, rgba(124,110,255,0.04) 100%) !important;
   }
 }
 
-/* ============ MOBILE PERFORMANCE: disable heaviest effects on phones ============
- * Desktop/laptop stays untouched. On phones (<768px) we kill:
- *   1) The full-screen animated noise overlay (constant GPU repaints)
- *   2) The counter-rotating gold ring on the About avatar (two conic spins forever)
- *   3) Heavy backdrop-filter on glass surfaces (22px blur+saturate murders mobile GPU)
- *   4) ALL continuously-running aurora/mesh/particle CSS animations (new — biggest crash cause)
+/* Mobile-specific suppressions removed — phone now matches desktop version. */
+
+
+/* ============ DESKTOP SCROLL PERFORMANCE ============
+ * content-visibility:auto lets the browser skip layout/paint for off-screen
+ * sections entirely — biggest single win for scroll smoothness on long pages.
+ * contain-intrinsic-size gives the scrollbar a stable height before render.
  */
-@media (max-width: 767px) {
-  /* 1) Noise overlay off */
-  [aria-hidden].pointer-events-none.fixed.inset-0.z-\[9999\] {
-    display: none !important;
+@media (min-width: 768px) {
+  main > section,
+  section[id] {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 800px;
   }
-
-  /* 2) Stop infinite spin on avatar rings + monument rotating border */
-  .animate-spin-slow,
-  [style*="conic-gradient"][style*="animation"] {
-    animation: none !important;
-  }
-  .monument-card::before {
-    animation: none !important;
-    opacity: 0 !important;
-  }
-
-  /* 3) Drop expensive backdrop-filter; keep the look with a slightly more opaque bg */
-  .glass-surface,
-  .glass-pill,
-  .glass-row {
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    background: linear-gradient(
-      180deg,
-      rgba(20, 20, 30, 0.78) 0%,
-      rgba(20, 20, 30, 0.62) 100%
-    ) !important;
-  }
-
-  /* 4) Pause ALL background CSS animations — these are the #1 crash cause on old phones.
-     auroraDrift (section backdrops), splashMesh (global CSS bg), dotsDrift, gridPan,
-     splashFloat (WavingBalls), splashSpin (OrbitingDots), badgeShimmer, monAngleSpin.
-     Content stays visible — animations simply freeze in place (looks fine). */
-  @keyframes auroraDrift {
-    0%,
-    100% {
-      transform: none;
-    }
-  }
-  @keyframes splashMesh {
-    0%,
-    100% {
-      transform: none;
-    }
-  }
-  @keyframes dotsDrift {
-    0%,
-    100% {
-      transform: none;
-    }
-  }
-  @keyframes gridPan {
-    0%,
-    100% {
-      transform: none;
-    }
-  }
-  @keyframes splashFloat {
-    0%,
-    100% {
-      transform: none;
-    }
-  }
-  @keyframes splashSpin {
-    0%,
-    100% {
-      transform: none;
-    }
-  }
-  @keyframes badgeShimmer {
-    0%,
-    100% {
-      transform: translateX(-120%);
-    }
-  }
-  @keyframes monAngleSpin {
-    0%,
-    100% {
-    }
-  }
-
-  /* Reduce marquee/ticker speed on mobile — fewer repaints */
-  .animate-ticker {
-    animation-duration: 90s !important;
-  }
-  .animate-ticker-reverse {
-    animation-duration: 90s !important;
-  }
-
-  /* Eliminate will-change on mobile — it actually costs memory on low-RAM devices */
-  * {
-    will-change: auto !important;
-  }
-}
-
-/* ============ LOW-END DEVICE HOOKS ============
- * useLowEndDevice() sets data-low-end="true" on <html>.
- * These rules add extra protection for old/weak devices beyond the mobile breakpoint.
- */
-[data-low-end="true"] {
-  /* Kill all transitions and animations on truly weak devices */
-}
-[data-low-end="true"] * {
-  animation-duration: 0.001ms !important;
-  animation-iteration-count: 1 !important;
-  transition-duration: 0.001ms !important;
-  will-change: auto !important;
-}
-/* Keep essential UI transitions (opacity for modals, etc.) */
-[data-low-end="true"] .page-transition {
-  transition: opacity 0.2s ease !important;
 }

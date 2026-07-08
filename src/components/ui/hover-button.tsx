@@ -11,7 +11,8 @@ interface Circle {
   fadeState: "in" | "out" | null;
 }
 
-export interface HoverButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface HoverButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
 }
 
@@ -29,7 +30,6 @@ const HoverButton = React.forwardRef<HTMLButtonElement, HoverButtonProps>(
     const [isListening, setIsListening] = React.useState(false);
     const [circles, setCircles] = React.useState<Circle[]>([]);
     const lastAdded = React.useRef(0);
-    const rectRef = React.useRef<DOMRect | null>(null);
 
     const createCircle = React.useCallback((x: number, y: number) => {
       const w = innerRef.current?.offsetWidth || 1;
@@ -41,27 +41,13 @@ const HoverButton = React.forwardRef<HTMLButtonElement, HoverButtonProps>(
       ]);
     }, []);
 
-    const handlePointerEnter = (e: React.PointerEvent<HTMLButtonElement>) => {
-      setIsListening(true);
-      rectRef.current = e.currentTarget.getBoundingClientRect();
-    };
-
-    const handlePointerLeave = () => {
-      setIsListening(false);
-      rectRef.current = null;
-    };
-
     const handlePointerMove = React.useCallback(
       (e: React.PointerEvent<HTMLButtonElement>) => {
         if (!isListening) return;
         const now = Date.now();
         if (now - lastAdded.current < 90) return;
         lastAdded.current = now;
-        let rect = rectRef.current;
-        if (!rect) {
-          rect = e.currentTarget.getBoundingClientRect();
-          rectRef.current = rect;
-        }
+        const rect = e.currentTarget.getBoundingClientRect();
         createCircle(e.clientX - rect.left, e.clientY - rect.top);
       },
       [isListening, createCircle],
@@ -73,10 +59,14 @@ const HoverButton = React.forwardRef<HTMLButtonElement, HoverButtonProps>(
         if (c.fadeState !== null) return;
         timers.push(
           window.setTimeout(() => {
-            setCircles((prev) => prev.map((p) => (p.id === c.id ? { ...p, fadeState: "in" } : p)));
+            setCircles((prev) =>
+              prev.map((p) => (p.id === c.id ? { ...p, fadeState: "in" } : p)),
+            );
           }, 0),
           window.setTimeout(() => {
-            setCircles((prev) => prev.map((p) => (p.id === c.id ? { ...p, fadeState: "out" } : p)));
+            setCircles((prev) =>
+              prev.map((p) => (p.id === c.id ? { ...p, fadeState: "out" } : p)),
+            );
           }, 900),
           window.setTimeout(() => {
             setCircles((prev) => prev.filter((p) => p.id !== c.id));
@@ -90,21 +80,18 @@ const HoverButton = React.forwardRef<HTMLButtonElement, HoverButtonProps>(
       <button
         ref={innerRef}
         data-hover
-        onPointerEnter={handlePointerEnter}
-        onPointerLeave={handlePointerLeave}
+        onPointerEnter={() => setIsListening(true)}
+        onPointerLeave={() => setIsListening(false)}
         onPointerMove={handlePointerMove}
         className={cn(
-          // Apple liquid-glass shell with iOS spring physics
+          // Apple liquid-glass shell
           "group relative isolate overflow-hidden rounded-full",
           "border border-white/15 bg-white/[0.06] px-7 py-3 text-sm font-medium text-white",
           "backdrop-blur-xl backdrop-saturate-150",
           "shadow-[0_6px_24px_-8px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.25),inset_0_-1px_0_rgba(0,0,0,0.4)]",
-          // Spring easing: hover lifts with gentle overshoot settle, active snaps fast
-          "[transition:transform_0.5s_cubic-bezier(0.34,1.56,0.64,1),box-shadow_0.4s_cubic-bezier(0.16,1,0.3,1),border-color_0.3s_ease]",
-          "hover:-translate-y-1 hover:scale-[1.02] hover:border-white/28",
-          "hover:shadow-[0_18px_48px_-10px_rgba(124,110,255,0.6),inset_0_1px_0_rgba(255,255,255,0.35)]",
-          "active:translate-y-px active:scale-[0.97] active:[transition:transform_0.08s_ease-out,box-shadow_0.08s_ease-out]",
-          "will-change-transform",
+          "transition-all duration-300 hover:-translate-y-0.5 hover:border-white/25",
+          "hover:shadow-[0_12px_40px_-10px_rgba(124,110,255,0.55),inset_0_1px_0_rgba(255,255,255,0.3)]",
+          "active:translate-y-0 active:scale-[0.98]",
           className,
         )}
         {...props}
