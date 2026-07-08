@@ -38,32 +38,35 @@
 
 :root {
   --radius: 0.125rem;
-  --background: oklch(0 0 0);
+  --background: #00000a;
   --foreground: oklch(1 0 0);
-  --surface: oklch(0.1 0 0);
-  --card: oklch(0.1 0 0);
+  --surface: #0a0a12;
+  --card: #0a0a12;
   --card-foreground: oklch(1 0 0);
-  --popover: oklch(0.08 0 0);
+  --popover: #050508;
   --popover-foreground: oklch(1 0 0);
   --primary: oklch(1 0 0);
   --primary-foreground: oklch(0 0 0);
-  --violet: oklch(1 0 0);
-  --gold: oklch(1 0 0);
-  --secondary: oklch(0.16 0 0);
+  /* Restored accent variables */
+  --orange: #ff8a3d;
+  --cyan: #00d4ff;
+  --violet: #7c6eff;
+  --gold: #ffb347;
+  --secondary: #0f0f1a;
   --secondary-foreground: oklch(1 0 0);
-  --muted: oklch(0.16 0 0);
-  --muted-foreground: oklch(0.65 0 0);
+  --muted: #0f0f1a;
+  --muted-foreground: oklch(0.55 0 0);
   --accent: oklch(1 0 0);
   --accent-foreground: oklch(0 0 0);
   --destructive: oklch(0.6 0.24 27);
   --destructive-foreground: oklch(1 0 0);
-  --border: oklch(1 0 0 / 14%);
-  --input: oklch(0.16 0 0);
+  --border: oklch(1 0 0 / 10%);
+  --input: #0f0f1a;
   --ring: oklch(1 0 0);
 }
 
 .dark {
-  --background: oklch(0 0 0);
+  --background: #00000a;
   --foreground: oklch(1 0 0);
 }
 
@@ -73,16 +76,17 @@
   }
   html {
     /* scroll-behavior removed — Lenis handles smooth scroll with physics */
-    background: #000000;
+    background: #00000a;
     overflow-x: hidden;
     /* Prevent overscroll rubber-band on Windows/Chrome that causes visible pop */
     overscroll-behavior: none;
+    cursor: none;
   }
   body {
-    background-color: #000000;
+    background-color: #00000a;
     color: #ffffff;
     font-family: var(--font-sans);
-    cursor: auto;
+    cursor: none;
     overflow-x: hidden;
     overscroll-behavior: none;
     -webkit-font-smoothing: antialiased;
@@ -138,46 +142,32 @@
     font-family: var(--font-mono);
   }
 
-  /* Monochrome remap of legacy accent utilities — keeps 1276-line page coherent */
-  .text-violet {
-    color: #ffffff;
-  }
-  .text-gold {
-    color: #ffffff;
-  }
-  .bg-violet {
-    background-color: #ffffff;
-  }
-  .bg-gold {
-    background-color: #ffffff;
-  }
-  .bg-surface {
-    background-color: #0a0a0a;
-  }
-  .border-violet {
-    border-color: #ffffff;
-  }
-  .text-muted-soft {
-    color: #8a8a8a;
-  }
-  .text-body {
-    color: #ffffff;
-  }
+  /* ===== ACCENT PALETTE ===== */
+  .text-violet { color: var(--violet); }
+  .text-gold { color: var(--gold); }
+  .text-orange { color: var(--orange); }
+  .text-cyan { color: var(--cyan); }
+  .bg-violet { background-color: var(--violet); }
+  .bg-gold { background-color: var(--gold); }
+  .bg-surface { background-color: #0a0a12; }
+  .border-violet { border-color: var(--violet); }
+  .text-muted-soft { color: #6e6e8a; }
+  .text-body { color: #ffffff; }
 
   .glow-violet {
     box-shadow:
-      0 0 0 1px rgba(255, 255, 255, 0.9),
-      0 20px 60px -20px rgba(255, 255, 255, 0.25);
+      0 0 0 1px rgba(124, 110, 255, 0.4),
+      0 20px 60px -20px rgba(124, 110, 255, 0.25);
   }
   .glow-gold {
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.7);
+    box-shadow: 0 0 10px 1px rgba(255, 179, 71, 0.35);
   }
   .text-glow-violet {
-    text-shadow: 0 0 30px rgba(255, 255, 255, 0.35);
+    text-shadow: 0 0 30px rgba(124, 110, 255, 0.4);
   }
 
   .gradient-text {
-    background: linear-gradient(180deg, #ffffff 0%, #bdbdbd 100%);
+    background: linear-gradient(135deg, #ffffff 0%, var(--orange) 60%, var(--gold) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;

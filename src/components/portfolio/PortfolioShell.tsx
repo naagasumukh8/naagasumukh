@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { NeuralCanvas } from "@/components/3d/NeuralCanvas";
+import { CustomCursor } from "@/components/ui/custom-cursor";
 import { PaperShaderBackdrop } from "@/components/ui/paper-shader-backdrop";
 
 // ============ SCROLL PROGRESS BAR (CSS-only, no Framer Motion) ============
@@ -31,8 +33,8 @@ export function ScrollProgress() {
         ref={barRef}
         className="h-full origin-left"
         style={{
-          background: "#ffffff",
-          boxShadow: "0 0 8px rgba(255,255,255,0.4)",
+          background: "linear-gradient(90deg, #ff8a3d, #7c6eff, #00d4ff)",
+          boxShadow: "0 0 12px rgba(255,138,61,0.6)",
           transform: "scaleX(0)",
         }}
       />
@@ -94,7 +96,7 @@ export function DotsNav() {
             className="block h-1.5 rounded-full transition-all duration-200"
             style={{
               width: active === s.id ? 24 : 8,
-              backgroundColor: active === s.id ? "#ffffff" : "#3a3a55",
+              backgroundColor: active === s.id ? "#ff8a3d" : "#3a3a55",
             }}
           />
         </a>
@@ -106,8 +108,10 @@ export function DotsNav() {
 // ============ SHELL ============
 export function PortfolioShell({ children }: { children: ReactNode }) {
   return (
-    <main className="relative min-h-screen bg-[#07121F] text-body">
+    <main className="relative min-h-screen bg-[#00000a] text-body">
+      <NeuralCanvas />
       <PaperShaderBackdrop />
+      <CustomCursor />
       <div className="relative z-10">
         <ScrollProgress />
         <DotsNav />
