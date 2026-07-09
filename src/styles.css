@@ -31,7 +31,8 @@
   --color-gold: var(--gold);
   --color-violet: var(--violet);
   --color-surface: var(--surface);
-  --font-display: "Anton", "Archivo Black", sans-serif;
+  --font-kanit: "Kanit", sans-serif;
+  --font-display: "Kanit", "Anton", "Archivo Black", sans-serif;
   --font-sans: "Inter", sans-serif;
   --font-mono: "JetBrains Mono", monospace;
 }
@@ -294,6 +295,13 @@
   .tilt-card {
     transform-style: preserve-3d;
     transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .hero-heading {
+    background: linear-gradient(180deg, #646973 0%, #BBCCD7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 }
 

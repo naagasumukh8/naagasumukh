@@ -38,6 +38,7 @@ import {
 import RadialOrbitalTimeline from "@/components/ui/radial-orbital-timeline";
 import { HoverButton } from "@/components/ui/hover-button";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
+import { Magnet } from "../components/ui/Magnet";
 
 /* ============ PREMIUM SECTION BACKDROPS ============
    Each backdrop fades in via IntersectionObserver when its section enters
@@ -1181,17 +1182,19 @@ export function Hero() {
       <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" fill="white" />
 
       <div className="pointer-events-none relative z-10 flex w-full md:w-1/2 max-w-[1600px] flex-col items-start px-6 md:px-12 text-left [&_a]:pointer-events-auto [&_button]:pointer-events-auto">
-        <div
-          className="hero-badge mb-10 inline-flex items-center gap-3 rounded-full border border-white/15 bg-white/[0.06] px-4 py-2 font-mono text-[11px] uppercase tracking-widest text-body [backdrop-filter:blur(12px)_saturate(140%)]"
-          style={{ opacity: 0, animation: "fadeUp 1s 0.2s forwards" }}
-        >
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full rounded-full bg-[#22ff88] opacity-70 animate-ping" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-[#22ff88] shadow-[0_0_10px_rgba(34,255,136,0.85)]" />
-          </span>
-          Available for opportunities
-          <span className="text-violet">→</span>
-        </div>
+        <Magnet strength={3} padding={80} className="pointer-events-auto">
+          <div
+            className="hero-badge mb-10 inline-flex items-center gap-3 rounded-full border border-white/15 bg-white/[0.06] px-4 py-2 font-mono text-[11px] uppercase tracking-widest text-body [backdrop-filter:blur(12px)_saturate(140%)] cursor-pointer"
+            style={{ opacity: 0, animation: "fadeUp 1s 0.2s forwards" }}
+          >
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full rounded-full bg-[#22ff88] opacity-70 animate-ping" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-[#22ff88] shadow-[0_0_10px_rgba(34,255,136,0.85)]" />
+            </span>
+            Available for opportunities
+            <span className="text-violet">→</span>
+          </div>
+        </Magnet>
 
         <h1 className="font-display font-bold leading-[0.82] tracking-tight text-body">
           <div className="block w-full" style={{ fontSize: "clamp(40px, 9vw, 150px)" }}>

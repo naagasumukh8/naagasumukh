@@ -13,6 +13,7 @@ import { Route as WorkRouteImport } from './routes/work'
 import { Route as VibeRouteImport } from './routes/vibe'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as JourneyRouteImport } from './routes/journey'
+import { Route as JackRouteImport } from './routes/jack'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
@@ -37,6 +38,11 @@ const JourneyRoute = JourneyRouteImport.update({
   path: '/journey',
   getParentRoute: () => rootRouteImport,
 } as any)
+const JackRoute = JackRouteImport.update({
+  id: '/jack',
+  path: '/jack',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
@@ -57,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
+  '/jack': typeof JackRoute
   '/journey': typeof JourneyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/vibe': typeof VibeRoute
@@ -66,6 +73,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
+  '/jack': typeof JackRoute
   '/journey': typeof JourneyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/vibe': typeof VibeRoute
@@ -76,6 +84,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
+  '/jack': typeof JackRoute
   '/journey': typeof JourneyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/vibe': typeof VibeRoute
@@ -87,6 +96,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/contact'
+    | '/jack'
     | '/journey'
     | '/sitemap.xml'
     | '/vibe'
@@ -96,6 +106,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/contact'
+    | '/jack'
     | '/journey'
     | '/sitemap.xml'
     | '/vibe'
@@ -105,6 +116,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/contact'
+    | '/jack'
     | '/journey'
     | '/sitemap.xml'
     | '/vibe'
@@ -115,6 +127,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
+  JackRoute: typeof JackRoute
   JourneyRoute: typeof JourneyRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   VibeRoute: typeof VibeRoute
@@ -151,6 +164,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof JourneyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/jack': {
+      id: '/jack'
+      path: '/jack'
+      fullPath: '/jack'
+      preLoaderRoute: typeof JackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contact': {
       id: '/contact'
       path: '/contact'
@@ -179,6 +199,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
+  JackRoute: JackRoute,
   JourneyRoute: JourneyRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   VibeRoute: VibeRoute,
