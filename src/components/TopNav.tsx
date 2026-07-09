@@ -13,7 +13,7 @@ const links = [
 ] as const;
 
 export function TopNav() {
-  const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState<string>("hero");
 
