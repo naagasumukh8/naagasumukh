@@ -88,7 +88,7 @@ export function DesktopRecommendation() {
                 >
                   Continue on mobile
                 </button>
-                <p className="text-center text-[11px] text-white/40">
+                <p className="text-center text-[11px] text-white/75">
                   Tip: tap & hold sections for richer interactions
                 </p>
               </div>

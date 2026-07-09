@@ -1152,7 +1152,7 @@ export function About() {
   ];
 
   return (
-    <section id="about" className="relative overflow-hidden px-5 py-16 sm:px-6 sm:py-20 md:px-12 md:py-40">
+    <section id="about" className="relative overflow-hidden px-5 py-16 sm:px-6 sm:py-20 md:px-12 md:py-24">
       {/* Premium animated backdrop — single layer, GPU-friendly */}
       <SectionBackdrop variant="paths" />
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-background/40 via-transparent to-background/70" />
@@ -1268,7 +1268,7 @@ export function About() {
         </div>
 
         {/* FOCUS AREAS — Scroll Animation */}
-        <div className="mt-16 sm:mt-24 md:mt-32">
+        <div className="mt-16 sm:mt-14 md:mt-16">
           <ContainerScroll
             titleComponent={
               <h2 className="font-display text-2xl font-bold text-body sm:text-3xl md:text-4xl mb-8">
@@ -1342,7 +1342,7 @@ export function Skills() {
   );
 
   return (
-    <section id="skills" className="relative overflow-hidden px-5 py-20 sm:px-6 sm:py-28 md:px-12 md:py-40">
+    <section id="skills" className="relative overflow-hidden px-5 py-20 sm:px-6 sm:py-16 md:px-12 md:py-24">
       {/* Premium animated backdrop — replaces the dark void */}
       <SectionBackdrop variant="aurora-violet" />
       <div
@@ -1560,12 +1560,12 @@ export function Journey() {
   }, []);
 
   return (
-    <section id="journey" className="relative overflow-hidden px-5 py-20 sm:px-6 sm:py-28 md:px-12 md:py-40">
+    <section id="journey" className="relative overflow-hidden px-5 py-20 sm:px-6 sm:py-16 md:px-12 md:py-24">
       <SectionBackdrop variant="dots" />
       <div className="relative mx-auto max-w-[1100px]">
         <Reveal><SectionLabel num="04" text="Trajectory" /></Reveal>
         <Reveal delay={100}>
-          <h2 className="mb-20 font-display text-4xl font-bold text-body md:text-6xl">
+          <h2 className="mb-10 font-display text-4xl font-bold text-body md:text-6xl">
             A short, <span className="text-violet">deliberate path</span> so far.
           </h2>
         </Reveal>
@@ -1606,12 +1606,12 @@ export function Recognition() {
     { v: 5, suffix: "", label: "College Cricket Tournaments Won", decimals: 0 },
   ];
   return (
-    <section id="recognition" className="relative overflow-hidden px-5 py-20 sm:px-6 sm:py-28 md:px-12 md:py-40">
+    <section id="recognition" className="relative overflow-hidden px-5 py-20 sm:px-6 sm:py-16 md:px-12 md:py-24">
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60" />
       <div className="relative mx-auto max-w-[1300px]">
         <Reveal><SectionLabel num="05" text="Monuments" /></Reveal>
         <Reveal delay={100}>
-          <h2 className="mb-16 font-display text-4xl font-bold text-body md:text-6xl">
+          <h2 className="mb-10 font-display text-4xl font-bold text-body md:text-6xl">
             Quiet wins, <span className="text-gold">loud echoes</span>.
           </h2>
         </Reveal>
@@ -1688,7 +1688,7 @@ export function Certs() {
   return (
     <section
       id="certs"
-      className="relative overflow-hidden bg-surface px-5 py-24 sm:px-6 sm:py-32 md:px-12 md:py-36"
+      className="relative overflow-hidden bg-surface px-5 py-24 sm:px-6 sm:py-20 md:px-12 md:py-24"
     >
       {/* Subtle radial vignette only — sparkles canvas removed for perf */}
       <div
@@ -1775,12 +1775,12 @@ export function Experience() {
     },
   ];
   return (
-    <section id="experience" className="relative overflow-hidden px-5 py-20 sm:px-6 sm:py-28 md:px-12 md:py-32">
+    <section id="experience" className="relative overflow-hidden px-5 py-20 sm:px-6 sm:py-16 md:px-12 md:py-20">
       <SectionBackdrop variant="aurora-cyan" />
       <div className="relative mx-auto max-w-[1100px]">
         <Reveal><SectionLabel num="04a" text="Experience" /></Reveal>
         <Reveal delay={100}>
-          <h2 className="mb-16 font-display text-4xl font-bold text-body md:text-6xl">
+          <h2 className="mb-10 font-display text-4xl font-bold text-body md:text-6xl">
             Where I&apos;ve <span className="text-violet">shown up</span>.
           </h2>
         </Reveal>
@@ -1822,7 +1822,7 @@ export function Education() {
     { yr: "2020", title: "Class X (CBSE)", org: "CBSE Board", scoreLabel: "Score", score: 91.2, max: 100 },
   ];
   return (
-    <section id="education" className="relative overflow-hidden px-5 py-20 sm:px-6 sm:py-28 md:px-12 md:py-32">
+    <section id="education" className="relative overflow-hidden px-5 py-20 sm:px-6 sm:py-16 md:px-12 md:py-20">
       <SectionBackdrop variant="aurora-gold" />
       <div className="relative mx-auto max-w-[1100px]">
         <Reveal><SectionLabel num="04b" text="Education" /></Reveal>
@@ -1902,7 +1902,7 @@ export function BeyondCode() {
     },
   ];
   return (
-    <section id="beyond-code" className="relative overflow-hidden px-5 py-20 sm:px-6 sm:py-28 md:px-12 md:py-32">
+    <section id="beyond-code" className="relative overflow-hidden px-5 py-20 sm:px-6 sm:py-16 md:px-12 md:py-20">
       <SectionBackdrop variant="aurora-violet" />
       <div className="relative mx-auto max-w-[1200px]">
         <Reveal><SectionLabel num="07" text="Beyond Code" /></Reveal>
@@ -1986,7 +1986,7 @@ export function Contact() {
     { l: "Phone", v: "+91 99723 71999", h: "tel:+919972371999", i: "☎" },
   ];
   return (
-    <section id="contact" className="relative overflow-hidden px-5 py-20 sm:px-6 sm:py-28 md:px-12 md:py-40">
+    <section id="contact" className="relative overflow-hidden px-5 py-20 sm:px-6 sm:py-16 md:px-12 md:py-24">
       <div
         className="pointer-events-none absolute inset-x-0 top-0 h-[420px] opacity-60"
         style={{
@@ -2006,7 +2006,7 @@ export function Contact() {
           </h2>
         </Reveal>
         <Reveal delay={200}>
-          <p className="mb-20 max-w-2xl text-lg text-muted-soft">
+          <p className="mb-10 max-w-2xl text-lg text-muted-soft">
             Open to AI/ML roles, freelance automation, and collaborations.
           </p>
         </Reveal>
@@ -2040,7 +2040,7 @@ export function Contact() {
           ))}
         </div>
 
-        <div className="mt-20 h-px w-full origin-left bg-gradient-to-r from-violet/60 via-violet/20 to-transparent" style={{ animation: "drawLine 1.5s 0.3s cubic-bezier(0.16,1,0.3,1) backwards" }} />
+        <div className="mt-12 h-px w-full origin-left bg-gradient-to-r from-violet/60 via-violet/20 to-transparent" style={{ animation: "drawLine 1.5s 0.3s cubic-bezier(0.16,1,0.3,1) backwards" }} />
         <footer className="mt-6 flex flex-col items-center justify-between gap-4 font-mono text-[10px] uppercase tracking-widest text-muted-soft md:flex-row">
           <span>
             © 2026 <span className="mx-1 text-violet" style={{ animation: "dotPulse 2s 0s infinite" }}>·</span> Naaga Sumukh B S <span className="mx-1 text-violet" style={{ animation: "dotPulse 2s 0.5s infinite" }}>·</span> Bengaluru
@@ -2458,7 +2458,7 @@ export function Achievements() {
   };
 
   return (
-    <section id="achievements" className="relative overflow-hidden px-5 py-20 sm:px-6 sm:py-28 md:px-12 md:py-40">
+    <section id="achievements" className="relative overflow-hidden px-5 py-20 sm:px-6 sm:py-16 md:px-12 md:py-24">
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black/60" />
       <div className="relative mx-auto max-w-[1300px]">
         <Reveal>
