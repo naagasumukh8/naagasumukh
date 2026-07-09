@@ -49,7 +49,8 @@ export function WebGLShader({ className = "" }: { className?: string }) {
     };
 
     const positions = new Float32Array([
-      -1, -1, 0, 1, -1, 0, -1, 1, 0, 1, -1, 0, -1, 1, 0, 1, 1, 0,
+      -1, -1, 0, 1, -1, 0, -1, 1, 0,
+      1, -1, 0, -1, 1, 0, 1, 1, 0,
     ]);
     const geometry = new THREE.BufferGeometry();
     geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));

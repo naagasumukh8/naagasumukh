@@ -3,7 +3,7 @@ import { lazy, Suspense, useEffect, useState } from "react";
 
 // Lazy-load shader to avoid SSR/WebGL crashes
 const MeshGradient = lazy(() =>
-  import("@paper-design/shaders-react").then((m) => ({ default: m.MeshGradient })),
+  import("@paper-design/shaders-react").then((m) => ({ default: m.MeshGradient }))
 );
 
 /**

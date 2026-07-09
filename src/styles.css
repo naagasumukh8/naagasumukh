@@ -31,8 +31,7 @@
   --color-gold: var(--gold);
   --color-violet: var(--violet);
   --color-surface: var(--surface);
-  --font-kanit: "Kanit", sans-serif;
-  --font-display: "Kanit", "Anton", "Archivo Black", sans-serif;
+  --font-display: "Anton", "Archivo Black", sans-serif;
   --font-sans: "Inter", sans-serif;
   --font-mono: "JetBrains Mono", monospace;
 }
@@ -41,8 +40,8 @@
   --radius: 0.125rem;
   --background: oklch(0 0 0);
   --foreground: oklch(1 0 0);
-  --surface: oklch(0.1 0 0);
-  --card: oklch(0.1 0 0);
+  --surface: oklch(0.10 0 0);
+  --card: oklch(0.10 0 0);
   --card-foreground: oklch(1 0 0);
   --popover: oklch(0.08 0 0);
   --popover-foreground: oklch(1 0 0);
@@ -86,10 +85,7 @@
     -webkit-font-smoothing: antialiased;
   }
   /* Custom cursor disabled — was causing flicker/lag on some setups. Default cursor is clean and reliable. */
-  h1,
-  h2,
-  h3,
-  h4 {
+  h1, h2, h3, h4 {
     font-family: var(--font-display);
     letter-spacing: -0.02em;
     text-transform: uppercase;
@@ -111,48 +107,26 @@
 }
 
 @layer utilities {
-  .font-display {
-    font-family: var(--font-display);
-    font-weight: 400;
-    letter-spacing: -0.02em;
-  }
-  .font-mono {
-    font-family: var(--font-mono);
-  }
+  .font-display { font-family: var(--font-display); font-weight: 400; letter-spacing: -0.02em; }
+  .font-mono { font-family: var(--font-mono); }
 
   /* Monochrome remap of legacy accent utilities — keeps 1276-line page coherent */
-  .text-violet {
-    color: #ffffff;
-  }
-  .text-gold {
-    color: #ffffff;
-  }
-  .bg-violet {
-    background-color: #ffffff;
-  }
-  .bg-gold {
-    background-color: #ffffff;
-  }
-  .bg-surface {
-    background-color: #0a0a0a;
-  }
-  .border-violet {
-    border-color: #ffffff;
-  }
-  .text-muted-soft {
-    color: #c9c9c9;
-  }
+  .text-violet { color: #ffffff; }
+  .text-gold { color: #ffffff; }
+  .bg-violet { background-color: #ffffff; }
+  .bg-gold { background-color: #ffffff; }
+  .bg-surface { background-color: #0a0a0a; }
+  .border-violet { border-color: #ffffff; }
+  .text-muted-soft { color: #c9c9c9; }
 
   .glow-violet {
-    box-shadow:
-      0 0 0 1px rgba(255, 255, 255, 0.9),
-      0 20px 60px -20px rgba(255, 255, 255, 0.25);
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.9), 0 20px 60px -20px rgba(255,255,255,0.25);
   }
   .glow-gold {
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.7);
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.7);
   }
   .text-glow-violet {
-    text-shadow: 0 0 30px rgba(255, 255, 255, 0.35);
+    text-shadow: 0 0 30px rgba(255,255,255,0.35);
   }
 
   .gradient-text {
@@ -164,8 +138,8 @@
 
   .grid-bg {
     background-image:
-      linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
     background-size: 60px 60px;
   }
 
@@ -180,135 +154,54 @@
   }
 
   @keyframes glitch {
-    0%,
-    100% {
-      transform: translate(0);
-      text-shadow: 0 0 0 transparent;
-    }
-    20% {
-      transform: translate(-2px, 1px);
-      text-shadow:
-        2px 0 #ffffff,
-        -2px 0 #ffffff;
-    }
-    40% {
-      transform: translate(2px, -1px);
-      text-shadow:
-        -2px 0 #ffffff,
-        2px 0 #ffffff;
-    }
-    60% {
-      transform: translate(0);
-      text-shadow: 0 0 0 transparent;
-    }
+    0%, 100% { transform: translate(0); text-shadow: 0 0 0 transparent; }
+    20% { transform: translate(-2px, 1px); text-shadow: 2px 0 #ffffff, -2px 0 #ffffff; }
+    40% { transform: translate(2px, -1px); text-shadow: -2px 0 #ffffff, 2px 0 #ffffff; }
+    60% { transform: translate(0); text-shadow: 0 0 0 transparent; }
   }
-  .animate-glitch {
-    animation: glitch 0.4s ease-in-out;
-  }
+  .animate-glitch { animation: glitch 0.4s ease-in-out; }
 
   @keyframes ticker {
-    from {
-      transform: translateX(0);
-    }
-    to {
-      transform: translateX(-50%);
-    }
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
   }
   @keyframes ticker-reverse {
-    from {
-      transform: translateX(-50%);
-    }
-    to {
-      transform: translateX(0);
-    }
+    from { transform: translateX(-50%); }
+    to { transform: translateX(0); }
   }
-  .animate-ticker {
-    animation: ticker 40s linear infinite;
-    will-change: transform;
-    transform: translateZ(0);
-  }
-  .animate-ticker-reverse {
-    animation: ticker-reverse 40s linear infinite;
-    will-change: transform;
-    transform: translateZ(0);
-  }
+  .animate-ticker { animation: ticker 40s linear infinite; will-change: transform; transform: translateZ(0); }
+  .animate-ticker-reverse { animation: ticker-reverse 40s linear infinite; will-change: transform; transform: translateZ(0); }
 
-  @keyframes spin-slow {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-  .animate-spin-slow {
-    animation: spin-slow 12s linear infinite;
-    will-change: transform;
-    transform: translateZ(0);
-  }
+  @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  .animate-spin-slow { animation: spin-slow 12s linear infinite; will-change: transform; transform: translateZ(0); }
 
   @keyframes orbit {
-    from {
-      transform: rotate(0deg) translateX(140px) rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg) translateX(140px) rotate(-360deg);
-    }
+    from { transform: rotate(0deg) translateX(140px) rotate(0deg); }
+    to { transform: rotate(360deg) translateX(140px) rotate(-360deg); }
   }
 
   @keyframes pulse-dot {
-    0%,
-    100% {
-      opacity: 1;
-      box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.6);
-    }
-    50% {
-      opacity: 0.7;
-      box-shadow: 0 0 0 8px rgba(255, 255, 255, 0);
-    }
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(255,255,255,0.6); }
+    50% { opacity: 0.7; box-shadow: 0 0 0 8px rgba(255,255,255,0); }
   }
-  .pulse-dot {
-    animation: pulse-dot 2s ease-in-out infinite;
-  }
+  .pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }
 
   @keyframes scroll-line {
-    0% {
-      transform: scaleY(0);
-      transform-origin: top;
-    }
-    50% {
-      transform: scaleY(1);
-      transform-origin: top;
-    }
-    51% {
-      transform-origin: bottom;
-    }
-    100% {
-      transform: scaleY(0);
-      transform-origin: bottom;
-    }
+    0% { transform: scaleY(0); transform-origin: top; }
+    50% { transform: scaleY(1); transform-origin: top; }
+    51% { transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
   }
-  .scroll-line {
-    animation: scroll-line 2s ease-in-out infinite;
-  }
+  .scroll-line { animation: scroll-line 2s ease-in-out infinite; }
 
   .tilt-card {
     transform-style: preserve-3d;
     transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
-
-  .hero-heading {
-    background: linear-gradient(180deg, #646973 0%, #BBCCD7 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
@@ -316,35 +209,25 @@
 }
 
 @media (hover: none) {
-  .tilt-card {
-    transform: none !important;
-  }
+  .tilt-card { transform: none !important; }
 }
 
 @keyframes spotlight {
-  0% {
-    opacity: 0;
-    transform: translate(-72%, -62%) scale(0.5);
-  }
-  100% {
-    opacity: 1;
-    transform: translate(-50%, -40%) scale(1);
-  }
+  0% { opacity: 0; transform: translate(-72%, -62%) scale(0.5); }
+  100% { opacity: 1; transform: translate(-50%, -40%) scale(1); }
 }
-.animate-spotlight {
-  animation: spotlight 2s ease 0.75s 1 forwards;
-}
+.animate-spotlight { animation: spotlight 2s ease 0.75s 1 forwards; }
 
 /* ============ APPLE LIQUID GLASS UTILITIES (site-wide) ============ */
 @utility glass-surface {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+  background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
   backdrop-filter: blur(8px) saturate(130%);
   -webkit-backdrop-filter: blur(8px) saturate(130%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255,255,255,0.12);
   box-shadow:
-    0 12px 40px -12px rgba(0, 0, 0, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.22),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+    0 12px 40px -12px rgba(0,0,0,0.5),
+    inset 0 1px 0 rgba(255,255,255,0.22),
+    inset 0 -1px 0 rgba(0,0,0,0.3);
 }
 
 @utility glass-pill {
@@ -358,56 +241,43 @@
   font-size: 11px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.95);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.03) 100%);
+  color: rgba(255,255,255,0.95);
+  background: linear-gradient(180deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 100%);
   backdrop-filter: blur(6px) saturate(140%);
   -webkit-backdrop-filter: blur(6px) saturate(140%);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255,255,255,0.18);
   box-shadow:
-    0 6px 20px -8px rgba(0, 0, 0, 0.55),
-    inset 0 1px 0 rgba(255, 255, 255, 0.28),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.35);
-  transition:
-    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 0.35s,
-    border-color 0.35s;
+    0 6px 20px -8px rgba(0,0,0,0.55),
+    inset 0 1px 0 rgba(255,255,255,0.28),
+    inset 0 -1px 0 rgba(0,0,0,0.35);
+  transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), box-shadow 0.35s, border-color 0.35s;
   cursor: pointer;
 }
 @utility glass-pill {
   &:hover {
     transform: translateY(-2px);
-    border-color: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255,255,255,0.3);
     box-shadow:
-      0 14px 40px -10px rgba(124, 110, 255, 0.45),
-      inset 0 1px 0 rgba(255, 255, 255, 0.35);
+      0 14px 40px -10px rgba(124,110,255,0.45),
+      inset 0 1px 0 rgba(255,255,255,0.35);
   }
-  &:active {
-    transform: translateY(0) scale(0.98);
-  }
+  &:active { transform: translateY(0) scale(0.98); }
 }
 
 @utility glass-row {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+  background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
   backdrop-filter: blur(5px) saturate(125%);
   -webkit-backdrop-filter: blur(5px) saturate(125%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255,255,255,0.08);
   border-radius: 1.25rem;
-  transition:
-    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-    border-color 0.35s,
-    box-shadow 0.35s,
-    background 0.35s;
+  transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), border-color 0.35s, box-shadow 0.35s, background 0.35s;
 }
 @utility glass-row {
   &:hover {
     transform: translateY(-2px);
-    border-color: rgba(124, 110, 255, 0.35);
-    background: linear-gradient(
-      180deg,
-      rgba(124, 110, 255, 0.08) 0%,
-      rgba(255, 255, 255, 0.02) 100%
-    );
-    box-shadow: 0 20px 60px -20px rgba(124, 110, 255, 0.45);
+    border-color: rgba(124,110,255,0.35);
+    background: linear-gradient(180deg, rgba(124,110,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
+    box-shadow: 0 20px 60px -20px rgba(124,110,255,0.45);
   }
 }
 
@@ -416,20 +286,12 @@
 /* Mobile-only tap feedback — native iOS spring. Desktop unaffected.
    Targets common interactive elements; designers can add .tap-spring manually. */
 @media (hover: none) and (pointer: coarse) {
-  a,
-  button,
-  [role="button"],
-  .tap-spring,
-  [data-hover],
-  [data-tap] {
+  a, button, [role="button"], .tap-spring,
+  [data-hover], [data-tap] {
     transition: transform 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
   }
-  a:active,
-  button:active,
-  [role="button"]:active,
-  .tap-spring:active,
-  [data-hover]:active,
-  [data-tap]:active {
+  a:active, button:active, [role="button"]:active,
+  .tap-spring:active, [data-hover]:active, [data-tap]:active {
     transform: scale(0.94);
     transition: transform 80ms ease-out;
   }
@@ -437,46 +299,27 @@
 
 /* Ticker / marquee fade masks — soft edge-out on both sides. */
 .ticker-fade {
-  -webkit-mask-image: linear-gradient(
-    90deg,
-    transparent 0,
-    #000 60px,
-    #000 calc(100% - 60px),
-    transparent 100%
-  );
-  mask-image: linear-gradient(
-    90deg,
-    transparent 0,
-    #000 60px,
-    #000 calc(100% - 60px),
-    transparent 100%
-  );
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 60px, #000 calc(100% - 60px), transparent 100%);
+          mask-image: linear-gradient(90deg, transparent 0, #000 60px, #000 calc(100% - 60px), transparent 100%);
 }
 
 /* Contact rows — hover expand + violet wash (desktop). Mobile keeps tap-spring. */
 @media (hover: hover) {
   .glass-row.contact-row {
-    padding-top: 1.5rem;
-    padding-bottom: 1.5rem;
-    transition:
-      padding 280ms cubic-bezier(0.4, 0, 0.2, 1),
-      background 280ms cubic-bezier(0.4, 0, 0.2, 1),
-      transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-      border-color 0.35s,
-      box-shadow 0.35s;
+    padding-top: 1.5rem; padding-bottom: 1.5rem;
+    transition: padding 280ms cubic-bezier(0.4,0,0.2,1),
+                background 280ms cubic-bezier(0.4,0,0.2,1),
+                transform 0.35s cubic-bezier(0.16,1,0.3,1),
+                border-color 0.35s, box-shadow 0.35s;
   }
   .glass-row.contact-row:hover {
-    padding-top: 1.95rem;
-    padding-bottom: 1.95rem;
-    background: linear-gradient(
-      180deg,
-      rgba(124, 110, 255, 0.1) 0%,
-      rgba(124, 110, 255, 0.04) 100%
-    ) !important;
+    padding-top: 1.95rem; padding-bottom: 1.95rem;
+    background: linear-gradient(180deg, rgba(124,110,255,0.10) 0%, rgba(124,110,255,0.04) 100%) !important;
   }
 }
 
 /* Mobile-specific suppressions removed — phone now matches desktop version. */
+
 
 /* ============ DESKTOP SCROLL PERFORMANCE ============
  * content-visibility:auto lets the browser skip layout/paint for off-screen
