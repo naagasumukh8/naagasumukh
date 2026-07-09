@@ -72,7 +72,7 @@ export function SplashLoader() {
                 style={{ animation: "splashProgress 6.5s linear forwards" }}
               />
             </div>
-            <div className="font-mono text-[10px] uppercase tracking-[0.4em] text-white/50">
+            <div className="font-mono text-[10px] uppercase tracking-[0.4em] text-white/80">
               Loading
             </div>
             <style>{`@keyframes splashProgress { from { transform: scaleX(0); } to { transform: scaleX(1); } }`}</style>

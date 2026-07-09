@@ -222,7 +222,7 @@ export default function RadialOrbitalTimeline({
                               ? "IN PROGRESS"
                               : "PENDING"}
                         </Badge>
-                        <span className="text-xs font-mono text-white/50">
+                        <span className="text-xs font-mono text-white/80">
                           {item.date}
                         </span>
                       </div>
@@ -276,7 +276,7 @@ export default function RadialOrbitalTimeline({
                                   {relatedItem?.title}
                                   <ArrowRight
                                     size={8}
-                                    className="ml-1 text-white/60"
+                                    className="ml-1 text-white/85"
                                   />
                                 </Button>
                               );
