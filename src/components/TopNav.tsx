@@ -13,7 +13,6 @@ const links = [
 ] as const;
 
 export function TopNav() {
-  const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState<string>("hero");
 
@@ -64,7 +63,7 @@ export function TopNav() {
           </span>
         </Link>
 
-        <ul className="hidden md:flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-2 py-1 backdrop-blur-md">
+        <ul className="flex items-center gap-0.5 sm:gap-1 rounded-full border border-white/15 bg-white/[0.06] px-1.5 py-1 sm:px-2 [backdrop-filter:blur(18px)_saturate(160%)] shadow-[0_8px_32px_rgba(0,0,0,0.35),inset_0_1px_0_rgba(255,255,255,0.08)]">
           {links.map((l) => {
             const act = isActive(l.id);
             return (
@@ -73,7 +72,7 @@ export function TopNav() {
                   href={l.hash ? `/#${l.hash}` : "/"}
                   onClick={(e) => smoothScrollOnSamePage(e, l.hash)}
                   aria-current={act ? "page" : undefined}
-                  className={`relative inline-flex items-center rounded-full px-3 py-1.5 text-xs font-medium transition-all ${
+                  className={`relative inline-flex items-center rounded-full px-2.5 sm:px-3 py-1.5 text-[11px] sm:text-xs font-medium transition-all ${
                     act
                       ? "text-white shadow-[0_0_22px_rgba(124,110,255,0.65)] ring-1 ring-[rgba(167,139,250,0.7)]"
                       : "text-foreground/70 hover:text-foreground hover:bg-white/10"
@@ -94,74 +93,8 @@ export function TopNav() {
           })}
         </ul>
 
-        <button
-          onClick={() => setOpen((v) => !v)}
-          className="md:hidden relative inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-foreground [backdrop-filter:blur(10px)]"
-          aria-label="Toggle menu"
-          aria-expanded={open}
-        >
-          <span className="relative block h-3.5 w-5">
-            <span
-              className="absolute left-0 top-0 h-[2px] w-full rounded-full bg-current transition-transform duration-300"
-              style={{ transform: open ? "translateY(6px) rotate(45deg)" : "translateY(0) rotate(0)" }}
-            />
-            <span
-              className="absolute left-0 top-[6px] h-[2px] w-full rounded-full bg-current transition-opacity duration-200"
-              style={{ opacity: open ? 0 : 1 }}
-            />
-            <span
-              className="absolute left-0 top-[12px] h-[2px] w-full rounded-full bg-current transition-transform duration-300"
-              style={{ transform: open ? "translateY(-6px) rotate(-45deg)" : "translateY(0) rotate(0)" }}
-            />
-          </span>
-        </button>
       </nav>
 
-      <div
-        className={`md:hidden fixed inset-x-0 top-[60px] bottom-0 z-40 transition-[clip-path] duration-[520ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
-          open ? "pointer-events-auto" : "pointer-events-none"
-        }`}
-        style={{
-          clipPath: open
-            ? "circle(160% at calc(100% - 28px) 0%)"
-            : "circle(0% at calc(100% - 28px) 0%)",
-          background:
-            "linear-gradient(180deg, rgba(7,18,31,0.96) 0%, rgba(7,18,31,0.92) 100%)",
-          backdropFilter: "blur(20px) saturate(140%)",
-        }}
-      >
-        <ul className="mx-4 mt-4 flex flex-col gap-1 rounded-2xl border border-white/10 bg-white/[0.03] p-2">
-          {links.map((l, idx) => {
-            const act = isActive(l.id);
-            return (
-              <li
-                key={l.label}
-                style={{
-                  transform: open ? "translateX(0)" : "translateX(40px)",
-                  opacity: open ? 1 : 0,
-                  transition: `transform 480ms cubic-bezier(0.16,1,0.3,1) ${open ? 120 + idx * 70 : 0}ms, opacity 320ms ease ${open ? 120 + idx * 70 : 0}ms`,
-                }}
-              >
-                <a
-                  href={l.hash ? `/#${l.hash}` : "/"}
-                  onClick={(e) => {
-                    setOpen(false);
-                    smoothScrollOnSamePage(e, l.hash);
-                  }}
-                  aria-current={act ? "page" : undefined}
-                  className={`block rounded-xl px-4 py-3 text-base font-medium transition-colors active:scale-[0.96] ${
-                    act
-                      ? "text-white bg-[linear-gradient(135deg,rgba(124,110,255,0.35),rgba(255,255,255,0.06))] shadow-[0_0_22px_rgba(124,110,255,0.55)] ring-1 ring-[rgba(167,139,250,0.7)]"
-                      : "text-foreground/85 hover:bg-white/10"
-                  }`}
-                >
-                  {l.label}
-                </a>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
     </header>
   );
 }
