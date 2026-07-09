@@ -14,7 +14,6 @@ const links = [
 
 export function TopNav() {
   const [scrolled, setScrolled] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState<string>("hero");
 
   useEffect(() => {
