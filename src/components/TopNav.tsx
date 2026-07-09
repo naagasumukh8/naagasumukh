@@ -64,7 +64,7 @@ export function TopNav() {
           </span>
         </Link>
 
-        <ul className="hidden md:flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-2 py-1 backdrop-blur-md">
+        <ul className="flex items-center gap-0.5 sm:gap-1 rounded-full border border-white/15 bg-white/[0.06] px-1.5 py-1 sm:px-2 [backdrop-filter:blur(18px)_saturate(160%)] shadow-[0_8px_32px_rgba(0,0,0,0.35),inset_0_1px_0_rgba(255,255,255,0.08)]">
           {links.map((l) => {
             const act = isActive(l.id);
             return (
