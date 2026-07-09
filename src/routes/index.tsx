@@ -1740,6 +1740,17 @@ export function Experience() {
       ],
     },
     {
+      role: "FDP Project Lead",
+      org: "NMIT",
+      yr: "2025 – Present",
+      icon: Star,
+      points: [
+        "Led a cross-functional team to build the college’s official Faculty Development Program (FDP) platform.",
+        "Designed end-to-end system architecture for faculty training, scheduling, and certification tracking.",
+        "Project is under institutional review and slated to become the official FDP solution for the college.",
+      ],
+    },
+    {
       role: "Founder & Event Lead",
       org: "Adwaitha Club, NMIT",
       yr: "2023 – 2025",
