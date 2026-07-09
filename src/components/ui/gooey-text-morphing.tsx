@@ -101,16 +101,13 @@ export function GooeyText({
         </defs>
       </svg>
 
-      <div
-        className="flex items-center justify-center"
-        style={{ filter: "url(#threshold)" }}
-      >
+      <div className="flex items-center justify-center" style={{ filter: "url(#threshold)" }}>
         <span
           ref={text1Ref}
           className={cn(
             "absolute inline-block select-none text-center text-6xl md:text-[60pt]",
             "text-foreground",
-            textClassName
+            textClassName,
           )}
         />
         <span
@@ -118,7 +115,7 @@ export function GooeyText({
           className={cn(
             "absolute inline-block select-none text-center text-6xl md:text-[60pt]",
             "text-foreground",
-            textClassName
+            textClassName,
           )}
         />
       </div>

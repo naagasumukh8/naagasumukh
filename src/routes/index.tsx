@@ -10,12 +10,34 @@ import DisplayCards from "@/components/ui/display-cards";
 import { ContainerScroll } from "@/components/ui/container-scroll-animation";
 import { Card } from "@/components/ui/card";
 import { HeavyGate } from "@/components/HeavyGate";
-import { Award, BrainCircuit, BarChart3, Code2, Database, Brain, Sparkles, Workflow, BarChart, Boxes, Atom, Linkedin, Github, Trophy, Star, GitFork, Users, MessageSquare, Eye, GitBranch, Zap, Briefcase, GraduationCap } from "lucide-react";
+import {
+  Award,
+  BrainCircuit,
+  BarChart3,
+  Code2,
+  Database,
+  Brain,
+  Sparkles,
+  Workflow,
+  BarChart,
+  Boxes,
+  Atom,
+  Linkedin,
+  Github,
+  Trophy,
+  Star,
+  GitFork,
+  Users,
+  MessageSquare,
+  Eye,
+  GitBranch,
+  Zap,
+  Briefcase,
+  GraduationCap,
+} from "lucide-react";
 import RadialOrbitalTimeline from "@/components/ui/radial-orbital-timeline";
 import { HoverButton } from "@/components/ui/hover-button";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
-
-
 
 /* ============ PREMIUM SECTION BACKDROPS ============
    Each backdrop fades in via IntersectionObserver when its section enters
@@ -24,10 +46,16 @@ function useInView<T extends HTMLElement>(threshold = 0.15) {
   const ref = useRef<T>(null);
   const [inView, setInView] = useState(false);
   useEffect(() => {
-    const el = ref.current; if (!el) return;
+    const el = ref.current;
+    if (!el) return;
     const io = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { setInView(true); io.disconnect(); } },
-      { threshold }
+      ([e]) => {
+        if (e.isIntersecting) {
+          setInView(true);
+          io.disconnect();
+        }
+      },
+      { threshold },
     );
     io.observe(el);
     return () => io.disconnect();
@@ -36,14 +64,16 @@ function useInView<T extends HTMLElement>(threshold = 0.15) {
 }
 
 function AuroraBackdrop({ hue = "violet" }: { hue?: "violet" | "gold" | "cyan" }) {
-  const c = hue === "gold"
-    ? ["rgba(244,196,107,0.35)", "rgba(255,140,90,0.25)", "rgba(124,110,255,0.18)"]
-    : hue === "cyan"
-    ? ["rgba(64,200,255,0.35)", "rgba(124,110,255,0.22)", "rgba(92,189,185,0.18)"]
-    : ["rgba(124,110,255,0.38)", "rgba(244,196,107,0.18)", "rgba(64,200,255,0.22)"];
+  const c =
+    hue === "gold"
+      ? ["rgba(244,196,107,0.35)", "rgba(255,140,90,0.25)", "rgba(124,110,255,0.18)"]
+      : hue === "cyan"
+        ? ["rgba(64,200,255,0.35)", "rgba(124,110,255,0.22)", "rgba(92,189,185,0.18)"]
+        : ["rgba(124,110,255,0.38)", "rgba(244,196,107,0.18)", "rgba(64,200,255,0.22)"];
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden">
-      <div className="absolute -inset-[20%] opacity-80 blur-3xl"
+      <div
+        className="absolute -inset-[20%] opacity-80 blur-3xl"
         style={{
           background: `radial-gradient(40% 40% at 20% 30%, ${c[0]}, transparent 70%),
                        radial-gradient(35% 45% at 80% 20%, ${c[1]}, transparent 70%),
@@ -56,17 +86,26 @@ function AuroraBackdrop({ hue = "violet" }: { hue?: "violet" | "gold" | "cyan" }
   );
 }
 
-function SectionBackdrop({ variant }: { variant: "paths" | "dots" | "aurora-violet" | "aurora-gold" | "aurora-cyan" | "grid" }) {
+function SectionBackdrop({
+  variant,
+}: {
+  variant: "paths" | "dots" | "aurora-violet" | "aurora-gold" | "aurora-cyan" | "grid";
+}) {
   const { ref, inView } = useInView<HTMLDivElement>(0.05);
   return (
-    <div ref={ref} className={`pointer-events-none absolute inset-0 overflow-hidden transition-opacity duration-[1400ms] ${inView ? "opacity-100" : "opacity-0"}`}>
+    <div
+      ref={ref}
+      className={`pointer-events-none absolute inset-0 overflow-hidden transition-opacity duration-[1400ms] ${inView ? "opacity-100" : "opacity-0"}`}
+    >
       {variant === "paths" && <AuroraBackdrop hue="violet" />}
       {variant === "dots" && (
         <>
           <AuroraBackdrop hue="cyan" />
-          <div className="absolute inset-0 opacity-[0.22]"
+          <div
+            className="absolute inset-0 opacity-[0.22]"
             style={{
-              backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.55) 1px, transparent 1.4px)",
+              backgroundImage:
+                "radial-gradient(circle, rgba(255,255,255,0.55) 1px, transparent 1.4px)",
               backgroundSize: "26px 26px",
               maskImage: "radial-gradient(ellipse at center, black 30%, transparent 75%)",
               animation: "dotsDrift 16s linear infinite",
@@ -81,7 +120,8 @@ function SectionBackdrop({ variant }: { variant: "paths" | "dots" | "aurora-viol
       {variant === "grid" && (
         <>
           <AuroraBackdrop hue="gold" />
-          <div className="absolute inset-0 opacity-[0.18]"
+          <div
+            className="absolute inset-0 opacity-[0.18]"
             style={{
               backgroundImage:
                 "linear-gradient(rgba(244,196,107,0.35) 1px, transparent 1px), linear-gradient(90deg, rgba(244,196,107,0.35) 1px, transparent 1px)",
@@ -109,7 +149,7 @@ function WavingBalls({ count = 14 }: { count?: number }) {
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden">
       {balls.map((_, i) => {
-        const size = 40 + (i * 13) % 80;
+        const size = 40 + ((i * 13) % 80);
         const left = (i * 37) % 100;
         const top = (i * 53) % 100;
         const dur = 6 + (i % 5);
@@ -202,15 +242,21 @@ function CSSMeshBg() {
   );
 }
 
-
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Naaga Sumukh B S — AI/ML Engineer | Bengaluru" },
-      { name: "description", content: "Portfolio of Naaga Sumukh B S — AI/ML engineer building intelligent systems. NMIT Bengaluru, 2023–2027." },
+      {
+        name: "description",
+        content:
+          "Portfolio of Naaga Sumukh B S — AI/ML engineer building intelligent systems. NMIT Bengaluru, 2023–2027.",
+      },
       { name: "theme-color", content: "#07121F" },
       { property: "og:title", content: "Naaga Sumukh B S — AI/ML Engineer" },
-      { property: "og:description", content: "Building intelligent systems. AI · ML · Automation · Leadership." },
+      {
+        property: "og:description",
+        content: "Building intelligent systems. AI · ML · Automation · Leadership.",
+      },
       { property: "og:image", content: portrait.url },
       { property: "og:url", content: "https://naagasumukh.engineer/" },
       { name: "twitter:image", content: portrait.url },
@@ -234,14 +280,23 @@ export function MagneticCursor() {
     if (!window.matchMedia("(min-width: 768px)").matches) return;
     setEnabled(true);
     document.body.classList.add("custom-cursor-active");
-    let rx = 0, ry = 0, dx = 0, dy = 0, tx = window.innerWidth / 2, ty = window.innerHeight / 2;
+    let rx = 0,
+      ry = 0,
+      dx = 0,
+      dy = 0,
+      tx = window.innerWidth / 2,
+      ty = window.innerHeight / 2;
     let raf = 0;
     const onMove = (e: globalThis.MouseEvent) => {
-      tx = e.clientX; ty = e.clientY;
+      tx = e.clientX;
+      ty = e.clientY;
       const t = e.target as HTMLElement | null;
       setHovering(!!t?.closest?.("a, button, [data-hover]"));
     };
-    const onDown = () => { clickingRef.current = true; setClickingState(true); };
+    const onDown = () => {
+      clickingRef.current = true;
+      setClickingState(true);
+    };
     const onUp = () => {
       clickingRef.current = false;
       setTimeout(() => setClickingState(false), 120);
@@ -252,8 +307,10 @@ export function MagneticCursor() {
       dx += (tx - dx) * 0.55;
       dy += (ty - dy) * 0.55;
       const s = clickingRef.current ? 0.6 : 1;
-      if (ringRef.current) ringRef.current.style.transform = `translate3d(${rx - 20}px, ${ry - 20}px, 0) scale(${s})`;
-      if (dotRef.current) dotRef.current.style.transform = `translate3d(${dx - 3}px, ${dy - 3}px, 0) scale(${s})`;
+      if (ringRef.current)
+        ringRef.current.style.transform = `translate3d(${rx - 20}px, ${ry - 20}px, 0) scale(${s})`;
+      if (dotRef.current)
+        dotRef.current.style.transform = `translate3d(${dx - 3}px, ${dy - 3}px, 0) scale(${s})`;
       raf = requestAnimationFrame(loop);
     };
     window.addEventListener("mousemove", onMove, { passive: true });
@@ -290,7 +347,11 @@ export function MagneticCursor() {
           mixBlendMode: "difference",
         }}
       />
-      <div data-magnetic-cursor="dot" ref={dotRef} className="pointer-events-none fixed left-0 top-0 z-[9999] hidden md:block h-1.5 w-1.5 rounded-full bg-white will-change-transform" />
+      <div
+        data-magnetic-cursor="dot"
+        ref={dotRef}
+        className="pointer-events-none fixed left-0 top-0 z-[9999] hidden md:block h-1.5 w-1.5 rounded-full bg-white will-change-transform"
+      />
       <span className="sr-only">{clickingState ? "" : ""}</span>
     </>
   );
@@ -301,27 +362,48 @@ export function MagneticCursor() {
    startup and was the main cause of Chrome's "Page Unresponsive" warning. */
 
 /* ============ TYPING TEXT ============ */
-function Typing({ text, className = "", speed = 18 }: { text: string; className?: string; speed?: number }) {
+function Typing({
+  text,
+  className = "",
+  speed = 18,
+}: {
+  text: string;
+  className?: string;
+  speed?: number;
+}) {
   const ref = useRef<HTMLSpanElement>(null);
   const [shown, setShown] = useState("");
   const [done, setDone] = useState(false);
   useEffect(() => {
-    const el = ref.current; if (!el) return;
+    const el = ref.current;
+    if (!el) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setShown(text); setDone(true); return;
+      setShown(text);
+      setDone(true);
+      return;
     }
-    let i = 0; let iv: ReturnType<typeof setInterval>;
-    const io = new IntersectionObserver(([e]) => {
-      if (!e.isIntersecting) return;
-      io.disconnect();
-      iv = setInterval(() => {
-        i++;
-        setShown(text.slice(0, i));
-        if (i >= text.length) { clearInterval(iv); setDone(true); }
-      }, speed);
-    }, { threshold: 0.3 });
+    let i = 0;
+    let iv: ReturnType<typeof setInterval>;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (!e.isIntersecting) return;
+        io.disconnect();
+        iv = setInterval(() => {
+          i++;
+          setShown(text.slice(0, i));
+          if (i >= text.length) {
+            clearInterval(iv);
+            setDone(true);
+          }
+        }, speed);
+      },
+      { threshold: 0.3 },
+    );
     io.observe(el);
-    return () => { io.disconnect(); if (iv) clearInterval(iv); };
+    return () => {
+      io.disconnect();
+      if (iv) clearInterval(iv);
+    };
   }, [text, speed]);
   return (
     <span ref={ref} className={className}>
@@ -341,7 +423,11 @@ export function useLenis() {
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    let lenis: { destroy: () => void; raf: (t: number) => void; on: (e: string, cb: () => void) => void } | null = null;
+    let lenis: {
+      destroy: () => void;
+      raf: (t: number) => void;
+      on: (e: string, cb: () => void) => void;
+    } | null = null;
     let cancelled = false;
     (async () => {
       const [{ default: Lenis }, gsapMod, stMod] = await Promise.all([
@@ -353,7 +439,13 @@ export function useLenis() {
       const gsap = gsapMod.default;
       const ScrollTrigger = stMod.ScrollTrigger;
       gsap.registerPlugin(ScrollTrigger);
-      const instance = new Lenis({ lerp: 0.12, duration: 0.9, smoothWheel: true, wheelMultiplier: 1, touchMultiplier: 1.4 });
+      const instance = new Lenis({
+        lerp: 0.12,
+        duration: 0.9,
+        smoothWheel: true,
+        wheelMultiplier: 1,
+        touchMultiplier: 1.4,
+      });
       lenis = instance as unknown as typeof lenis;
       instance.on("scroll", ScrollTrigger.update);
       gsap.ticker.add((time) => instance.raf(time * 1000));
@@ -374,7 +466,9 @@ function NeuralCanvas() {
   useEffect(() => {
     const canvas = canvasRef.current!;
     const ctx = canvas.getContext("2d")!;
-    let w = 0, h = 0, dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let w = 0;
+    let h = 0;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const mouse = { x: -9999, y: -9999 };
     type P = { x: number; y: number; vx: number; vy: number };
     let particles: P[] = [];
@@ -382,8 +476,10 @@ function NeuralCanvas() {
     let visible = true;
 
     const resize = () => {
-      w = canvas.clientWidth; h = canvas.clientHeight;
-      canvas.width = w * dpr; canvas.height = h * dpr;
+      w = canvas.clientWidth;
+      h = canvas.clientHeight;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       // Lighter density everywhere — O(n²) link loop was hot on desktop.
       const cap = window.innerWidth < 768 ? 45 : 70;
@@ -399,31 +495,44 @@ function NeuralCanvas() {
     resize();
     const onMove = (e: globalThis.MouseEvent) => {
       const r = canvas.getBoundingClientRect();
-      mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top;
+      mouse.x = e.clientX - r.left;
+      mouse.y = e.clientY - r.top;
     };
-    const onLeave = () => { mouse.x = -9999; mouse.y = -9999; };
+    const onLeave = () => {
+      mouse.x = -9999;
+      mouse.y = -9999;
+    };
     window.addEventListener("resize", resize);
     canvas.addEventListener("mousemove", onMove);
     canvas.addEventListener("mouseleave", onLeave);
 
     const draw = () => {
-      if (!visible) { raf = 0; return; }
+      if (!visible) {
+        raf = 0;
+        return;
+      }
       ctx.clearRect(0, 0, w, h);
       for (const p of particles) {
-        const dx = mouse.x - p.x, dy = mouse.y - p.y;
+        const dx = mouse.x - p.x,
+          dy = mouse.y - p.y;
         const dist = Math.hypot(dx, dy);
         if (dist < 180) {
           p.vx -= (dx / dist) * 0.02;
           p.vy -= (dy / dist) * 0.02;
         }
-        p.vx *= 0.99; p.vy *= 0.99;
-        p.x += p.vx; p.y += p.vy;
-        if (p.x < 0) p.x = w; if (p.x > w) p.x = 0;
-        if (p.y < 0) p.y = h; if (p.y > h) p.y = 0;
+        p.vx *= 0.99;
+        p.vy *= 0.99;
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0) p.x = w;
+        if (p.x > w) p.x = 0;
+        if (p.y < 0) p.y = h;
+        if (p.y > h) p.y = 0;
       }
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
-          const a = particles[i], b = particles[j];
+          const a = particles[i],
+            b = particles[j];
           const d = Math.hypot(a.x - b.x, a.y - b.y);
           if (d < 130) {
             const op = (1 - d / 130) * 0.35;
@@ -448,10 +557,13 @@ function NeuralCanvas() {
     };
 
     // Pause draw loop when the hero canvas scrolls off-screen.
-    const io = new IntersectionObserver(([e]) => {
-      visible = e.isIntersecting;
-      if (visible && !raf) raf = requestAnimationFrame(draw);
-    }, { threshold: 0.01 });
+    const io = new IntersectionObserver(
+      ([e]) => {
+        visible = e.isIntersecting;
+        if (visible && !raf) raf = requestAnimationFrame(draw);
+      },
+      { threshold: 0.01 },
+    );
     io.observe(canvas);
     raf = requestAnimationFrame(draw);
 
@@ -467,18 +579,37 @@ function NeuralCanvas() {
 }
 
 /* ============ REVEAL ON SCROLL ============ */
-function Reveal({ children, delay = 0, className = "" }: { children: ReactNode; delay?: number; className?: string }) {
+function Reveal({
+  children,
+  delay = 0,
+  className = "",
+}: {
+  children: ReactNode;
+  delay?: number;
+  className?: string;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const [vis, setVis] = useState(false);
   useEffect(() => {
-    const el = ref.current; if (!el) return;
+    const el = ref.current;
+    if (!el) return;
     // Respect prefers-reduced-motion: show content immediately, no transition.
-    if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setVis(true); return;
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      setVis(true);
+      return;
     }
-    const io = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting) { setVis(true); io.disconnect(); }
-    }, { threshold: 0.15 });
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setVis(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.15 },
+    );
     io.observe(el);
     return () => io.disconnect();
   }, []);
@@ -498,7 +629,17 @@ function Reveal({ children, delay = 0, className = "" }: { children: ReactNode; 
 }
 
 /* ============ SPLIT TEXT REVEAL ============ */
-function SplitWord({ word, delay = 0, glitch = false, gradient = false }: { word: string; delay?: number; glitch?: boolean; gradient?: boolean }) {
+function SplitWord({
+  word,
+  delay = 0,
+  glitch = false,
+  gradient = false,
+}: {
+  word: string;
+  delay?: number;
+  glitch?: boolean;
+  gradient?: boolean;
+}) {
   const ref = useRef<HTMLSpanElement>(null);
   const [vis, setVis] = useState(false);
   const [glitching, setGlitching] = useState(false);
@@ -508,14 +649,20 @@ function SplitWord({ word, delay = 0, glitch = false, gradient = false }: { word
   }, [delay]);
   useEffect(() => {
     if (!glitch) return;
-    const iv = setInterval(() => {
-      setGlitching(true);
-      setTimeout(() => setGlitching(false), 400);
-    }, 5000 + Math.random() * 3000);
+    const iv = setInterval(
+      () => {
+        setGlitching(true);
+        setTimeout(() => setGlitching(false), 400);
+      },
+      5000 + Math.random() * 3000,
+    );
     return () => clearInterval(iv);
   }, [glitch]);
   return (
-    <span ref={ref} className={`inline-block overflow-hidden align-bottom ${glitching ? "animate-glitch" : ""}`}>
+    <span
+      ref={ref}
+      className={`inline-block overflow-hidden align-bottom ${glitching ? "animate-glitch" : ""}`}
+    >
       {word.split("").map((c, i) => (
         <span
           key={i}
@@ -534,7 +681,21 @@ function SplitWord({ word, delay = 0, glitch = false, gradient = false }: { word
 }
 
 /* ============ COUNTER ============ */
-function Counter({ value, suffix = "", prefix = "", duration = 2000, decimals, compact = false }: { value: number; suffix?: string; prefix?: string; duration?: number; decimals?: number; compact?: boolean }) {
+function Counter({
+  value,
+  suffix = "",
+  prefix = "",
+  duration = 2000,
+  decimals,
+  compact = false,
+}: {
+  value: number;
+  suffix?: string;
+  prefix?: string;
+  duration?: number;
+  decimals?: number;
+  compact?: boolean;
+}) {
   const ref = useRef<HTMLSpanElement>(null);
   const dp = decimals ?? (value % 1 !== 0 ? (value.toString().split(".")[1]?.length ?? 2) : 0);
   const format = (x: number) => {
@@ -549,13 +710,18 @@ function Counter({ value, suffix = "", prefix = "", duration = 2000, decimals, c
   // Start at 0 so the animation is visible on entry.
   const [text, setText] = useState<string>(format(0));
   useEffect(() => {
-    const el = ref.current; if (!el) return;
+    const el = ref.current;
+    if (!el) return;
     if (typeof window === "undefined") return;
     const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) { setText(format(value)); return; }
+    if (reduce) {
+      setText(format(value));
+      return;
+    }
     let started = false;
     const run = () => {
-      if (started) return; started = true;
+      if (started) return;
+      started = true;
       const start = performance.now();
       const tick = (now: number) => {
         const p = Math.min(1, (now - start) / duration);
@@ -565,22 +731,38 @@ function Counter({ value, suffix = "", prefix = "", duration = 2000, decimals, c
       };
       requestAnimationFrame(tick);
     };
-    const io = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting) { io.disconnect(); run(); }
-    }, { threshold: 0.2, rootMargin: "0px 0px -5% 0px" });
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          io.disconnect();
+          run();
+        }
+      },
+      { threshold: 0.2, rootMargin: "0px 0px -5% 0px" },
+    );
     io.observe(el);
     const fallback = setTimeout(run, 2500);
-    return () => { io.disconnect(); clearTimeout(fallback); };
+    return () => {
+      io.disconnect();
+      clearTimeout(fallback);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, duration, compact]);
-  return <span ref={ref}>{prefix}{text}{suffix}</span>;
+  return (
+    <span ref={ref}>
+      {prefix}
+      {text}
+      {suffix}
+    </span>
+  );
 }
 
 /* ============ TILT CARD ============ */
 function TiltCard({ children, className = "" }: { children: ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const onMove = (e: MouseEvent<HTMLDivElement>) => {
-    const el = ref.current; if (!el) return;
+    const el = ref.current;
+    if (!el) return;
     const r = el.getBoundingClientRect();
     const px = e.clientX - r.left;
     const py = e.clientY - r.top;
@@ -591,7 +773,8 @@ function TiltCard({ children, className = "" }: { children: ReactNode; className
     el.style.setProperty("--my", `${py}px`);
   };
   const onLeave = () => {
-    if (ref.current) ref.current.style.transform = "perspective(1000px) rotateY(0) rotateX(0) translateY(0)";
+    if (ref.current)
+      ref.current.style.transform = "perspective(1000px) rotateY(0) rotateX(0) translateY(0)";
   };
   return (
     <div ref={ref} onMouseMove={onMove} onMouseLeave={onLeave} className={`tilt-card ${className}`}>
@@ -617,11 +800,16 @@ export function DotsNav() {
   useEffect(() => {
     const obs = new IntersectionObserver(
       (entries) => {
-        entries.forEach((e) => { if (e.isIntersecting) setActive(e.target.id); });
+        entries.forEach((e) => {
+          if (e.isIntersecting) setActive(e.target.id);
+        });
       },
-      { threshold: 0.4 }
+      { threshold: 0.4 },
     );
-    SECTIONS.forEach((s) => { const el = document.getElementById(s.id); if (el) obs.observe(el); });
+    SECTIONS.forEach((s) => {
+      const el = document.getElementById(s.id);
+      if (el) obs.observe(el);
+    });
     return () => obs.disconnect();
   }, []);
   return (
@@ -634,7 +822,9 @@ export function DotsNav() {
           className="group flex items-center gap-3"
           aria-label={s.label}
         >
-          <span className="font-mono text-[10px] uppercase tracking-widest text-muted-soft opacity-0 transition-opacity group-hover:opacity-100">{s.label}</span>
+          <span className="font-mono text-[10px] uppercase tracking-widest text-muted-soft opacity-0 transition-opacity group-hover:opacity-100">
+            {s.label}
+          </span>
           <span
             className="block h-1.5 rounded-full transition-all"
             style={{
@@ -673,25 +863,17 @@ function LazyVideo({ src, className }: { src: string; className?: string }) {
     io.observe(el);
     return () => io.disconnect();
   }, [src]);
-  return (
-    <video
-      ref={ref}
-      muted
-      loop
-      playsInline
-      preload="none"
-      className={className}
-    />
-  );
+  return <video ref={ref} muted loop playsInline preload="none" className={className} />;
 }
-
-
 
 /* ============ MARQUEE DIVIDER ============ */
 export function Marquee({ reverse = false }: { reverse?: boolean }) {
   const text = "NAAGA SUMUKH B S · AI/ML ENGINEER · BENGALURU · 2027 · ";
   return (
-    <div className="ticker-fade relative overflow-hidden border-y border-white/[0.04] py-4" aria-hidden>
+    <div
+      className="ticker-fade relative overflow-hidden border-y border-white/[0.04] py-4"
+      aria-hidden
+    >
       <div
         className="flex w-max whitespace-nowrap font-mono text-sm uppercase tracking-[0.3em]"
         style={{
@@ -702,7 +884,11 @@ export function Marquee({ reverse = false }: { reverse?: boolean }) {
           backfaceVisibility: "hidden",
         }}
       >
-        {Array.from({ length: 8 }).map((_, i) => <span key={i} className="px-4">{text}</span>)}
+        {Array.from({ length: 8 }).map((_, i) => (
+          <span key={i} className="px-4">
+            {text}
+          </span>
+        ))}
       </div>
       <style>{`
         @keyframes marqueeL { from { transform: translate3d(0,0,0); } to { transform: translate3d(-50%,0,0); } }
@@ -720,7 +906,9 @@ function DemoDialog({ onClose }: { onClose: () => void }) {
   useEffect(() => {
     const prev = document.activeElement as HTMLElement | null;
     closeRef.current?.focus();
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
     window.addEventListener("keydown", onKey);
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -742,7 +930,9 @@ function DemoDialog({ onClose }: { onClose: () => void }) {
         className="relative w-full max-w-5xl overflow-hidden rounded-2xl border border-white/10 bg-black shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 id="demo-dialog-title" className="sr-only">SacchAI demo video</h2>
+        <h2 id="demo-dialog-title" className="sr-only">
+          SacchAI demo video
+        </h2>
         <button
           ref={closeRef}
           type="button"
@@ -786,7 +976,11 @@ export function ScrollProgress() {
   }, []);
   return (
     <div className="fixed left-0 right-0 top-0 z-[80] h-[2px] bg-transparent">
-      <div ref={ref} className="h-full origin-left bg-violet" style={{ boxShadow: "0 0 10px #5CBDB9", transform: "scaleX(0)", willChange: "transform" }} />
+      <div
+        ref={ref}
+        className="h-full origin-left bg-violet"
+        style={{ boxShadow: "0 0 10px #5CBDB9", transform: "scaleX(0)", willChange: "transform" }}
+      />
     </div>
   );
 }
@@ -798,7 +992,6 @@ export function CursorTrail() {
   // was the single biggest desktop scroll/animation stutter source.
   return null;
 }
-
 
 /* ============ NOISE OVERLAY ============ */
 export function NoiseOverlay() {
@@ -817,7 +1010,11 @@ export function NoiseOverlay() {
 /* ============ HERO ============ */
 export function Hero() {
   const splineHostRef = useRef<HTMLDivElement>(null);
-  const splineSceneRef = useRef<{ emitEvent: (eventName: string, targetName?: string) => void; getApp: () => unknown } | null>(null);
+  const splineSceneRef = useRef<{
+    emitEvent: (eventName: string, targetName?: string) => void;
+    getApp: () => unknown;
+  } | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const splineAppRef = useRef<any>(null);
   const heroInViewRef = useRef(true);
   const [wave, setWave] = useState(false);
@@ -830,16 +1027,21 @@ export function Hero() {
     if (typeof window === "undefined") return;
     const host = splineHostRef.current;
     if (!host || typeof IntersectionObserver === "undefined") return;
-    const io = new IntersectionObserver((entries) => {
-      const visible = entries.some((e) => e.isIntersecting);
-      heroInViewRef.current = visible;
-      const app = splineAppRef.current;
-      if (!app) return;
-      try {
-        if (visible) app.play?.();
-        else app.stop?.();
-      } catch { /* runtime may not expose */ }
-    }, { rootMargin: "100px" });
+    const io = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.some((e) => e.isIntersecting);
+        heroInViewRef.current = visible;
+        const app = splineAppRef.current;
+        if (!app) return;
+        try {
+          if (visible) app.play?.();
+          else app.stop?.();
+        } catch {
+          /* runtime may not expose */
+        }
+      },
+      { rootMargin: "100px" },
+    );
     io.observe(host);
     const onVis = () => {
       const app = splineAppRef.current;
@@ -847,12 +1049,18 @@ export function Hero() {
       try {
         if (document.hidden || !heroInViewRef.current) app.stop?.();
         else app.play?.();
-      } catch { /* noop */ }
+      } catch {
+        /* noop */
+      }
     };
     document.addEventListener("visibilitychange", onVis);
-    return () => { io.disconnect(); document.removeEventListener("visibilitychange", onVis); };
+    return () => {
+      io.disconnect();
+      document.removeEventListener("visibilitychange", onVis);
+    };
   }, []);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSplineLoad = (app: any) => {
     splineAppRef.current = app;
     // Cap DPR — retina desktops run Spline at 2x pixel work; 1.5 looks identical, ~55% less GPU.
@@ -861,7 +1069,9 @@ export function Hero() {
       app?._renderer?.setPixelRatio?.(dpr);
       const host = splineHostRef.current;
       if (host) app?.setSize?.(host.clientWidth, host.clientHeight);
-    } catch { /* noop */ }
+    } catch {
+      /* noop */
+    }
   };
 
   useEffect(() => {
@@ -875,32 +1085,39 @@ export function Hero() {
         const event = lastPointerRef.current;
         if (!event) return;
         const host = splineHostRef.current;
-        const canvas = [...(host?.querySelectorAll("canvas") ?? [])]
-          .sort((a, b) => (b.getBoundingClientRect().width * b.getBoundingClientRect().height) - (a.getBoundingClientRect().width * a.getBoundingClientRect().height))[0];
+        const canvas = [...(host?.querySelectorAll("canvas") ?? [])].sort(
+          (a, b) =>
+            b.getBoundingClientRect().width * b.getBoundingClientRect().height -
+            a.getBoundingClientRect().width * a.getBoundingClientRect().height,
+        )[0];
         if (!host || !canvas) return;
         const rect = host.getBoundingClientRect();
         if (rect.bottom < 0 || rect.top > window.innerHeight) return;
 
-        canvas.dispatchEvent(new MouseEvent("mousemove", {
-          clientX: event.clientX,
-          clientY: event.clientY,
-          screenX: event.screenX,
-          screenY: event.screenY,
-          bubbles: true,
-          cancelable: false,
-          view: window,
-        }));
-        canvas.dispatchEvent(new PointerEvent("pointermove", {
-          clientX: event.clientX,
-          clientY: event.clientY,
-          screenX: event.screenX,
-          screenY: event.screenY,
-          pointerId: "pointerId" in event ? event.pointerId : 1,
-          pointerType: "pointerType" in event ? event.pointerType || "mouse" : "mouse",
-          isPrimary: "isPrimary" in event ? event.isPrimary : true,
-          bubbles: true,
-          cancelable: false,
-        }));
+        canvas.dispatchEvent(
+          new MouseEvent("mousemove", {
+            clientX: event.clientX,
+            clientY: event.clientY,
+            screenX: event.screenX,
+            screenY: event.screenY,
+            bubbles: true,
+            cancelable: false,
+            view: window,
+          }),
+        );
+        canvas.dispatchEvent(
+          new PointerEvent("pointermove", {
+            clientX: event.clientX,
+            clientY: event.clientY,
+            screenX: event.screenX,
+            screenY: event.screenY,
+            pointerId: "pointerId" in event ? event.pointerId : 1,
+            pointerType: "pointerType" in event ? event.pointerType || "mouse" : "mouse",
+            isPrimary: "isPrimary" in event ? event.isPrimary : true,
+            bubbles: true,
+            cancelable: false,
+          }),
+        );
       });
     };
 
@@ -917,7 +1134,9 @@ export function Hero() {
     setWave(true);
     try {
       splineSceneRef.current?.emitEvent("click");
-    } catch { /* scene may not have a click event */ }
+    } catch {
+      /* scene may not have a click event */
+    }
     setTimeout(() => setWave(false), 2500);
   };
 
@@ -951,9 +1170,7 @@ export function Hero() {
           <div className="relative rounded-2xl border border-white/20 bg-[#0B1A2E]/90 px-5 py-3 text-body shadow-[0_10px_40px_-10px_rgba(0,0,0,0.6)] backdrop-blur-md">
             <span className="text-xl">👋</span>
             <span className="ml-2 font-display text-lg font-bold">Hi there!</span>
-            <div
-              className="absolute -bottom-2 left-6 h-4 w-4 -rotate-45 border-b border-r border-white/20 bg-[#0B1A2E]/90"
-            />
+            <div className="absolute -bottom-2 left-6 h-4 w-4 -rotate-45 border-b border-r border-white/20 bg-[#0B1A2E]/90" />
           </div>
         </div>
         {/* Legibility veil — left side for hero copy */}
@@ -977,9 +1194,15 @@ export function Hero() {
         </div>
 
         <h1 className="font-display font-bold leading-[0.82] tracking-tight text-body">
-          <div className="block w-full" style={{ fontSize: "clamp(40px, 9vw, 150px)" }}><SplitWord word="Building" delay={300} glitch /></div>
-          <div className="block w-full" style={{ fontSize: "clamp(40px, 9vw, 150px)" }}><SplitWord word="Intelligent" delay={600} /></div>
-          <div className="block w-full" style={{ fontSize: "clamp(40px, 9vw, 150px)" }}><SplitWord word="Systems." delay={900} gradient /></div>
+          <div className="block w-full" style={{ fontSize: "clamp(40px, 9vw, 150px)" }}>
+            <SplitWord word="Building" delay={300} glitch />
+          </div>
+          <div className="block w-full" style={{ fontSize: "clamp(40px, 9vw, 150px)" }}>
+            <SplitWord word="Intelligent" delay={600} />
+          </div>
+          <div className="block w-full" style={{ fontSize: "clamp(40px, 9vw, 150px)" }}>
+            <SplitWord word="Systems." delay={900} gradient />
+          </div>
         </h1>
 
         <div
@@ -1006,7 +1229,10 @@ export function Hero() {
 
       <div className="absolute bottom-10 left-1/2 z-10 -translate-x-1/2 flex flex-col items-center gap-2">
         <span className="block h-14 w-px overflow-hidden bg-white/10 relative">
-          <span className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white to-transparent" style={{ animation: "heartbeatLine 1.8s ease-in-out infinite" }} />
+          <span
+            className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white to-transparent"
+            style={{ animation: "heartbeatLine 1.8s ease-in-out infinite" }}
+          />
         </span>
         <span className="font-mono text-[10px] text-muted-soft leading-none">↓</span>
       </div>
@@ -1022,30 +1248,42 @@ export function Hero() {
   );
 }
 
-
 /* Live3D removed — was mounting a second Spline WebGL context loading the same
    scene as the hero (kZDDjO5HuC9GJUM2), doubling GPU and network cost. The hero
    robot already carries the "live 3D" story. */
-
-
 
 /* ============ SECTION LABEL ============ */
 function SectionLabel({ num, text }: { num: string; text: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const [seen, setSeen] = useState(false);
   useEffect(() => {
-    const el = ref.current; if (!el) return;
-    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setSeen(true); io.disconnect(); } }, { threshold: 0.4 });
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setSeen(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.4 },
+    );
     io.observe(el);
     return () => io.disconnect();
   }, []);
   return (
-    <div ref={ref} className="mb-6 inline-block font-mono text-[11px] uppercase tracking-[0.3em] text-gold relative pb-1.5">
+    <div
+      ref={ref}
+      className="mb-6 inline-block font-mono text-[11px] uppercase tracking-[0.3em] text-gold relative pb-1.5"
+    >
       [ {num} — {text} ]
       <span
         aria-hidden
         className="absolute left-0 bottom-0 h-px bg-violet/70"
-        style={{ width: seen ? "100%" : "0%", transition: "width 600ms cubic-bezier(0.22,1,0.36,1) 120ms" }}
+        style={{
+          width: seen ? "100%" : "0%",
+          transition: "width 600ms cubic-bezier(0.22,1,0.36,1) 120ms",
+        }}
       />
     </div>
   );
@@ -1084,8 +1322,7 @@ function GlowTile({
         style={{
           background:
             "conic-gradient(from var(--angle,0deg), rgba(167,139,250,0.9), rgba(244,196,107,0.7), rgba(64,200,255,0.6), rgba(167,139,250,0.9))",
-          WebkitMask:
-            "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
+          WebkitMask: "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
           WebkitMaskComposite: "xor",
           maskComposite: "exclude",
           padding: "1px",
@@ -1130,13 +1367,23 @@ function GlowTile({
   );
 }
 
-
 /* ============ ABOUT ============ */
 export function About() {
   const tiles: Array<{
-    label: string; value: string; sub?: string; accent: "violet" | "gold"; wide?: boolean; italic?: boolean;
+    label: string;
+    value: string;
+    sub?: string;
+    accent: "violet" | "gold";
+    wide?: boolean;
+    italic?: boolean;
   }> = [
-    { label: "Statement", value: '"Building real systems, not just demos."', accent: "violet", wide: true, italic: true },
+    {
+      label: "Statement",
+      value: '"Building real systems, not just demos."',
+      accent: "violet",
+      wide: true,
+      italic: true,
+    },
     { label: "LinkedIn Impressions", value: "1M+", sub: "Last 12 months", accent: "gold" },
     { label: "Cleve AI Users", value: "Top 0.095%", sub: "Global rank", accent: "gold" },
     { label: "CGPA · NMIT", value: "7.95", sub: "B.E. Information Science", accent: "gold" },
@@ -1145,14 +1392,33 @@ export function About() {
   ];
 
   const focus = [
-    { icon: Brain, title: "AI / ML Engineering", text: "NLP, classical ML, GenAI pipelines, RAG and agentic workflows." },
-    { icon: Workflow, title: "Automation & Ops", text: "End-to-end automations with N8N, Python, and Supabase." },
-    { icon: BarChart3, title: "Data & Insights", text: "Pandas, Power BI dashboards, storytelling with business data." },
-    { icon: Code2, title: "Full-Stack Delivery", text: "React, TypeScript, Tailwind — shipping recruiter-ready products." },
+    {
+      icon: Brain,
+      title: "AI / ML Engineering",
+      text: "NLP, classical ML, GenAI pipelines, RAG and agentic workflows.",
+    },
+    {
+      icon: Workflow,
+      title: "Automation & Ops",
+      text: "End-to-end automations with N8N, Python, and Supabase.",
+    },
+    {
+      icon: BarChart3,
+      title: "Data & Insights",
+      text: "Pandas, Power BI dashboards, storytelling with business data.",
+    },
+    {
+      icon: Code2,
+      title: "Full-Stack Delivery",
+      text: "React, TypeScript, Tailwind — shipping recruiter-ready products.",
+    },
   ];
 
   return (
-    <section id="about" className="relative overflow-hidden px-5 py-16 sm:px-6 sm:py-20 md:px-12 md:py-24">
+    <section
+      id="about"
+      className="relative overflow-hidden px-5 py-16 sm:px-6 sm:py-20 md:px-12 md:py-24"
+    >
       {/* Premium animated backdrop — single layer, GPU-friendly */}
       <SectionBackdrop variant="paths" />
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-background/40 via-transparent to-background/70" />
@@ -1165,16 +1431,21 @@ export function About() {
         <div className="grid gap-10 md:grid-cols-[420px_1fr] md:items-center md:gap-20">
           {/* PORTRAIT */}
           <Reveal>
-            <div className="relative mx-auto h-56 w-56 md:h-[26rem] md:w-[26rem]" style={{ animation: "avatarFloat 6s ease-in-out infinite" }}>
+            <div
+              className="relative mx-auto h-56 w-56 md:h-[26rem] md:w-[26rem]"
+              style={{ animation: "avatarFloat 6s ease-in-out infinite" }}
+            >
               <div className="absolute -inset-6 rounded-full bg-violet/15 blur-[60px] md:-inset-10 md:blur-[90px]" />
               {/* Outer counter-rotating gold ring */}
               <div
                 className="absolute rounded-full pointer-events-none"
                 style={{
                   inset: "-10px",
-                  background: "conic-gradient(from 0deg, rgba(244,196,107,0.0) 0deg, rgba(244,196,107,0.85) 80deg, rgba(255,140,90,0.55) 160deg, rgba(244,196,107,0.0) 260deg, rgba(244,196,107,0.0) 360deg)",
-                  WebkitMask: "radial-gradient(farthest-side, transparent calc(100% - 4px), #000 calc(100% - 3px))",
-                          mask: "radial-gradient(farthest-side, transparent calc(100% - 4px), #000 calc(100% - 3px))",
+                  background:
+                    "conic-gradient(from 0deg, rgba(244,196,107,0.0) 0deg, rgba(244,196,107,0.85) 80deg, rgba(255,140,90,0.55) 160deg, rgba(244,196,107,0.0) 260deg, rgba(244,196,107,0.0) 360deg)",
+                  WebkitMask:
+                    "radial-gradient(farthest-side, transparent calc(100% - 4px), #000 calc(100% - 3px))",
+                  mask: "radial-gradient(farthest-side, transparent calc(100% - 4px), #000 calc(100% - 3px))",
                   animation: "portrait-spin-rev 28s linear infinite",
                   filter: "drop-shadow(0 0 24px rgba(244,196,107,0.35))",
                 }}
@@ -1212,13 +1483,15 @@ export function About() {
           <div>
             <Reveal delay={80}>
               <h2 className="mb-6 font-display text-3xl font-bold leading-[1.05] text-body sm:text-4xl md:text-6xl">
-                AI/ML engineer — <span className="text-violet">building real systems</span>, not just demos.
+                AI/ML engineer — <span className="text-violet">building real systems</span>, not
+                just demos.
               </h2>
             </Reveal>
             <Reveal delay={160}>
               <p className="mb-8 max-w-xl text-sm leading-relaxed text-muted-soft sm:mb-10 sm:text-base md:text-lg">
                 Information Science &amp; Engineering undergraduate (2023–2027) at NMIT Bengaluru.
-                Building real AI systems — from interview-integrity detection to healthcare operating systems.
+                Building real AI systems — from interview-integrity detection to healthcare
+                operating systems.
                 <span className="text-gold"> 1M+ LinkedIn impressions. Top 0.095% globally.</span>
               </p>
             </Reveal>
@@ -1238,14 +1511,11 @@ export function About() {
                     >
                       {t.value}
                     </div>
-                    {t.sub && (
-                      <div className="mt-1 text-[11px] text-muted-soft/80">{t.sub}</div>
-                    )}
+                    {t.sub && <div className="mt-1 text-[11px] text-muted-soft/80">{t.sub}</div>}
                   </GlowTile>
                 </Reveal>
               ))}
             </div>
-
 
             <Reveal delay={760}>
               <LiquidButton
@@ -1307,7 +1577,6 @@ export function About() {
             </div>
           </ContainerScroll>
         </div>
-
       </div>
     </section>
   );
@@ -1315,25 +1584,142 @@ export function About() {
 
 /* ============ SKILLS ============ */
 export function Skills() {
-  const row1 = ["Python", "C", "SQL", "R", "Scikit-learn", "Pandas", "NumPy", "NLP", "TF-IDF", "Random Forest"];
-  const row2 = ["Generative AI", "N8N", "Power BI", "Supabase", "React", "TypeScript", "Tailwind", "GitHub", "Jupyter", "Google Colab", "Canva", "Antigravity"];
+  const row1 = [
+    "Python",
+    "C",
+    "SQL",
+    "R",
+    "Scikit-learn",
+    "Pandas",
+    "NumPy",
+    "NLP",
+    "TF-IDF",
+    "Random Forest",
+  ];
+  const row2 = [
+    "Generative AI",
+    "N8N",
+    "Power BI",
+    "Supabase",
+    "React",
+    "TypeScript",
+    "Tailwind",
+    "GitHub",
+    "Jupyter",
+    "Google Colab",
+    "Canva",
+    "Antigravity",
+  ];
   const skillsTimeline = [
-    { id: 1, title: "Python", date: "Core", content: "Primary language for data, ML pipelines, and automation.", category: "Language", icon: Code2, relatedIds: [2, 3, 4], status: "completed" as const, energy: 95 },
-    { id: 2, title: "Scikit-learn", date: "ML", content: "Classical ML — Random Forest, SVMs, regression, clustering.", category: "ML", icon: Atom, relatedIds: [1, 3], status: "completed" as const, energy: 85 },
-    { id: 3, title: "NLP", date: "AI", content: "TF-IDF, transformers, text classification and embeddings.", category: "AI", icon: Brain, relatedIds: [1, 2, 5], status: "completed" as const, energy: 80 },
-    { id: 4, title: "Pandas", date: "Data", content: "Dataframes, ETL, feature engineering at scale.", category: "Data", icon: Database, relatedIds: [1, 7], status: "completed" as const, energy: 90 },
-    { id: 5, title: "GenAI", date: "AI", content: "LLMs, RAG, prompt orchestration, agentic workflows.", category: "AI", icon: Sparkles, relatedIds: [3, 6], status: "in-progress" as const, energy: 88 },
-    { id: 6, title: "N8N", date: "Ops", content: "Low-code automation for AI pipelines and integrations.", category: "Ops", icon: Workflow, relatedIds: [5, 8], status: "in-progress" as const, energy: 70 },
-    { id: 7, title: "Power BI", date: "BI", content: "Dashboards and storytelling with business data.", category: "BI", icon: BarChart, relatedIds: [4, 8], status: "completed" as const, energy: 75 },
-    { id: 8, title: "Supabase", date: "Stack", content: "Postgres, auth, edge functions for full-stack apps.", category: "Stack", icon: Boxes, relatedIds: [6, 7, 9], status: "in-progress" as const, energy: 78 },
-    { id: 9, title: "React", date: "Web", content: "Component-driven UIs with TypeScript + Tailwind.", category: "Web", icon: Code2, relatedIds: [8], status: "completed" as const, energy: 82 },
+    {
+      id: 1,
+      title: "Python",
+      date: "Core",
+      content: "Primary language for data, ML pipelines, and automation.",
+      category: "Language",
+      icon: Code2,
+      relatedIds: [2, 3, 4],
+      status: "completed" as const,
+      energy: 95,
+    },
+    {
+      id: 2,
+      title: "Scikit-learn",
+      date: "ML",
+      content: "Classical ML — Random Forest, SVMs, regression, clustering.",
+      category: "ML",
+      icon: Atom,
+      relatedIds: [1, 3],
+      status: "completed" as const,
+      energy: 85,
+    },
+    {
+      id: 3,
+      title: "NLP",
+      date: "AI",
+      content: "TF-IDF, transformers, text classification and embeddings.",
+      category: "AI",
+      icon: Brain,
+      relatedIds: [1, 2, 5],
+      status: "completed" as const,
+      energy: 80,
+    },
+    {
+      id: 4,
+      title: "Pandas",
+      date: "Data",
+      content: "Dataframes, ETL, feature engineering at scale.",
+      category: "Data",
+      icon: Database,
+      relatedIds: [1, 7],
+      status: "completed" as const,
+      energy: 90,
+    },
+    {
+      id: 5,
+      title: "GenAI",
+      date: "AI",
+      content: "LLMs, RAG, prompt orchestration, agentic workflows.",
+      category: "AI",
+      icon: Sparkles,
+      relatedIds: [3, 6],
+      status: "in-progress" as const,
+      energy: 88,
+    },
+    {
+      id: 6,
+      title: "N8N",
+      date: "Ops",
+      content: "Low-code automation for AI pipelines and integrations.",
+      category: "Ops",
+      icon: Workflow,
+      relatedIds: [5, 8],
+      status: "in-progress" as const,
+      energy: 70,
+    },
+    {
+      id: 7,
+      title: "Power BI",
+      date: "BI",
+      content: "Dashboards and storytelling with business data.",
+      category: "BI",
+      icon: BarChart,
+      relatedIds: [4, 8],
+      status: "completed" as const,
+      energy: 75,
+    },
+    {
+      id: 8,
+      title: "Supabase",
+      date: "Stack",
+      content: "Postgres, auth, edge functions for full-stack apps.",
+      category: "Stack",
+      icon: Boxes,
+      relatedIds: [6, 7, 9],
+      status: "in-progress" as const,
+      energy: 78,
+    },
+    {
+      id: 9,
+      title: "React",
+      date: "Web",
+      content: "Component-driven UIs with TypeScript + Tailwind.",
+      category: "Web",
+      icon: Code2,
+      relatedIds: [8],
+      status: "completed" as const,
+      energy: 82,
+    },
   ];
 
   const Ticker = ({ items, reverse }: { items: string[]; reverse?: boolean }) => (
     <div className="relative overflow-hidden py-3">
       <div className={`flex w-max gap-4 ${reverse ? "animate-ticker-reverse" : "animate-ticker"}`}>
         {[...items, ...items, ...items, ...items].map((s, i) => (
-          <span key={i} className="flex items-center gap-4 whitespace-nowrap font-display text-3xl font-bold text-body md:text-5xl">
+          <span
+            key={i}
+            className="flex items-center gap-4 whitespace-nowrap font-display text-3xl font-bold text-body md:text-5xl"
+          >
             {s} <span className="text-violet">✦</span>
           </span>
         ))}
@@ -1342,7 +1728,10 @@ export function Skills() {
   );
 
   return (
-    <section id="skills" className="relative overflow-hidden px-5 py-20 sm:px-6 sm:py-16 md:px-12 md:py-24">
+    <section
+      id="skills"
+      className="relative overflow-hidden px-5 py-20 sm:px-6 sm:py-16 md:px-12 md:py-24"
+    >
       {/* Premium animated backdrop — replaces the dark void */}
       <SectionBackdrop variant="aurora-violet" />
       <div
@@ -1355,7 +1744,9 @@ export function Skills() {
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-background/30 via-transparent to-background/60" />
 
       <div className="relative mx-auto max-w-[1300px]">
-        <Reveal><SectionLabel num="02" text="Skills" /></Reveal>
+        <Reveal>
+          <SectionLabel num="02" text="Skills" />
+        </Reveal>
         <Reveal delay={100}>
           <h2 className="mb-12 font-display text-3xl font-bold text-body sm:mb-16 sm:text-4xl md:text-6xl">
             A constellation of <span className="text-violet">capabilities</span>.
@@ -1401,7 +1792,16 @@ export function Projects() {
       name: "SacchAI",
       desc: "Browser extension for real-time detection of unauthorized AI assistance during online interviews — monitors behavioural signals, clipboard activity, tab-switching and speech/response patterns. Custom ensemble classifier generates recruiter-facing reports with genuineness scores, suspicious-activity flags and plagiarism analysis.",
       badge: "88.4% accuracy",
-      tags: ["JavaScript", "TypeScript", "React", "Chrome APIs", "Python", "Scikit-learn", "Node.js", "REST APIs"],
+      tags: [
+        "JavaScript",
+        "TypeScript",
+        "React",
+        "Chrome APIs",
+        "Python",
+        "Scikit-learn",
+        "Node.js",
+        "REST APIs",
+      ],
       link: "https://github.com/naagasumukh8",
       cta: "Watch demo",
       media: { kind: "video" as const, src: sachhaiVideo.url },
@@ -1411,7 +1811,14 @@ export function Projects() {
       name: "MediConnect",
       desc: "Full-stack HealthcareOS: multi-hospital management, role-based access, appointment scheduling, digital prescriptions, inter-department referrals, pharmacy inventory and AI-assisted patient support. Automated follow-ups, shared medical memory, family accounts and secure file storage via Supabase RLS, validated end-to-end with Playwright + TypeScript.",
       badge: "Live product",
-      tags: ["React", "TypeScript", "Tailwind", "Supabase RLS", "Google Calendar API", "Playwright"],
+      tags: [
+        "React",
+        "TypeScript",
+        "Tailwind",
+        "Supabase RLS",
+        "Google Calendar API",
+        "Playwright",
+      ],
       link: "https://easyhospital.lovable.app",
       cta: "Visit live site",
       media: { kind: "iframe" as const, src: "https://easyhospital.lovable.app" },
@@ -1421,7 +1828,16 @@ export function Projects() {
       name: "JobShield — AI-Powered Fake Job Detection",
       desc: "Final-year project. Multi-stage fraud detector: NLP + ML on job posts, recruiter verification via email domains, WHOIS and company sites. Explainable verdicts — Likely Genuine, Suspicious, or High Scam Risk.",
       badge: "Multi-level verification",
-      tags: ["Python", "Scikit-learn", "spaCy", "BeautifulSoup", "WHOIS", "Pandas", "TF-IDF", "Random Forest"],
+      tags: [
+        "Python",
+        "Scikit-learn",
+        "spaCy",
+        "BeautifulSoup",
+        "WHOIS",
+        "Pandas",
+        "TF-IDF",
+        "Random Forest",
+      ],
       link: "https://github.com/naagasumukh8/Job_Verify_FYP",
       cta: "View on GitHub",
       media: { kind: "none" as const, src: "" },
@@ -1435,7 +1851,9 @@ export function Projects() {
       <SectionBackdrop variant="grid" />
       <div className="px-5 pt-16 sm:px-6 sm:pt-20 md:px-12 md:pt-24">
         <div className="mx-auto max-w-[1300px]">
-          <Reveal><SectionLabel num="03" text="Selected Work" /></Reveal>
+          <Reveal>
+            <SectionLabel num="03" text="Selected Work" />
+          </Reveal>
           <Reveal delay={100}>
             <h2 className="mb-8 font-display text-4xl font-bold text-body md:mb-10 md:text-6xl">
               Each project is <span className="text-violet">its own world</span>.
@@ -1463,7 +1881,9 @@ export function Projects() {
                       className="h-full w-full"
                       fallback={
                         <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-violet/20 to-gold/10">
-                          <span className="font-display text-6xl font-bold text-white/10">{p.n}</span>
+                          <span className="font-display text-6xl font-bold text-white/10">
+                            {p.n}
+                          </span>
                         </div>
                       }
                     >
@@ -1485,18 +1905,27 @@ export function Projects() {
                 </div>
                 <div className="flex flex-1 flex-col p-5 md:p-6">
                   <div className="mb-2 flex items-center justify-between gap-2">
-                    <div className="font-mono text-[10px] uppercase tracking-widest text-gold">Project {p.n} / 0{projects.length}</div>
+                    <div className="font-mono text-[10px] uppercase tracking-widest text-gold">
+                      Project {p.n} / 0{projects.length}
+                    </div>
                     {p.badge && (
                       <span className="rounded-full border border-gold/40 bg-gold/15 px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-gold shadow-[0_0_18px_rgba(244,196,107,0.45)]">
                         {p.badge}
                       </span>
                     )}
                   </div>
-                  <h3 className="mb-2 font-display text-2xl font-bold leading-tight text-body group-hover:text-violet">{p.name}</h3>
+                  <h3 className="mb-2 font-display text-2xl font-bold leading-tight text-body group-hover:text-violet">
+                    {p.name}
+                  </h3>
                   <p className="mb-3 line-clamp-3 text-sm text-muted-soft">{p.desc}</p>
                   <div className="mb-4 flex flex-wrap gap-1.5">
                     {p.tags.slice(0, 8).map((t) => (
-                      <span key={t} className="rounded-full border border-violet/25 bg-violet/10 px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-body">{t}</span>
+                      <span
+                        key={t}
+                        className="rounded-full border border-violet/25 bg-violet/10 px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-body"
+                      >
+                        {t}
+                      </span>
                     ))}
                   </div>
                   {p.cta === "Watch demo" && p.media.kind === "video" ? (
@@ -1524,10 +1953,9 @@ export function Projects() {
         </div>
       </div>
 
-      {demoOpen && typeof document !== "undefined" && createPortal(
-        <DemoDialog onClose={() => setDemoOpen(false)} />,
-        document.body,
-      )}
+      {demoOpen &&
+        typeof document !== "undefined" &&
+        createPortal(<DemoDialog onClose={() => setDemoOpen(false)} />, document.body)}
     </section>
   );
 }
@@ -1535,11 +1963,31 @@ export function Projects() {
 /* ============ JOURNEY ============ */
 export function Journey() {
   const items = [
-    { yr: "2023 – 2027", title: "NMIT Bengaluru", desc: "B.E. Information Science & Engineering · CGPA 7.95" },
-    { yr: "2024 – Present", title: "AI Leader, Rabbitt AI", desc: "Leading AI initiatives and product strategy. Driving technical vision and automation pipelines for intelligent workflow solutions." },
-    { yr: "2023 – Present", title: "Youngest Student Council Member, NMIT", desc: "Contributing to student governance and institutional decision-making. Representing student interests in college-level committees." },
-    { yr: "2023 – 2025", title: "Founder & Event Lead, Adwaitha Club NMIT", desc: "Established 2 institutional MOUs, conducted college-level health camps, volunteered at an AI Summit with Rabbitt AI, organized 5 guest events with end-to-end execution & financial management, and mentored students toward successful placements." },
-    { yr: "2023 – 2024", title: "Digital Marketing Intern, LinkedInforHER", desc: "Created & published professional content across digital platforms. Built automated LinkedIn & YouTube content-posting pipelines using N8N & Antigravity to improve reach & engagement." },
+    {
+      yr: "2023 – 2027",
+      title: "NMIT Bengaluru",
+      desc: "B.E. Information Science & Engineering · CGPA 7.95",
+    },
+    {
+      yr: "2024 – Present",
+      title: "AI Leader, Rabbitt AI",
+      desc: "Leading AI initiatives and product strategy. Driving technical vision and automation pipelines for intelligent workflow solutions.",
+    },
+    {
+      yr: "2023 – Present",
+      title: "Youngest Student Council Member, NMIT",
+      desc: "Contributing to student governance and institutional decision-making. Representing student interests in college-level committees.",
+    },
+    {
+      yr: "2023 – 2025",
+      title: "Founder & Event Lead, Adwaitha Club NMIT",
+      desc: "Established 2 institutional MOUs, conducted college-level health camps, volunteered at an AI Summit with Rabbitt AI, organized 5 guest events with end-to-end execution & financial management, and mentored students toward successful placements.",
+    },
+    {
+      yr: "2023 – 2024",
+      title: "Digital Marketing Intern, LinkedInforHER",
+      desc: "Created & published professional content across digital platforms. Built automated LinkedIn & YouTube content-posting pipelines using N8N & Antigravity to improve reach & engagement.",
+    },
     { yr: "2020 – 2022", title: "Pre-University, Siddaganga PU College", desc: "Score: 95%" },
     { yr: "2020", title: "Class X, CBSE", desc: "Score: 91.2%" },
   ];
@@ -1547,7 +1995,8 @@ export function Journey() {
   const [progress, setProgress] = useState(0);
   useEffect(() => {
     const onScroll = () => {
-      const el = ref.current; if (!el) return;
+      const el = ref.current;
+      if (!el) return;
       const r = el.getBoundingClientRect();
       const vh = window.innerHeight;
       const total = r.height + vh;
@@ -1560,10 +2009,15 @@ export function Journey() {
   }, []);
 
   return (
-    <section id="journey" className="relative overflow-hidden px-5 py-20 sm:px-6 sm:py-16 md:px-12 md:py-24">
+    <section
+      id="journey"
+      className="relative overflow-hidden px-5 py-20 sm:px-6 sm:py-16 md:px-12 md:py-24"
+    >
       <SectionBackdrop variant="dots" />
       <div className="relative mx-auto max-w-[1100px]">
-        <Reveal><SectionLabel num="04" text="Trajectory" /></Reveal>
+        <Reveal>
+          <SectionLabel num="04" text="Trajectory" />
+        </Reveal>
         <Reveal delay={100}>
           <h2 className="mb-10 font-display text-4xl font-bold text-body md:text-6xl">
             A short, <span className="text-violet">deliberate path</span> so far.
@@ -1587,7 +2041,9 @@ export function Journey() {
                 <span className="absolute inset-1 rounded-full bg-violet glow-violet" />
               </span>
               <div className="font-mono text-xs uppercase tracking-widest text-gold">{it.yr}</div>
-              <h3 className="mt-2 font-display text-2xl font-bold text-body md:text-3xl">{it.title}</h3>
+              <h3 className="mt-2 font-display text-2xl font-bold text-body md:text-3xl">
+                {it.title}
+              </h3>
               <p className="mt-2 text-muted-soft">{it.desc}</p>
             </Reveal>
           ))}
@@ -1599,17 +2055,35 @@ export function Journey() {
 
 /* ============ RECOGNITION ============ */
 export function Recognition() {
-  const items: Array<{ v: number; suffix?: string; prefix?: string; label: string; decimals?: number; compact?: boolean }> = [
+  const items: Array<{
+    v: number;
+    suffix?: string;
+    prefix?: string;
+    label: string;
+    decimals?: number;
+    compact?: boolean;
+  }> = [
     { v: 1_000_000, suffix: "+", label: "LinkedIn Impressions", decimals: 0, compact: true },
-    { v: 0.095, prefix: "Top ", suffix: "%", label: "Global LinkedIn Rank · Cleve AI 2024", decimals: 3 },
+    {
+      v: 0.095,
+      prefix: "Top ",
+      suffix: "%",
+      label: "Global LinkedIn Rank · Cleve AI 2024",
+      decimals: 3,
+    },
     { v: 3, suffix: "rd Place", label: "Thinkathon — Cloudzilla, NMIT", decimals: 0 },
     { v: 5, suffix: "", label: "College Cricket Tournaments Won", decimals: 0 },
   ];
   return (
-    <section id="recognition" className="relative overflow-hidden px-5 py-20 sm:px-6 sm:py-16 md:px-12 md:py-24">
+    <section
+      id="recognition"
+      className="relative overflow-hidden px-5 py-20 sm:px-6 sm:py-16 md:px-12 md:py-24"
+    >
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60" />
       <div className="relative mx-auto max-w-[1300px]">
-        <Reveal><SectionLabel num="05" text="Monuments" /></Reveal>
+        <Reveal>
+          <SectionLabel num="05" text="Monuments" />
+        </Reveal>
         <Reveal delay={100}>
           <h2 className="mb-10 font-display text-4xl font-bold text-body md:text-6xl">
             Quiet wins, <span className="text-gold">loud echoes</span>.
@@ -1618,15 +2092,30 @@ export function Recognition() {
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {items.map((it, i) => (
             <Reveal key={i} delay={i * 80}>
-              <div data-hover className="monument-card group relative overflow-hidden rounded-2xl bg-surface p-8 transition-all hover:-translate-y-1">
-                <div className="absolute inset-0 opacity-0 transition-opacity group-hover:opacity-100" style={{
-                  background: "radial-gradient(circle at 50% 0%, rgba(255,179,71,0.15), transparent 70%)",
-                }} />
+              <div
+                data-hover
+                className="monument-card group relative overflow-hidden rounded-2xl bg-surface p-8 transition-all hover:-translate-y-1"
+              >
+                <div
+                  className="absolute inset-0 opacity-0 transition-opacity group-hover:opacity-100"
+                  style={{
+                    background:
+                      "radial-gradient(circle at 50% 0%, rgba(255,179,71,0.15), transparent 70%)",
+                  }}
+                />
                 <div className="relative">
                   <div className="font-display text-4xl font-bold text-gold md:text-5xl">
-                    <Counter value={it.v} prefix={it.prefix || ""} suffix={it.suffix || ""} decimals={it.decimals} compact={it.compact} />
+                    <Counter
+                      value={it.v}
+                      prefix={it.prefix || ""}
+                      suffix={it.suffix || ""}
+                      decimals={it.decimals}
+                      compact={it.compact}
+                    />
                   </div>
-                  <div className="mt-4 font-mono text-[11px] uppercase tracking-widest text-muted-soft">{it.label}</div>
+                  <div className="mt-4 font-mono text-[11px] uppercase tracking-widest text-muted-soft">
+                    {it.label}
+                  </div>
                 </div>
               </div>
             </Reveal>
@@ -1701,8 +2190,12 @@ export function Certs() {
 
       <div className="relative z-10 mx-auto max-w-[1100px]">
         <div className="mb-14 flex items-end justify-between">
-          <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#5a5a5a]">Certifications</div>
-          <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#2e2e2e]">03 verified</div>
+          <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-soft">
+            Certifications
+          </div>
+          <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/50">
+            03 verified
+          </div>
         </div>
 
         <div className="flex min-h-[420px] w-full items-center justify-center">
@@ -1714,7 +2207,6 @@ export function Certs() {
     </section>
   );
 }
-
 
 /* ============ EXPERIENCE ============ */
 export function Experience() {
@@ -1775,10 +2267,15 @@ export function Experience() {
     },
   ];
   return (
-    <section id="experience" className="relative overflow-hidden px-5 py-20 sm:px-6 sm:py-16 md:px-12 md:py-20">
+    <section
+      id="experience"
+      className="relative overflow-hidden px-5 py-20 sm:px-6 sm:py-16 md:px-12 md:py-20"
+    >
       <SectionBackdrop variant="aurora-cyan" />
       <div className="relative mx-auto max-w-[1100px]">
-        <Reveal><SectionLabel num="04a" text="Experience" /></Reveal>
+        <Reveal>
+          <SectionLabel num="04a" text="Experience" />
+        </Reveal>
         <Reveal delay={100}>
           <h2 className="mb-10 font-display text-4xl font-bold text-body md:text-6xl">
             Where I&apos;ve <span className="text-violet">shown up</span>.
@@ -1792,8 +2289,12 @@ export function Experience() {
                 <it.icon size={12} className="text-violet" />
               </span>
               <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 shadow-[0_20px_60px_-30px_rgba(124,110,255,0.5)]">
-                <div className="font-mono text-[11px] uppercase tracking-widest text-gold">{it.yr}</div>
-                <h3 className="mt-1 font-display text-xl font-bold text-body md:text-2xl">{it.role}</h3>
+                <div className="font-mono text-[11px] uppercase tracking-widest text-gold">
+                  {it.yr}
+                </div>
+                <h3 className="mt-1 font-display text-xl font-bold text-body md:text-2xl">
+                  {it.role}
+                </h3>
                 <div className="mt-1 text-sm text-violet">{it.org}</div>
                 <ul className="mt-4 space-y-2 text-sm text-muted-soft">
                   {it.points.map((p) => (
@@ -1817,15 +2318,41 @@ export function Experience() {
 /* ============ EDUCATION ============ */
 export function Education() {
   const items = [
-    { yr: "2023 – 2027", title: "B.E. Information Science & Engineering", org: "NMIT, Bengaluru", scoreLabel: "CGPA", score: 7.95, max: 10 },
-    { yr: "2020 – 2022", title: "Pre-University (PU)", org: "Siddaganga PU College", scoreLabel: "Score", score: 95, max: 100 },
-    { yr: "2020", title: "Class X (CBSE)", org: "CBSE Board", scoreLabel: "Score", score: 91.2, max: 100 },
+    {
+      yr: "2023 – 2027",
+      title: "B.E. Information Science & Engineering",
+      org: "NMIT, Bengaluru",
+      scoreLabel: "CGPA",
+      score: 7.95,
+      max: 10,
+    },
+    {
+      yr: "2020 – 2022",
+      title: "Pre-University (PU)",
+      org: "Siddaganga PU College",
+      scoreLabel: "Score",
+      score: 95,
+      max: 100,
+    },
+    {
+      yr: "2020",
+      title: "Class X (CBSE)",
+      org: "CBSE Board",
+      scoreLabel: "Score",
+      score: 91.2,
+      max: 100,
+    },
   ];
   return (
-    <section id="education" className="relative overflow-hidden px-5 py-20 sm:px-6 sm:py-16 md:px-12 md:py-20">
+    <section
+      id="education"
+      className="relative overflow-hidden px-5 py-20 sm:px-6 sm:py-16 md:px-12 md:py-20"
+    >
       <SectionBackdrop variant="aurora-gold" />
       <div className="relative mx-auto max-w-[1100px]">
-        <Reveal><SectionLabel num="04b" text="Education" /></Reveal>
+        <Reveal>
+          <SectionLabel num="04b" text="Education" />
+        </Reveal>
         <Reveal delay={100}>
           <h2 className="mb-14 font-display text-4xl font-bold text-body md:text-6xl">
             Built on a <span className="text-gold">solid base</span>.
@@ -1843,22 +2370,49 @@ export function Education() {
   );
 }
 
-function EducationCard({ yr, title, org, scoreLabel, score, max }: { yr: string; title: string; org: string; scoreLabel: string; score: number; max: number }) {
+function EducationCard({
+  yr,
+  title,
+  org,
+  scoreLabel,
+  score,
+  max,
+}: {
+  yr: string;
+  title: string;
+  org: string;
+  scoreLabel: string;
+  score: number;
+  max: number;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(0);
   const pct = Math.min(100, (score / max) * 100);
   useEffect(() => {
-    const el = ref.current; if (!el) return;
+    const el = ref.current;
+    if (!el) return;
     const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) { setWidth(pct); return; }
-    const io = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting) { setWidth(pct); io.disconnect(); }
-    }, { threshold: 0.3 });
+    if (reduce) {
+      setWidth(pct);
+      return;
+    }
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setWidth(pct);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.3 },
+    );
     io.observe(el);
     return () => io.disconnect();
   }, [pct]);
   return (
-    <div ref={ref} className="grid items-center gap-5 rounded-2xl border border-white/10 bg-white/[0.03] p-6 md:grid-cols-[160px_1fr] md:p-8">
+    <div
+      ref={ref}
+      className="grid items-center gap-5 rounded-2xl border border-white/10 bg-white/[0.03] p-6 md:grid-cols-[160px_1fr] md:p-8"
+    >
       <div className="rounded-xl border border-gold/30 bg-gold/10 px-4 py-3 text-center font-mono text-xs uppercase tracking-widest text-gold shadow-[0_0_24px_rgba(244,196,107,0.25)] md:text-sm">
         {yr}
       </div>
@@ -1867,7 +2421,10 @@ function EducationCard({ yr, title, org, scoreLabel, score, max }: { yr: string;
         <div className="mt-1 text-sm text-violet">{org}</div>
         <div className="mt-4 flex items-center justify-between text-xs text-muted-soft">
           <span className="font-mono uppercase tracking-widest">{scoreLabel}</span>
-          <span className="font-display text-lg font-bold text-gold">{score}{max === 100 ? "%" : ` / ${max}`}</span>
+          <span className="font-display text-lg font-bold text-gold">
+            {score}
+            {max === 100 ? "%" : ` / ${max}`}
+          </span>
         </div>
         <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-white/5">
           <div
@@ -1902,10 +2459,15 @@ export function BeyondCode() {
     },
   ];
   return (
-    <section id="beyond-code" className="relative overflow-hidden px-5 py-20 sm:px-6 sm:py-16 md:px-12 md:py-20">
+    <section
+      id="beyond-code"
+      className="relative overflow-hidden px-5 py-20 sm:px-6 sm:py-16 md:px-12 md:py-20"
+    >
       <SectionBackdrop variant="aurora-violet" />
       <div className="relative mx-auto max-w-[1200px]">
-        <Reveal><SectionLabel num="07" text="Beyond Code" /></Reveal>
+        <Reveal>
+          <SectionLabel num="07" text="Beyond Code" />
+        </Reveal>
         <Reveal delay={100}>
           <h2 className="mb-14 font-display text-4xl font-bold text-body md:text-6xl">
             Work that <span className="text-violet">isn&apos;t shipped to prod</span>.
@@ -1917,16 +2479,24 @@ export function BeyondCode() {
               <div className="group relative h-full overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-7 transition-all hover:-translate-y-1">
                 <div
                   className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-                  style={{ background: `radial-gradient(60% 60% at 30% 0%, ${it.accent}33, transparent 70%)` }}
+                  style={{
+                    background: `radial-gradient(60% 60% at 30% 0%, ${it.accent}33, transparent 70%)`,
+                  }}
                 />
                 <div className="relative">
                   <div
                     className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl"
-                    style={{ background: `${it.accent}22`, color: it.accent, boxShadow: `0 0 22px ${it.accent}55` }}
+                    style={{
+                      background: `${it.accent}22`,
+                      color: it.accent,
+                      boxShadow: `0 0 22px ${it.accent}55`,
+                    }}
                   >
                     <it.icon size={22} />
                   </div>
-                  <h3 className="font-display text-xl font-bold text-body md:text-2xl">{it.title}</h3>
+                  <h3 className="font-display text-xl font-bold text-body md:text-2xl">
+                    {it.title}
+                  </h3>
                   <p className="mt-3 text-sm leading-relaxed text-muted-soft">{it.text}</p>
                 </div>
               </div>
@@ -1961,7 +2531,10 @@ export function Vibe() {
           </div>
         </Reveal>
         <Reveal delay={120}>
-          <h2 className="font-display font-bold leading-[0.9] text-body" style={{ fontSize: "clamp(48px, 10vw, 140px)" }}>
+          <h2
+            className="font-display font-bold leading-[0.9] text-body"
+            style={{ fontSize: "clamp(48px, 10vw, 140px)" }}
+          >
             Made <span className="gradient-text">to move.</span>
           </h2>
         </Reveal>
@@ -1975,23 +2548,28 @@ export function Vibe() {
   );
 }
 
-
-
 /* ============ CONTACT ============ */
 export function Contact() {
   const links = [
     { l: "Email", v: "naagasumukh1@gmail.com", h: "mailto:naagasumukh1@gmail.com", i: "✉" },
-    { l: "LinkedIn", v: "linkedin.com/in/naaga-sumukh-b-s-326588281", h: "https://linkedin.com/in/naaga-sumukh-b-s-326588281", i: "in" },
+    {
+      l: "LinkedIn",
+      v: "linkedin.com/in/naaga-sumukh-b-s-326588281",
+      h: "https://linkedin.com/in/naaga-sumukh-b-s-326588281",
+      i: "in",
+    },
     { l: "GitHub", v: "github.com/naagasumukh8", h: "https://github.com/naagasumukh8", i: "⌥" },
     { l: "Phone", v: "+91 99723 71999", h: "tel:+919972371999", i: "☎" },
   ];
   return (
-    <section id="contact" className="relative overflow-hidden px-5 py-20 sm:px-6 sm:py-16 md:px-12 md:py-24">
+    <section
+      id="contact"
+      className="relative overflow-hidden px-5 py-20 sm:px-6 sm:py-16 md:px-12 md:py-24"
+    >
       <div
         className="pointer-events-none absolute inset-x-0 top-0 h-[420px] opacity-60"
         style={{
-          background:
-            "radial-gradient(ellipse at 50% 0%, rgba(124,110,255,0.35), transparent 60%)",
+          background: "radial-gradient(ellipse at 50% 0%, rgba(124,110,255,0.35), transparent 60%)",
         }}
       />
       <div className="pointer-events-none absolute inset-0 opacity-40 mix-blend-screen">
@@ -1999,7 +2577,9 @@ export function Contact() {
       </div>
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black/80" />
       <div className="relative mx-auto max-w-[1300px]">
-        <Reveal><SectionLabel num="07" text="Transmission" /></Reveal>
+        <Reveal>
+          <SectionLabel num="07" text="Transmission" />
+        </Reveal>
         <Reveal delay={100}>
           <h2 className="mb-8 font-display text-5xl font-bold leading-[0.95] text-body md:text-8xl">
             Let's build something <span className="gradient-text">unforgettable</span>.
@@ -2026,7 +2606,9 @@ export function Contact() {
                     {it.i}
                   </span>
                   <div className="min-w-0">
-                    <div className="font-mono text-[10px] uppercase tracking-widest text-muted-soft">{it.l}</div>
+                    <div className="font-mono text-[10px] uppercase tracking-widest text-muted-soft">
+                      {it.l}
+                    </div>
                     <div className="truncate font-display text-xl font-bold text-body transition-colors group-hover:text-violet md:text-3xl">
                       {it.v}
                     </div>
@@ -2040,10 +2622,21 @@ export function Contact() {
           ))}
         </div>
 
-        <div className="mt-12 h-px w-full origin-left bg-gradient-to-r from-violet/60 via-violet/20 to-transparent" style={{ animation: "drawLine 1.5s 0.3s cubic-bezier(0.16,1,0.3,1) backwards" }} />
+        <div
+          className="mt-12 h-px w-full origin-left bg-gradient-to-r from-violet/60 via-violet/20 to-transparent"
+          style={{ animation: "drawLine 1.5s 0.3s cubic-bezier(0.16,1,0.3,1) backwards" }}
+        />
         <footer className="mt-6 flex flex-col items-center justify-between gap-4 font-mono text-[10px] uppercase tracking-widest text-muted-soft md:flex-row">
           <span>
-            © 2026 <span className="mx-1 text-violet" style={{ animation: "dotPulse 2s 0s infinite" }}>·</span> Naaga Sumukh B S <span className="mx-1 text-violet" style={{ animation: "dotPulse 2s 0.5s infinite" }}>·</span> Bengaluru
+            © 2026{" "}
+            <span className="mx-1 text-violet" style={{ animation: "dotPulse 2s 0s infinite" }}>
+              ·
+            </span>{" "}
+            Naaga Sumukh B S{" "}
+            <span className="mx-1 text-violet" style={{ animation: "dotPulse 2s 0.5s infinite" }}>
+              ·
+            </span>{" "}
+            Bengaluru
           </span>
           <span>Crafted with intent.</span>
           <style>{`
@@ -2081,7 +2674,11 @@ function AchievementPanel({
   open,
   items,
   accent,
-}: { open: boolean; items: AchItem[]; accent: string }) {
+}: {
+  open: boolean;
+  items: AchItem[];
+  accent: string;
+}) {
   return (
     <div
       className={`grid transition-[grid-template-rows,opacity] duration-500 ease-out ${
@@ -2111,9 +2708,7 @@ function AchievementPanel({
                 <div className="mt-1 truncate font-mono text-[10px] uppercase tracking-widest text-muted-soft">
                   {it.label}
                 </div>
-                {it.sub && (
-                  <div className="mt-1 truncate text-xs text-muted-soft/80">{it.sub}</div>
-                )}
+                {it.sub && <div className="mt-1 truncate text-xs text-muted-soft/80">{it.sub}</div>}
               </div>
             </div>
           ))}
@@ -2338,7 +2933,7 @@ function PhoneModal({
         }
       `}</style>
     </div>,
-    document.body
+    document.body,
   );
 }
 
@@ -2360,17 +2955,65 @@ export function Achievements() {
   ];
 
   const linkedinPosts: FeedPost[] = [
-    { tag: "Profile", title: "Naaga Sumukh B S", meta: "AI / ML student", body: "Information Science & Engineering undergraduate at NMIT (2023–2027). Strong foundation in Python, SQL, R, and data analysis with hands-on projects and applied AI experience. Open to ML / AI internship roles.", href: "https://linkedin.com/in/naaga-sumukh-b-s-326588281" },
-    { tag: "Achievement", title: "1M+ impressions · Top 0.095% globally", meta: "Cleve AI · 2024", body: "Achieved 1M+ impressions on LinkedIn and ranked among the top 0.095% users globally in 2024 according to Cleve AI.", href: "https://linkedin.com/in/naaga-sumukh-b-s-326588281" },
-    { tag: "Experience", title: "Digital Marketing Intern, LinkedInforHER", meta: "2023 – 2024", body: "Created and published professional content across digital platforms. Built automated LinkedIn and YouTube content-posting pipelines using AI-driven workflow tools (N8N, Antigravity) to improve reach and engagement.", href: "https://linkedin.com/in/naaga-sumukh-b-s-326588281" },
-    { tag: "Connect", title: "Open to ML / AI internships", meta: "Bengaluru", body: "Seeking Machine Learning / AI internship roles. Passionate about building real-world AI solutions, leveraging generative AI tools, and contributing to impactful, data-driven systems.", href: "https://linkedin.com/in/naaga-sumukh-b-s-326588281" },
+    {
+      tag: "Profile",
+      title: "Naaga Sumukh B S",
+      meta: "AI / ML student",
+      body: "Information Science & Engineering undergraduate at NMIT (2023–2027). Strong foundation in Python, SQL, R, and data analysis with hands-on projects and applied AI experience. Open to ML / AI internship roles.",
+      href: "https://linkedin.com/in/naaga-sumukh-b-s-326588281",
+    },
+    {
+      tag: "Achievement",
+      title: "1M+ impressions · Top 0.095% globally",
+      meta: "Cleve AI · 2024",
+      body: "Achieved 1M+ impressions on LinkedIn and ranked among the top 0.095% users globally in 2024 according to Cleve AI.",
+      href: "https://linkedin.com/in/naaga-sumukh-b-s-326588281",
+    },
+    {
+      tag: "Experience",
+      title: "Digital Marketing Intern, LinkedInforHER",
+      meta: "2023 – 2024",
+      body: "Created and published professional content across digital platforms. Built automated LinkedIn and YouTube content-posting pipelines using AI-driven workflow tools (N8N, Antigravity) to improve reach and engagement.",
+      href: "https://linkedin.com/in/naaga-sumukh-b-s-326588281",
+    },
+    {
+      tag: "Connect",
+      title: "Open to ML / AI internships",
+      meta: "Bengaluru",
+      body: "Seeking Machine Learning / AI internship roles. Passionate about building real-world AI solutions, leveraging generative AI tools, and contributing to impactful, data-driven systems.",
+      href: "https://linkedin.com/in/naaga-sumukh-b-s-326588281",
+    },
   ];
 
   const githubPosts: FeedPost[] = [
-    { tag: "Repository · JavaScript", title: "Job_Verify_FYP", meta: "Public · active", body: "Final-year project: AI-assisted job-listing verification. Work in progress — issues and PRs welcome.", href: "https://github.com/naagasumukh8/Job_Verify_FYP" },
-    { tag: "Profile README · Python", title: "naagasumukh8", meta: "Public", body: "Profile repository — quick intro and the things I'm currently exploring.", href: "https://github.com/naagasumukh8/naagasumukh8" },
-    { tag: "Status", title: "More repos shipping soon", meta: "Coming up", body: "Agent orchestration experiments and N8N pipeline templates are next on the list to open-source.", href: "https://github.com/naagasumukh8" },
-    { tag: "Follow", title: "Follow along on GitHub", meta: "@naagasumukh8", body: "Joined Oct 2025 — early days. A ⭐ on Job_Verify_FYP genuinely helps.", href: "https://github.com/naagasumukh8" },
+    {
+      tag: "Repository · JavaScript",
+      title: "Job_Verify_FYP",
+      meta: "Public · active",
+      body: "Final-year project: AI-assisted job-listing verification. Work in progress — issues and PRs welcome.",
+      href: "https://github.com/naagasumukh8/Job_Verify_FYP",
+    },
+    {
+      tag: "Profile README · Python",
+      title: "naagasumukh8",
+      meta: "Public",
+      body: "Profile repository — quick intro and the things I'm currently exploring.",
+      href: "https://github.com/naagasumukh8/naagasumukh8",
+    },
+    {
+      tag: "Status",
+      title: "More repos shipping soon",
+      meta: "Coming up",
+      body: "Agent orchestration experiments and N8N pipeline templates are next on the list to open-source.",
+      href: "https://github.com/naagasumukh8",
+    },
+    {
+      tag: "Follow",
+      title: "Follow along on GitHub",
+      meta: "@naagasumukh8",
+      body: "Joined Oct 2025 — early days. A ⭐ on Job_Verify_FYP genuinely helps.",
+      href: "https://github.com/naagasumukh8",
+    },
   ];
 
   const Card = ({
@@ -2398,7 +3041,9 @@ export function Achievements() {
       >
         <div
           className="pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-          style={{ background: `radial-gradient(600px circle at 50% 0%, ${accent}1f, transparent 60%)` }}
+          style={{
+            background: `radial-gradient(600px circle at 50% 0%, ${accent}1f, transparent 60%)`,
+          }}
         />
         <button
           type="button"
@@ -2419,7 +3064,9 @@ export function Achievements() {
               <div className="font-mono text-[10px] uppercase tracking-widest text-muted-soft">
                 {title}
               </div>
-              <div className="truncate font-display text-base font-bold text-body md:text-2xl">{handle}</div>
+              <div className="truncate font-display text-base font-bold text-body md:text-2xl">
+                {handle}
+              </div>
             </div>
           </div>
           <span
@@ -2458,7 +3105,10 @@ export function Achievements() {
   };
 
   return (
-    <section id="achievements" className="relative overflow-hidden px-5 py-20 sm:px-6 sm:py-16 md:px-12 md:py-24">
+    <section
+      id="achievements"
+      className="relative overflow-hidden px-5 py-20 sm:px-6 sm:py-16 md:px-12 md:py-24"
+    >
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black/60" />
       <div className="relative mx-auto max-w-[1300px]">
         <Reveal>
@@ -2471,7 +3121,8 @@ export function Achievements() {
         </Reveal>
         <Reveal delay={200}>
           <p className="mb-10 max-w-2xl text-sm text-muted-soft sm:mb-14 sm:text-lg">
-            A phone-style showcase of featured posts, achievements and live signals from across the web.
+            A phone-style showcase of featured posts, achievements and live signals from across the
+            web.
           </p>
         </Reveal>
         <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
@@ -2531,11 +3182,11 @@ function Portfolio() {
       <Marquee />
       <About />
       <Marquee reverse />
-      
+
       <Projects />
       <Experience />
       <Education />
-      
+
       <Journey />
       <Recognition />
       <Certs />
@@ -2546,6 +3197,3 @@ function Portfolio() {
     </PortfolioShell>
   );
 }
-
-
-

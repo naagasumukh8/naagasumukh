@@ -8,12 +8,7 @@ type Props = {
   speed?: number;
 };
 
-export function GLSLHills({
-  className = "",
-  cameraZ = 125,
-  planeSize = 256,
-  speed = 0.5,
-}: Props) {
+export function GLSLHills({ className = "", cameraZ = 125, planeSize = 256, speed = 0.5 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
 

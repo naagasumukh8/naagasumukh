@@ -8,7 +8,10 @@ export function useInView<T extends HTMLElement>(rootMargin = "300px") {
     if (seen) return;
     const el = ref.current;
     if (!el) return;
-    if (typeof IntersectionObserver === "undefined") { setSeen(true); return; }
+    if (typeof IntersectionObserver === "undefined") {
+      setSeen(true);
+      return;
+    }
     const io = new IntersectionObserver(
       (entries) => {
         if (entries.some((e) => e.isIntersecting)) {
@@ -43,10 +46,13 @@ export function useIdle(delay = 1200) {
   const [ready, setReady] = useState(false);
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const w = window as Window & { requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number };
+    const w = window as Window & {
+      requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
+      cancelIdleCallback?: (id: number) => void;
+    };
     if (w.requestIdleCallback) {
       const id = w.requestIdleCallback(() => setReady(true), { timeout: delay });
-      return () => (window as any).cancelIdleCallback?.(id);
+      return () => w.cancelIdleCallback?.(id);
     }
     const t = setTimeout(() => setReady(true), delay);
     return () => clearTimeout(t);
@@ -84,6 +90,7 @@ export function HeavyGate({
   const desktop = useIsDesktop();
   const allow = !desktopOnly || desktop;
   return (
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     <Tag ref={ref as any} className={className}>
       {allow && inView ? <Suspense fallback={fallback}>{children}</Suspense> : fallback}
     </Tag>

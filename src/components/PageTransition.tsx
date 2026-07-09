@@ -1,16 +1,15 @@
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useRouterState } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 
 /**
  * Persistent ambient background + lightweight route-change cross-fade.
- * The old diagonal backdrop-filter sheen was removed — it was tanking
- * desktop smoothness on every navigation.
+ * Optimized with performant opacity + translateY transitions (no heavy blur filters).
+ * Respects prefers-reduced-motion.
  */
 export function PageTransition({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-
-
+  const prefersReducedMotion = useReducedMotion();
 
   return (
     <>
@@ -35,21 +34,21 @@ export function PageTransition({ children }: { children: ReactNode }) {
 
       {/* Page content cross-fade keyed by route */}
       <AnimatePresence mode="wait" initial={false}>
-        <motion.div
-          key={pathname}
-          initial={{ opacity: 0, y: 8, filter: "blur(6px)" }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          exit={{ opacity: 0, y: -8, filter: "blur(6px)" }}
-          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-          style={{ willChange: "opacity, transform, filter" }}
-        >
-          {children}
-        </motion.div>
+        {prefersReducedMotion ? (
+          <div key={pathname}>{children}</div>
+        ) : (
+          <motion.div
+            key={pathname}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            style={{ willChange: "opacity, transform" }}
+          >
+            {children}
+          </motion.div>
+        )}
       </AnimatePresence>
-
-      {/* Sheen wipe removed — full-viewport backdrop-filter blur on every route
-          change was a major desktop stutter source. Cross-fade above is enough. */}
-
     </>
   );
 }
