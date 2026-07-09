@@ -73,7 +73,7 @@ export function TopNav() {
                   href={l.hash ? `/#${l.hash}` : "/"}
                   onClick={(e) => smoothScrollOnSamePage(e, l.hash)}
                   aria-current={act ? "page" : undefined}
-                  className={`relative inline-flex items-center rounded-full px-3 py-1.5 text-xs font-medium transition-all ${
+                  className={`relative inline-flex items-center rounded-full px-2.5 sm:px-3 py-1.5 text-[11px] sm:text-xs font-medium transition-all ${
                     act
                       ? "text-white shadow-[0_0_22px_rgba(124,110,255,0.65)] ring-1 ring-[rgba(167,139,250,0.7)]"
                       : "text-foreground/70 hover:text-foreground hover:bg-white/10"
