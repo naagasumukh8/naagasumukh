@@ -498,7 +498,7 @@ function Reveal({ children, delay = 0, className = "" }: { children: ReactNode; 
 }
 
 /* ============ SPLIT TEXT REVEAL ============ */
-function SplitWord({ word, delay = 0, glitch = false, gradient = false }: { word: string; delay?: number; glitch?: boolean; gradient?: boolean }) {
+function SplitWord({ word, delay = 0, glitch = false, gradient = false, className = "" }: { word: string; delay?: number; glitch?: boolean; gradient?: boolean; className?: string }) {
   const ref = useRef<HTMLSpanElement>(null);
   const [vis, setVis] = useState(false);
   const [glitching, setGlitching] = useState(false);
