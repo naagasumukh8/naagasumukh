@@ -1938,42 +1938,6 @@ export function BeyondCode() {
   );
 }
 
-/* ============ VIBE (full-bleed shader + cursor image trail) ============ */
-export function Vibe() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const tokens = ["AI", "ML", "Py", "GenAI", "NLP", "N8N", "React", "SQL", "Auto", "✦", "◉", "→"];
-  return (
-    <section
-      ref={containerRef}
-      id="vibe"
-      className="relative h-[80vh] w-full overflow-hidden border-y border-white/[0.04]"
-    >
-      <div className="absolute inset-0 bg-gradient-to-br from-[#1a1f3a] via-[#0F2540] to-black" />
-      <WavingBalls count={16} />
-      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/70" />
-
-      {/* image-trail removed for desktop perf */}
-
-      <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center">
-        <Reveal>
-          <div className="mb-6 font-mono text-[11px] uppercase tracking-[0.3em] text-gold">
-            [ INTERLUDE — MOVE YOUR CURSOR ]
-          </div>
-        </Reveal>
-        <Reveal delay={120}>
-          <h2 className="font-display font-bold leading-[0.9] text-body" style={{ fontSize: "clamp(48px, 10vw, 140px)" }}>
-            Made <span className="gradient-text">to move.</span>
-          </h2>
-        </Reveal>
-        <Reveal delay={240}>
-          <p className="mt-6 max-w-xl font-mono text-[11px] uppercase tracking-[0.25em] text-muted-soft">
-            Every pixel here breathes — same energy I bring to systems.
-          </p>
-        </Reveal>
-      </div>
-    </section>
-  );
-}
 
 
 
