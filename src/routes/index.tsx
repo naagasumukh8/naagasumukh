@@ -145,7 +145,7 @@ function OrbitingDots() {
 }
 
 function CSSMeshBg() {
-  // Pure-CSS animated mesh — replaces the WebGL MeshGradientBg as the global backdrop.
+  // Pure-CSS static mesh — animation removed to keep the compositor free for smooth scrolling.
   return (
     <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden bg-[#05080F]">
       <div
@@ -153,16 +153,10 @@ function CSSMeshBg() {
         style={{
           backgroundImage:
             "radial-gradient(40% 40% at 20% 30%, #5CBDB955 0%, transparent 60%), radial-gradient(45% 45% at 80% 20%, #7C6EFF55 0%, transparent 60%), radial-gradient(50% 50% at 60% 80%, #FFB34744 0%, transparent 65%), radial-gradient(35% 35% at 10% 85%, #0F254088 0%, transparent 70%)",
-          animation: "splashMesh 22s ease-in-out infinite alternate",
           filter: "blur(20px)",
         }}
       />
       <div className="absolute inset-0 bg-[#05080F]/82" />
-      <style>{`@keyframes splashMesh {
-        0%   { transform: translate3d(0,0,0) scale(1); }
-        50%  { transform: translate3d(-3%,2%,0) scale(1.05); }
-        100% { transform: translate3d(2%,-3%,0) scale(0.98); }
-      }`}</style>
     </div>
   );
 }
@@ -333,103 +327,7 @@ export function useLenis() {
 
 /* useBgShifter removed — the near-black transitions (delta ~4% luminance) were imperceptible while burning 8 IntersectionObservers on every scroll. */
 
-/* ============ NEURAL NETWORK CANVAS ============ */
-function NeuralCanvas() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  useEffect(() => {
-    const canvas = canvasRef.current!;
-    const ctx = canvas.getContext("2d")!;
-    let w = 0, h = 0, dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const mouse = { x: -9999, y: -9999 };
-    type P = { x: number; y: number; vx: number; vy: number };
-    let particles: P[] = [];
-    let raf = 0;
-    let visible = true;
-
-    const resize = () => {
-      w = canvas.clientWidth; h = canvas.clientHeight;
-      canvas.width = w * dpr; canvas.height = h * dpr;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      // Lighter density everywhere — O(n²) link loop was hot on desktop.
-      const cap = window.innerWidth < 768 ? 45 : 70;
-      const count = Math.min(cap, Math.floor((w * h) / 20000));
-
-      particles = Array.from({ length: count }, () => ({
-        x: Math.random() * w,
-        y: Math.random() * h,
-        vx: (Math.random() - 0.5) * 0.3,
-        vy: (Math.random() - 0.5) * 0.3,
-      }));
-    };
-    resize();
-    const onMove = (e: globalThis.MouseEvent) => {
-      const r = canvas.getBoundingClientRect();
-      mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top;
-    };
-    const onLeave = () => { mouse.x = -9999; mouse.y = -9999; };
-    window.addEventListener("resize", resize);
-    canvas.addEventListener("mousemove", onMove);
-    canvas.addEventListener("mouseleave", onLeave);
-
-    const draw = () => {
-      if (!visible) { raf = 0; return; }
-      ctx.clearRect(0, 0, w, h);
-      for (const p of particles) {
-        const dx = mouse.x - p.x, dy = mouse.y - p.y;
-        const dist = Math.hypot(dx, dy);
-        if (dist < 180) {
-          p.vx -= (dx / dist) * 0.02;
-          p.vy -= (dy / dist) * 0.02;
-        }
-        p.vx *= 0.99; p.vy *= 0.99;
-        p.x += p.vx; p.y += p.vy;
-        if (p.x < 0) p.x = w; if (p.x > w) p.x = 0;
-        if (p.y < 0) p.y = h; if (p.y > h) p.y = 0;
-      }
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const a = particles[i], b = particles[j];
-          const d = Math.hypot(a.x - b.x, a.y - b.y);
-          if (d < 130) {
-            const op = (1 - d / 130) * 0.35;
-            ctx.strokeStyle = `rgba(124,110,255,${op})`;
-            ctx.lineWidth = 0.6;
-            ctx.beginPath();
-            ctx.moveTo(a.x, a.y);
-            ctx.lineTo(b.x, b.y);
-            ctx.stroke();
-          }
-        }
-      }
-      for (const p of particles) {
-        const dm = Math.hypot(mouse.x - p.x, mouse.y - p.y);
-        const close = dm < 180;
-        ctx.fillStyle = close ? "#7DD3FC" : "#5CBDB9";
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, close ? 2.2 : 1.4, 0, Math.PI * 2);
-        ctx.fill();
-      }
-      raf = requestAnimationFrame(draw);
-    };
-
-    // Pause draw loop when the hero canvas scrolls off-screen.
-    const io = new IntersectionObserver(([e]) => {
-      visible = e.isIntersecting;
-      if (visible && !raf) raf = requestAnimationFrame(draw);
-    }, { threshold: 0.01 });
-    io.observe(canvas);
-    raf = requestAnimationFrame(draw);
-
-    return () => {
-      window.removeEventListener("resize", resize);
-      canvas.removeEventListener("mousemove", onMove);
-      canvas.removeEventListener("mouseleave", onLeave);
-      io.disconnect();
-      cancelAnimationFrame(raf);
-    };
-  }, []);
-  return <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />;
-}
+// NeuralCanvas removed to optimize rendering performance.
 
 /* ============ REVEAL ON SCROLL ============ */
 function Reveal({ children, delay = 0, className = "" }: { children: ReactNode; delay?: number; className?: string }) {
@@ -780,151 +678,23 @@ export function NoiseOverlay() {
 /* ============ INTRO AVATAR (floating PiP) ============ */
 
 /* ============ HERO ============ */
+/* ============ HERO ============ */
 export function Hero() {
-  const splineHostRef = useRef<HTMLDivElement>(null);
-  const splineSceneRef = useRef<{ emitEvent: (eventName: string, targetName?: string) => void; getApp: () => unknown } | null>(null);
-  const splineAppRef = useRef<any>(null);
-  const heroInViewRef = useRef(true);
-  const [wave, setWave] = useState(false);
-  const forwardRafRef = useRef(0);
-  const lastPointerRef = useRef<PointerEvent | globalThis.MouseEvent | null>(null);
-
-  // Pause Spline's render loop when hero scrolls out of view — biggest desktop
-  // smoothness win. Spline runs continuous rAF/WebGL that competes with scroll.
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const host = splineHostRef.current;
-    if (!host || typeof IntersectionObserver === "undefined") return;
-    const io = new IntersectionObserver((entries) => {
-      const visible = entries.some((e) => e.isIntersecting);
-      heroInViewRef.current = visible;
-      const app = splineAppRef.current;
-      if (!app) return;
-      try {
-        if (visible) app.play?.();
-        else app.stop?.();
-      } catch { /* runtime may not expose */ }
-    }, { rootMargin: "100px" });
-    io.observe(host);
-    const onVis = () => {
-      const app = splineAppRef.current;
-      if (!app) return;
-      try {
-        if (document.hidden || !heroInViewRef.current) app.stop?.();
-        else app.play?.();
-      } catch { /* noop */ }
-    };
-    document.addEventListener("visibilitychange", onVis);
-    return () => { io.disconnect(); document.removeEventListener("visibilitychange", onVis); };
-  }, []);
-
-  const handleSplineLoad = (app: any) => {
-    splineAppRef.current = app;
-    // Cap DPR — retina desktops run Spline at 2x pixel work; 1.5 looks identical, ~55% less GPU.
-    try {
-      const dpr = Math.min(typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1, 1.5);
-      app?._renderer?.setPixelRatio?.(dpr);
-      const host = splineHostRef.current;
-      if (host) app?.setSize?.(host.clientWidth, host.clientHeight);
-    } catch { /* noop */ }
-  };
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const forwardCursorToSpline = (event: PointerEvent | globalThis.MouseEvent) => {
-      if (!heroInViewRef.current) return; // skip work entirely when hero off-screen
-      lastPointerRef.current = event;
-      if (forwardRafRef.current) return;
-      forwardRafRef.current = requestAnimationFrame(() => {
-        forwardRafRef.current = 0;
-        const event = lastPointerRef.current;
-        if (!event) return;
-        const host = splineHostRef.current;
-        const canvas = [...(host?.querySelectorAll("canvas") ?? [])]
-          .sort((a, b) => (b.getBoundingClientRect().width * b.getBoundingClientRect().height) - (a.getBoundingClientRect().width * a.getBoundingClientRect().height))[0];
-        if (!host || !canvas) return;
-        const rect = host.getBoundingClientRect();
-        if (rect.bottom < 0 || rect.top > window.innerHeight) return;
-
-        canvas.dispatchEvent(new MouseEvent("mousemove", {
-          clientX: event.clientX,
-          clientY: event.clientY,
-          screenX: event.screenX,
-          screenY: event.screenY,
-          bubbles: true,
-          cancelable: false,
-          view: window,
-        }));
-        canvas.dispatchEvent(new PointerEvent("pointermove", {
-          clientX: event.clientX,
-          clientY: event.clientY,
-          screenX: event.screenX,
-          screenY: event.screenY,
-          pointerId: "pointerId" in event ? event.pointerId : 1,
-          pointerType: "pointerType" in event ? event.pointerType || "mouse" : "mouse",
-          isPrimary: "isPrimary" in event ? event.isPrimary : true,
-          bubbles: true,
-          cancelable: false,
-        }));
-      });
-    };
-
-    window.addEventListener("mousemove", forwardCursorToSpline, { passive: true });
-    window.addEventListener("pointermove", forwardCursorToSpline, { passive: true });
-    return () => {
-      window.removeEventListener("mousemove", forwardCursorToSpline);
-      window.removeEventListener("pointermove", forwardCursorToSpline);
-      if (forwardRafRef.current) cancelAnimationFrame(forwardRafRef.current);
-    };
-  }, []);
-
-  const handleRobotClick = () => {
-    setWave(true);
-    try {
-      splineSceneRef.current?.emitEvent("click");
-    } catch { /* scene may not have a click event */ }
-    setTimeout(() => setWave(false), 2500);
-  };
-
   return (
     <section id="hero" className="relative flex min-h-screen items-center overflow-hidden">
-      {/* Backdrop: grid + neural canvas */}
+      {/* Backdrop: grid + static radial gradients */}
       <div className="absolute inset-0 grid-bg opacity-25" />
-      <div className="absolute inset-0 opacity-50">
-        <NeuralCanvas />
-      </div>
+      <div
+        className="absolute inset-0 opacity-50 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(circle at 75% 50%, rgba(124,110,255,0.15) 0%, transparent 60%), radial-gradient(circle at 25% 40%, rgba(92,189,185,0.1) 0%, transparent 50%)",
+        }}
+      />
 
-      {/* Spline robot — full hero bleed so it tracks the cursor everywhere */}
-      <div ref={splineHostRef} data-spline-host className="absolute inset-0 z-0">
-        <div className="absolute inset-0 cursor-pointer" onClick={handleRobotClick} />
-        {/* Static backdrop while Spline streams in — same tone so there's no visible pop-in */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,rgba(124,110,255,0.18),transparent_60%)]" />
-        <SplineScene
-          ref={splineSceneRef}
-          scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-          className="absolute inset-0 h-full w-full"
-          onLoad={handleSplineLoad}
-        />
-        {/* Speech bubble */}
-        <div
-          className="pointer-events-none absolute right-[10vw] top-[22vh] z-20 transition-all duration-500"
-          style={{
-            opacity: wave ? 1 : 0,
-            transform: wave ? "translateY(0) scale(1)" : "translateY(10px) scale(0.9)",
-          }}
-        >
-          <div className="relative rounded-2xl border border-white/20 bg-[#0B1A2E]/90 px-5 py-3 text-body shadow-[0_10px_40px_-10px_rgba(0,0,0,0.6)] backdrop-blur-md">
-            <span className="text-xl">👋</span>
-            <span className="ml-2 font-display text-lg font-bold">Hi there!</span>
-            <div
-              className="absolute -bottom-2 left-6 h-4 w-4 -rotate-45 border-b border-r border-white/20 bg-[#0B1A2E]/90"
-            />
-          </div>
-        </div>
-        {/* Legibility veil — left side for hero copy */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#05080F] via-[#05080F]/80 to-transparent md:via-[#05080F]/55" />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#05080F]" />
-      </div>
+      {/* Left-to-right + bottom fade overlays */}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#05080F] via-[#05080F]/80 to-transparent md:via-[#05080F]/55" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#05080F]" />
 
       <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" fill="white" />
 
@@ -942,8 +712,8 @@ export function Hero() {
         </div>
 
         <h1 className="font-display font-bold leading-[0.82] tracking-tight text-body">
-          <div className="block w-full" style={{ fontSize: "clamp(40px, 9vw, 150px)" }}><SplitWord word="Building" delay={300} /></div>
-          <div className="block w-full" style={{ fontSize: "clamp(40px, 9vw, 150px)" }}><SplitWord word="Intelligent" delay={600} glitch className="font-elegant" /></div>
+          <div className="block w-full" style={{ fontSize: "clamp(40px, 9vw, 150px)" }}><SplitWord word="Building" delay={300} glitch /></div>
+          <div className="block w-full" style={{ fontSize: "clamp(40px, 9vw, 150px)" }}><SplitWord word="Intelligent" delay={600} glitch /></div>
           <div className="block w-full" style={{ fontSize: "clamp(40px, 9vw, 150px)" }}><SplitWord word="Systems." delay={900} gradient /></div>
         </h1>
 
@@ -971,7 +741,10 @@ export function Hero() {
 
       <div className="absolute bottom-10 left-1/2 z-10 -translate-x-1/2 flex flex-col items-center gap-2">
         <span className="block h-14 w-px overflow-hidden bg-white/10 relative">
-          <span className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white to-transparent" style={{ animation: "heartbeatLine 1.8s ease-in-out infinite" }} />
+          <span
+            className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white to-transparent"
+            style={{ animation: "heartbeatLine 1.8s ease-in-out infinite" }}
+          />
         </span>
         <span className="font-mono text-[10px] text-muted-soft leading-none">↓</span>
       </div>
