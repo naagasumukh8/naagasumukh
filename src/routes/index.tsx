@@ -382,7 +382,7 @@ function SplitWord({ word, delay = 0, glitch = false, gradient = false, classNam
       {word.split("").map((c, i) => (
         <span
           key={i}
-          className={`inline-block ${gradient ? "gradient-text" : ""}`}
+          className={`inline-block font-display font-bold ${gradient ? "gradient-text" : ""}`}
           style={{
             transform: vis ? "translateY(0)" : "translateY(110%)",
             opacity: vis ? 1 : 0,
