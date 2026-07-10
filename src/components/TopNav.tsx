@@ -53,17 +53,17 @@ export function TopNav() {
           : "bg-transparent border-b border-transparent"
       }`}
     >
-      <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
-        <Link to="/" className="group flex items-center gap-2.5">
+      <nav className="mx-auto flex max-w-6xl items-center justify-between gap-2 px-3 py-3 sm:px-6">
+        <Link to="/" className="group flex shrink-0 items-center gap-2.5">
           <span className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full ring-2 ring-primary/40 shadow-lg shadow-primary/20 active:scale-[0.94] transition-transform duration-200">
             <img src={portrait.url} alt="Naaga Sumukh" className="h-full w-full object-cover" />
           </span>
-          <span className="hidden sm:inline font-mono text-[12px] font-bold tracking-[0.18em] text-foreground">
+          <span className="hidden md:inline font-mono text-[12px] font-bold tracking-[0.18em] text-foreground">
             NAAGA&nbsp;SUMUKH
           </span>
         </Link>
 
-        <ul className="flex items-center gap-0.5 sm:gap-1 rounded-full border border-white/15 bg-white/[0.06] px-1.5 py-1 sm:px-2 [backdrop-filter:blur(18px)_saturate(160%)] shadow-[0_8px_32px_rgba(0,0,0,0.35),inset_0_1px_0_rgba(255,255,255,0.08)]">
+        <ul className="flex min-w-0 items-center gap-0.5 sm:gap-1 rounded-full border border-white/15 bg-white/[0.06] px-1 py-1 sm:px-2 [backdrop-filter:blur(18px)_saturate(160%)] shadow-[0_8px_32px_rgba(0,0,0,0.35),inset_0_1px_0_rgba(255,255,255,0.08)]">
           {links.map((l) => {
             const act = isActive(l.id);
             return (
@@ -72,7 +72,7 @@ export function TopNav() {
                   href={l.hash ? `/#${l.hash}` : "/"}
                   onClick={(e) => smoothScrollOnSamePage(e, l.hash)}
                   aria-current={act ? "page" : undefined}
-                  className={`relative inline-flex items-center rounded-full px-2.5 sm:px-3 py-1.5 text-[11px] sm:text-xs font-medium transition-all ${
+                  className={`relative inline-flex items-center rounded-full px-2 sm:px-3 py-1.5 text-[10px] sm:text-xs font-medium whitespace-nowrap transition-all ${
                     act
                       ? "text-white shadow-[0_0_22px_rgba(124,110,255,0.65)] ring-1 ring-[rgba(167,139,250,0.7)]"
                       : "text-foreground/70 hover:text-foreground hover:bg-white/10"
