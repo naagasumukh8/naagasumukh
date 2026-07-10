@@ -772,7 +772,7 @@ export function Hero() {
 
       <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" fill="white" />
 
-      <div className="pointer-events-none relative z-10 flex w-full md:w-1/2 max-w-[1600px] flex-col items-start px-6 md:px-12 text-left [&_a]:pointer-events-auto [&_button]:pointer-events-auto">
+      <div className="pointer-events-none relative z-10 flex w-full md:w-1/2 max-w-[1600px] flex-col items-start px-6 md:px-12 pt-20 md:pt-28 text-left [&_a]:pointer-events-auto [&_button]:pointer-events-auto">
         <div
           className="hero-badge mb-10 inline-flex items-center gap-3 rounded-full border border-white/15 bg-white/[0.06] px-4 py-2 font-mono text-[11px] uppercase tracking-widest text-body [backdrop-filter:blur(12px)_saturate(140%)]"
           style={{ opacity: 0, animation: "fadeUp 1s 0.2s forwards" }}
