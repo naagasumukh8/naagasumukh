@@ -498,7 +498,7 @@ function Reveal({ children, delay = 0, className = "" }: { children: ReactNode; 
 }
 
 /* ============ SPLIT TEXT REVEAL ============ */
-function SplitWord({ word, delay = 0, glitch = false, gradient = false }: { word: string; delay?: number; glitch?: boolean; gradient?: boolean }) {
+function SplitWord({ word, delay = 0, glitch = false, gradient = false, className = "" }: { word: string; delay?: number; glitch?: boolean; gradient?: boolean; className?: string }) {
   const ref = useRef<HTMLSpanElement>(null);
   const [vis, setVis] = useState(false);
   const [glitching, setGlitching] = useState(false);
@@ -515,7 +515,7 @@ function SplitWord({ word, delay = 0, glitch = false, gradient = false }: { word
     return () => clearInterval(iv);
   }, [glitch]);
   return (
-    <span ref={ref} className={`inline-block overflow-hidden align-bottom ${glitching ? "animate-glitch" : ""}`}>
+    <span ref={ref} className={`inline-block overflow-hidden align-bottom ${glitching ? "animate-glitch" : ""} ${className}`}>
       {word.split("").map((c, i) => (
         <span
           key={i}
@@ -978,7 +978,7 @@ export function Hero() {
 
         <h1 className="font-display font-bold leading-[0.82] tracking-tight text-body">
           <div className="block w-full" style={{ fontSize: "clamp(40px, 9vw, 150px)" }}><SplitWord word="Building" delay={300} /></div>
-          <div className="block w-full" style={{ fontSize: "clamp(40px, 9vw, 150px)" }}><SplitWord word="Intelligent" delay={600} glitch /></div>
+          <div className="block w-full" style={{ fontSize: "clamp(40px, 9vw, 150px)" }}><SplitWord word="Intelligent" delay={600} glitch className="font-elegant" /></div>
           <div className="block w-full" style={{ fontSize: "clamp(40px, 9vw, 150px)" }}><SplitWord word="Systems." delay={900} gradient /></div>
         </h1>
 

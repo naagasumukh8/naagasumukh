@@ -34,6 +34,7 @@
   --font-display: "Anton", "Archivo Black", sans-serif;
   --font-sans: "Inter", sans-serif;
   --font-mono: "JetBrains Mono", monospace;
+  --font-elegant: "Playfair Display", serif;
 }
 
 :root {
