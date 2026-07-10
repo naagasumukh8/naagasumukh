@@ -815,19 +815,18 @@ function GlowTile({
       className={`group relative h-full overflow-hidden rounded-2xl transition-transform duration-300 motion-safe:hover:-translate-y-1 ${className}`}
       style={{ ["--mx" as string]: "50%", ["--my" as string]: "50%" }}
     >
-      {/* Animated conic border (revealed on hover) */}
+      {/* Static linear gradient border (revealed on hover) — replacing CPU-heavy masked rotating conic gradient */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+        className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
         style={{
           background:
-            "conic-gradient(from var(--angle,0deg), rgba(167,139,250,0.9), rgba(244,196,107,0.7), rgba(64,200,255,0.6), rgba(167,139,250,0.9))",
+            "linear-gradient(135deg, rgba(167,139,250,0.85), rgba(244,196,107,0.7), rgba(64,200,255,0.6))",
           WebkitMask:
             "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
           WebkitMaskComposite: "xor",
           maskComposite: "exclude",
           padding: "1px",
-          animation: "tile-spin 6s linear infinite",
         }}
       />
       {/* Inner card */}
@@ -905,25 +904,12 @@ export function About() {
           <Reveal>
             <div className="relative mx-auto h-56 w-56 md:h-[26rem] md:w-[26rem]" style={{ animation: "avatarFloat 6s ease-in-out infinite" }}>
               <div className="absolute -inset-6 rounded-full bg-violet/15 blur-[60px] md:-inset-10 md:blur-[90px]" />
-              {/* Outer counter-rotating gold ring */}
+              {/* Premium clean static border glow — replacing counter-rotating conic gradients to save GPU performance */}
               <div
-                className="absolute rounded-full pointer-events-none"
+                className="absolute -inset-[3px] rounded-full opacity-60"
                 style={{
-                  inset: "-10px",
-                  background: "conic-gradient(from 0deg, rgba(244,196,107,0.0) 0deg, rgba(244,196,107,0.85) 80deg, rgba(255,140,90,0.55) 160deg, rgba(244,196,107,0.0) 260deg, rgba(244,196,107,0.0) 360deg)",
-                  WebkitMask: "radial-gradient(farthest-side, transparent calc(100% - 4px), #000 calc(100% - 3px))",
-                          mask: "radial-gradient(farthest-side, transparent calc(100% - 4px), #000 calc(100% - 3px))",
-                  animation: "portrait-spin-rev 28s linear infinite",
-                  filter: "drop-shadow(0 0 24px rgba(244,196,107,0.35))",
-                }}
-              />
-              <div
-                className="absolute -inset-[2px] rounded-full"
-                style={{
-                  background:
-                    "conic-gradient(from 140deg, rgba(167,139,250,0.95) 0%, rgba(255,255,255,0.05) 40%, rgba(255,255,255,0.05) 60%, rgba(244,196,107,0.85) 100%)",
-                  animation: "portrait-spin 22s linear infinite",
-                  filter: "drop-shadow(0 0 28px rgba(124,110,255,0.45))",
+                  background: "linear-gradient(135deg, #7C6EFF, #FFB347, #5CBDB9)",
+                  filter: "blur(4px)",
                 }}
               />
               <div className="absolute inset-[3px] rounded-full bg-background" />
@@ -1027,7 +1013,7 @@ export function About() {
                   {focus.map((f) => (
                     <div
                       key={f.title}
-                      className="rounded-xl bg-white/[0.06] border border-white/[0.1] backdrop-blur-md p-3 md:p-4"
+                      className="rounded-xl bg-[#0B1424]/85 border border-white/[0.08] p-3 md:p-4 shadow-lg"
                     >
                       <div className="mb-2 inline-flex h-8 w-8 items-center justify-center rounded-lg bg-violet/20 text-violet ring-1 ring-violet/30">
                         <f.icon size={16} />
