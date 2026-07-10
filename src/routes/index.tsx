@@ -978,7 +978,7 @@ export function Hero() {
 
         <h1 className="font-display font-bold leading-[0.82] tracking-tight text-body">
           <div className="block w-full" style={{ fontSize: "clamp(40px, 9vw, 150px)" }}><SplitWord word="Building" delay={300} /></div>
-          <div className="block w-full" style={{ fontSize: "clamp(40px, 9vw, 150px)" }}><SplitWord word="Intelligent" delay={600} glitch /></div>
+          <div className="block w-full" style={{ fontSize: "clamp(40px, 9vw, 150px)" }}><SplitWord word="Intelligent" delay={600} glitch className="font-elegant" /></div>
           <div className="block w-full" style={{ fontSize: "clamp(40px, 9vw, 150px)" }}><SplitWord word="Systems." delay={900} gradient /></div>
         </h1>
 
