@@ -715,12 +715,44 @@ export function Hero() {
     return () => { io.disconnect(); document.removeEventListener("visibilitychange", onVis); };
   }, []);
 
+  // Pause Spline rendering during active scrolling to free up 100% of CPU/GPU for the scroll compositor.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const host = splineHostRef.current;
+    if (!host) return;
+
+    let scrollTimeout: ReturnType<typeof setTimeout>;
+
+    const handleScrollStart = () => {
+      const app = splineAppRef.current;
+      if (!app) return;
+      try {
+        app.stop?.();
+      } catch { /* noop */ }
+
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        const app = splineAppRef.current;
+        if (app && heroInViewRef.current && !document.hidden) {
+          try {
+            app.play?.();
+          } catch { /* noop */ }
+        }
+      }, 150);
+    };
+
+    window.addEventListener("scroll", handleScrollStart, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleScrollStart);
+      clearTimeout(scrollTimeout);
+    };
+  }, []);
+
   const handleSplineLoad = (app: any) => {
     splineAppRef.current = app;
-    // Cap DPR — retina desktops run Spline at 2x pixel work; 1.5 looks identical, ~55% less GPU.
     try {
-      const dpr = Math.min(typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1, 1.5);
-      app?._renderer?.setPixelRatio?.(dpr);
+      // Cap DPR at 1.0 - reduces rendering pixel workload by up to 75% on Retina/High-DPI laptops.
+      app?._renderer?.setPixelRatio?.(1.0);
       const host = splineHostRef.current;
       if (host) app?.setSize?.(host.clientWidth, host.clientHeight);
     } catch { /* noop */ }
