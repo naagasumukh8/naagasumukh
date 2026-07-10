@@ -2541,7 +2541,7 @@ function Portfolio() {
       <Certs />
       <BeyondCode />
       <Achievements />
-      <Vibe />
+      
       <Contact />
     </PortfolioShell>
   );

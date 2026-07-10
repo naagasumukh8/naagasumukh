@@ -10,7 +10,6 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WorkRouteImport } from './routes/work'
-import { Route as VibeRouteImport } from './routes/vibe'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as JourneyRouteImport } from './routes/journey'
 import { Route as ContactRouteImport } from './routes/contact'
@@ -20,11 +19,6 @@ import { Route as IndexRouteImport } from './routes/index'
 const WorkRoute = WorkRouteImport.update({
   id: '/work',
   path: '/work',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const VibeRoute = VibeRouteImport.update({
-  id: '/vibe',
-  path: '/vibe',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -59,7 +53,6 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/journey': typeof JourneyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/vibe': typeof VibeRoute
   '/work': typeof WorkRoute
 }
 export interface FileRoutesByTo {
@@ -68,7 +61,6 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/journey': typeof JourneyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/vibe': typeof VibeRoute
   '/work': typeof WorkRoute
 }
 export interface FileRoutesById {
@@ -78,28 +70,13 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/journey': typeof JourneyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/vibe': typeof VibeRoute
   '/work': typeof WorkRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/about'
-    | '/contact'
-    | '/journey'
-    | '/sitemap.xml'
-    | '/vibe'
-    | '/work'
+  fullPaths: '/' | '/about' | '/contact' | '/journey' | '/sitemap.xml' | '/work'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/about'
-    | '/contact'
-    | '/journey'
-    | '/sitemap.xml'
-    | '/vibe'
-    | '/work'
+  to: '/' | '/about' | '/contact' | '/journey' | '/sitemap.xml' | '/work'
   id:
     | '__root__'
     | '/'
@@ -107,7 +84,6 @@ export interface FileRouteTypes {
     | '/contact'
     | '/journey'
     | '/sitemap.xml'
-    | '/vibe'
     | '/work'
   fileRoutesById: FileRoutesById
 }
@@ -117,7 +93,6 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   JourneyRoute: typeof JourneyRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
-  VibeRoute: typeof VibeRoute
   WorkRoute: typeof WorkRoute
 }
 
@@ -128,13 +103,6 @@ declare module '@tanstack/react-router' {
       path: '/work'
       fullPath: '/work'
       preLoaderRoute: typeof WorkRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/vibe': {
-      id: '/vibe'
-      path: '/vibe'
-      fullPath: '/vibe'
-      preLoaderRoute: typeof VibeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sitemap.xml': {
@@ -181,7 +149,6 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   JourneyRoute: JourneyRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
-  VibeRoute: VibeRoute,
   WorkRoute: WorkRoute,
 }
 export const routeTree = rootRouteImport
