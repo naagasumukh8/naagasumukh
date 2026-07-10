@@ -515,7 +515,7 @@ function SplitWord({ word, delay = 0, glitch = false, gradient = false, classNam
     return () => clearInterval(iv);
   }, [glitch]);
   return (
-    <span ref={ref} className={`inline-block overflow-hidden align-bottom ${glitching ? "animate-glitch" : ""}`}>
+    <span ref={ref} className={`inline-block overflow-hidden align-bottom ${glitching ? "animate-glitch" : ""} ${className}`}>
       {word.split("").map((c, i) => (
         <span
           key={i}
