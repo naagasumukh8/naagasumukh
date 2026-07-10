@@ -8,5 +8,5 @@
 - [About](/about): Background, skills, and how he builds.
 - [Work](/work): Selected projects across AI/ML, automation, and interactive 3D.
 - [Journey](/journey): Timeline, recognition, and credentials.
-- [Vibe](/vibe): Motion, shader, and interactive experiments.
+
 - [Contact](/contact): How to get in touch.

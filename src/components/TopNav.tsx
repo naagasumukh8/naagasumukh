@@ -8,7 +8,7 @@ const links = [
   { hash: "about", label: "About", id: "about" },
   { hash: "work", label: "Work", id: "work" },
   { hash: "journey", label: "Journey", id: "journey" },
-  { hash: "vibe", label: "Vibe", id: "vibe" },
+  
   { hash: "contact", label: "Contact", id: "contact" },
 ] as const;
 
