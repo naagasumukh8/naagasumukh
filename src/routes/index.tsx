@@ -685,8 +685,6 @@ export function Hero() {
   const splineAppRef = useRef<any>(null);
   const heroInViewRef = useRef(true);
   const [wave, setWave] = useState(false);
-  const forwardRafRef = useRef(0);
-  const lastPointerRef = useRef<PointerEvent | globalThis.MouseEvent | null>(null);
 
   // Pause Spline's render loop when hero scrolls out of view — biggest desktop
   // smoothness win. Spline runs continuous rAF/WebGL that competes with scroll.
@@ -728,55 +726,6 @@ export function Hero() {
     } catch { /* noop */ }
   };
 
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const forwardCursorToSpline = (event: PointerEvent | globalThis.MouseEvent) => {
-      if (!heroInViewRef.current) return; // skip work entirely when hero off-screen
-      lastPointerRef.current = event;
-      if (forwardRafRef.current) return;
-      forwardRafRef.current = requestAnimationFrame(() => {
-        forwardRafRef.current = 0;
-        const event = lastPointerRef.current;
-        if (!event) return;
-        const host = splineHostRef.current;
-        const canvas = [...(host?.querySelectorAll("canvas") ?? [])]
-          .sort((a, b) => (b.getBoundingClientRect().width * b.getBoundingClientRect().height) - (a.getBoundingClientRect().width * a.getBoundingClientRect().height))[0];
-        if (!host || !canvas) return;
-        const rect = host.getBoundingClientRect();
-        if (rect.bottom < 0 || rect.top > window.innerHeight) return;
-
-        canvas.dispatchEvent(new MouseEvent("mousemove", {
-          clientX: event.clientX,
-          clientY: event.clientY,
-          screenX: event.screenX,
-          screenY: event.screenY,
-          bubbles: true,
-          cancelable: false,
-          view: window,
-        }));
-        canvas.dispatchEvent(new PointerEvent("pointermove", {
-          clientX: event.clientX,
-          clientY: event.clientY,
-          screenX: event.screenX,
-          screenY: event.screenY,
-          pointerId: "pointerId" in event ? event.pointerId : 1,
-          pointerType: "pointerType" in event ? event.pointerType || "mouse" : "mouse",
-          isPrimary: "isPrimary" in event ? event.isPrimary : true,
-          bubbles: true,
-          cancelable: false,
-        }));
-      });
-    };
-
-    window.addEventListener("mousemove", forwardCursorToSpline, { passive: true });
-    window.addEventListener("pointermove", forwardCursorToSpline, { passive: true });
-    return () => {
-      window.removeEventListener("mousemove", forwardCursorToSpline);
-      window.removeEventListener("pointermove", forwardCursorToSpline);
-      if (forwardRafRef.current) cancelAnimationFrame(forwardRafRef.current);
-    };
-  }, []);
-
   const handleRobotClick = () => {
     setWave(true);
     try {
@@ -791,8 +740,7 @@ export function Hero() {
       <div className="absolute inset-0 grid-bg opacity-25" />
 
       {/* Spline robot — full hero bleed so it tracks the cursor everywhere */}
-      <div ref={splineHostRef} data-spline-host className="absolute inset-0 z-0">
-        <div className="absolute inset-0 cursor-pointer" onClick={handleRobotClick} />
+      <div ref={splineHostRef} data-spline-host className="absolute inset-0 z-0 cursor-pointer" onClick={handleRobotClick}>
         {/* Static backdrop while Spline streams in — same tone so there's no visible pop-in */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,rgba(124,110,255,0.18),transparent_60%)]" />
         <SplineScene
