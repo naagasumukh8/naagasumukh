@@ -772,7 +772,7 @@ export function Hero() {
       <div className="absolute inset-0 grid-bg opacity-25" />
 
       {/* Spline robot — full hero bleed so it tracks the cursor everywhere */}
-      <div ref={splineHostRef} data-spline-host className="absolute inset-0 z-0 cursor-pointer" onClick={handleRobotClick}>
+      <div ref={splineHostRef} data-spline-host className="absolute inset-0 z-0 cursor-pointer">
         {/* Static backdrop while Spline streams in — same tone so there's no visible pop-in */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,rgba(124,110,255,0.18),transparent_60%)]" />
         <SplineScene
@@ -780,6 +780,7 @@ export function Hero() {
           scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
           className="absolute inset-0 h-full w-full"
           onLoad={handleSplineLoad}
+          onClick={handleRobotClick}
         />
         {/* Speech bubble */}
         <div

@@ -12,10 +12,11 @@ interface SplineSceneProps {
   scene: string
   className?: string
   onLoad?: (spline: unknown) => void
+  onClick?: (event: React.MouseEvent<HTMLDivElement>) => void
 }
 
 export const SplineScene = forwardRef<SplineSceneRef, SplineSceneProps>(
-  function SplineScene({ scene, className, onLoad }, ref) {
+  function SplineScene({ scene, className, onLoad, onClick }, ref) {
     const appRef = useRef<unknown>(null)
 
     useImperativeHandle(ref, () => ({
@@ -41,7 +42,7 @@ export const SplineScene = forwardRef<SplineSceneRef, SplineSceneProps>(
 
     return (
       <Suspense fallback={null}>
-        <Spline scene={scene} className={className} onLoad={(spline) => {
+        <Spline scene={scene} className={className} onClick={onClick} onLoad={(spline) => {
           appRef.current = spline
           onLoad?.(spline)
         }} />
