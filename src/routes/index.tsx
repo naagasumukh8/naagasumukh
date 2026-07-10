@@ -103,41 +103,6 @@ function SectionBackdrop({ variant }: { variant: "paths" | "dots" | "aurora-viol
 import { SplineScene } from "@/components/ui/splite";
 
 /* ============ LIGHTWEIGHT CSS EFFECTS (replace heavy WebGL backdrops) ============ */
-function WavingBalls({ count = 14 }: { count?: number }) {
-  // Cheap floating/waving balls — pure CSS keyframes, no canvas, no WebGL.
-  const balls = Array.from({ length: count });
-  return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden">
-      {balls.map((_, i) => {
-        const size = 40 + (i * 13) % 80;
-        const left = (i * 37) % 100;
-        const top = (i * 53) % 100;
-        const dur = 6 + (i % 5);
-        const delay = (i % 7) * -0.8;
-        const hue = i % 3 === 0 ? "#5CBDB9" : i % 3 === 1 ? "#7C6EFF" : "#FFB347";
-        return (
-          <span
-            key={i}
-            className="absolute rounded-full blur-2xl opacity-60"
-            style={{
-              width: size,
-              height: size,
-              left: `${left}%`,
-              top: `${top}%`,
-              background: `radial-gradient(circle, ${hue}aa 0%, transparent 70%)`,
-              animation: `splashFloat ${dur}s ease-in-out ${delay}s infinite alternate`,
-            }}
-          />
-        );
-      })}
-      <style>{`@keyframes splashFloat {
-        0% { transform: translate3d(0,0,0) scale(1); }
-        50% { transform: translate3d(20px,-30px,0) scale(1.15); }
-        100% { transform: translate3d(-15px,25px,0) scale(0.9); }
-      }`}</style>
-    </div>
-  );
-}
 
 function OrbitingDots() {
   // CSS orbiting dots — replaces the heavy SpiralAnimation WebGL canvas.
