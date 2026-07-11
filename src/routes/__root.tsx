@@ -13,7 +13,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { PageTransition } from "../components/PageTransition";
 import { TopNav } from "../components/TopNav";
-import { SplashLoader } from "../components/SplashLoader";
+import { SplashGate } from "../components/SplashGate";
 
 
 
