@@ -1230,7 +1230,7 @@ export function Projects() {
     {
       n: "01",
       name: "SacchAI",
-      desc: "Browser extension for real-time detection of unauthorized AI assistance during online interviews — monitors behavioural signals, clipboard activity, tab-switching and speech/response patterns. Custom ensemble classifier generates recruiter-facing reports with genuineness scores, suspicious-activity flags and plagiarism analysis.",
+      desc: "AI-powered browser extension that detects unauthorized AI assistance during online interviews by analyzing clipboard activity, tab switching, speech patterns, and user behavior. An ensemble ML pipeline assesses candidate authenticity and generates recruiter reports with risk scores, behavioral insights, and plagiarism analysis.",
       badge: "88.4% accuracy",
       tags: ["JavaScript", "TypeScript", "React", "Chrome APIs", "Python", "Scikit-learn", "Node.js", "REST APIs"],
       link: "https://github.com/naagasumukh8",
@@ -1240,7 +1240,7 @@ export function Projects() {
     {
       n: "02",
       name: "MediConnect",
-      desc: "Full-stack HealthcareOS: multi-hospital management, role-based access, appointment scheduling, digital prescriptions, inter-department referrals, pharmacy inventory and AI-assisted patient support. Automated follow-ups, shared medical memory, family accounts and secure file storage via Supabase RLS, validated end-to-end with Playwright + TypeScript.",
+      desc: "AI-powered hospital management platform supporting multi-hospital operations, appointment scheduling, digital prescriptions, pharmacy inventory, referrals, and role-based access control. Includes AI-assisted patient support, Google Calendar scheduling, secure document storage, and family account management using Supabase Row-Level Security.",
       badge: "Live product",
       tags: ["React", "TypeScript", "Tailwind", "Supabase RLS", "Google Calendar API", "Playwright"],
       link: "https://easyhospital.lovable.app",
@@ -1250,7 +1250,7 @@ export function Projects() {
     {
       n: "03",
       name: "JobShield — AI-Powered Fake Job Detection",
-      desc: "Final-year project. Multi-stage fraud detector: NLP + ML on job posts, recruiter verification via email domains, WHOIS and company sites. Explainable verdicts — Likely Genuine, Suspicious, or High Scam Risk.",
+      desc: "Final-year project. NLP-based platform that identifies fraudulent job postings by analyzing job descriptions, recruiter information, and company credibility indicators. Generates explainable fraud risk assessments classifying postings as Genuine, Suspicious, or High Scam Risk using machine learning techniques.",
       badge: "Multi-level verification",
       tags: ["Python", "Scikit-learn", "spaCy", "BeautifulSoup", "WHOIS", "Pandas", "TF-IDF", "Random Forest"],
       link: "https://github.com/naagasumukh8/Job_Verify_FYP",
