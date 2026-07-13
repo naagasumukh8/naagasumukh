@@ -983,7 +983,7 @@ export function About() {
     { label: "Statement", value: '"Building real systems, not just demos."', accent: "violet", wide: true, italic: true },
     { label: "LinkedIn Impressions", value: "1M+", sub: "Last 12 months", accent: "gold" },
     { label: "Cleve AI Users", value: "Top 0.095%", sub: "Global rank", accent: "gold" },
-    { label: "CGPA · NMIT", value: "7.95", sub: "B.E. Information Science", accent: "gold" },
+    { label: "CGPA · NMIT", value: "7.99", sub: "B.E. Information Science", accent: "gold" },
     { label: "Projects Shipped", value: "3+", sub: "Production systems", accent: "gold" },
     { label: "Based in", value: "Bengaluru", sub: "Open to roles", accent: "violet" },
   ];
@@ -1048,8 +1048,8 @@ export function About() {
             </Reveal>
             <Reveal delay={160}>
               <p className="mb-8 max-w-xl text-sm leading-relaxed text-muted-soft sm:mb-10 sm:text-base md:text-lg">
-                Information Science &amp; Engineering undergraduate (2023–2027) at NMIT Bengaluru.
-                Building real AI systems — from interview-integrity detection to healthcare operating systems.
+                Information Science &amp; Engineering undergraduate (2023–2027) passionate about developing AI-enabled software and scalable full-stack applications that solve real-world problems.
+                Building real systems — from interview-integrity detection to healthcare operating systems.
                 <span className="text-gold"> 1M+ LinkedIn impressions. Top 0.095% globally.</span>
               </p>
             </Reveal>
@@ -1147,17 +1147,17 @@ export function About() {
 /* ============ SKILLS ============ */
 export function Skills() {
   const row1 = ["Python", "C", "SQL", "R", "Scikit-learn", "Pandas", "NumPy", "NLP", "TF-IDF", "Random Forest"];
-  const row2 = ["Generative AI", "N8N", "Power BI", "Supabase", "React", "TypeScript", "Tailwind", "GitHub", "Jupyter", "Google Colab", "Canva", "Antigravity"];
+  const row2 = ["React", "TypeScript", "Tailwind CSS", "Node.js", "Generative AI", "Supabase", "PostgreSQL", "Git", "GitHub", "Jupyter", "Google Colab", "Power BI", "n8n", "Lovable", "Playwright", "Canva"];
   const skillsTimeline = [
     { id: 1, title: "Python", date: "Core", content: "Primary language for data, ML pipelines, and automation.", category: "Language", icon: Code2, relatedIds: [2, 3, 4], status: "completed" as const, energy: 95 },
-    { id: 2, title: "Scikit-learn", date: "ML", content: "Classical ML — Random Forest, SVMs, regression, clustering.", category: "ML", icon: Atom, relatedIds: [1, 3], status: "completed" as const, energy: 85 },
-    { id: 3, title: "NLP", date: "AI", content: "TF-IDF, transformers, text classification and embeddings.", category: "AI", icon: Brain, relatedIds: [1, 2, 5], status: "completed" as const, energy: 80 },
-    { id: 4, title: "Pandas", date: "Data", content: "Dataframes, ETL, feature engineering at scale.", category: "Data", icon: Database, relatedIds: [1, 7], status: "completed" as const, energy: 90 },
-    { id: 5, title: "GenAI", date: "AI", content: "LLMs, RAG, prompt orchestration, agentic workflows.", category: "AI", icon: Sparkles, relatedIds: [3, 6], status: "in-progress" as const, energy: 88 },
-    { id: 6, title: "N8N", date: "Ops", content: "Low-code automation for AI pipelines and integrations.", category: "Ops", icon: Workflow, relatedIds: [5, 8], status: "in-progress" as const, energy: 70 },
+    { id: 2, title: "Scikit-learn", date: "ML", content: "Classical ML — Random Forest, regression, clustering, and ensemble methods.", category: "ML", icon: Atom, relatedIds: [1, 3], status: "completed" as const, energy: 85 },
+    { id: 3, title: "NLP", date: "AI", content: "TF-IDF, text classification, embeddings, and fraud-detection pipelines.", category: "AI", icon: Brain, relatedIds: [1, 2, 5], status: "completed" as const, energy: 80 },
+    { id: 4, title: "Pandas", date: "Data", content: "Dataframes, ETL, feature engineering, and business storytelling.", category: "Data", icon: Database, relatedIds: [1, 7], status: "completed" as const, energy: 90 },
+    { id: 5, title: "GenAI", date: "AI", content: "LLMs, prompt orchestration, and AI-enabled software workflows.", category: "AI", icon: Sparkles, relatedIds: [3, 6], status: "in-progress" as const, energy: 88 },
+    { id: 6, title: "n8n", date: "Ops", content: "Low-code automation for LinkedIn/YouTube content pipelines and integrations.", category: "Ops", icon: Workflow, relatedIds: [5, 8], status: "in-progress" as const, energy: 70 },
     { id: 7, title: "Power BI", date: "BI", content: "Dashboards and storytelling with business data.", category: "BI", icon: BarChart, relatedIds: [4, 8], status: "completed" as const, energy: 75 },
-    { id: 8, title: "Supabase", date: "Stack", content: "Postgres, auth, edge functions for full-stack apps.", category: "Stack", icon: Boxes, relatedIds: [6, 7, 9], status: "in-progress" as const, energy: 78 },
-    { id: 9, title: "React", date: "Web", content: "Component-driven UIs with TypeScript + Tailwind.", category: "Web", icon: Code2, relatedIds: [8], status: "completed" as const, energy: 82 },
+    { id: 8, title: "Supabase", date: "Stack", content: "Postgres, auth, and RLS for full-stack apps.", category: "Stack", icon: Boxes, relatedIds: [6, 7, 9], status: "in-progress" as const, energy: 78 },
+    { id: 9, title: "React", date: "Web", content: "Component-driven UIs with TypeScript and Tailwind CSS.", category: "Web", icon: Code2, relatedIds: [8], status: "completed" as const, energy: 82 },
   ];
 
   const Ticker = ({ items, reverse }: { items: string[]; reverse?: boolean }) => (
