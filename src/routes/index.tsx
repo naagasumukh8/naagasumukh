@@ -700,6 +700,8 @@ export function Hero() {
   const splineAppRef = useRef<any>(null);
   const heroInViewRef = useRef(true);
   const [wave, setWave] = useState(false);
+  // Robot stays hidden until intro zoom is skipped, then fades in cleanly.
+  const [splineReady, setSplineReady] = useState(false);
 
   // Pause Spline's render loop when hero scrolls out of view — biggest desktop
   // smoothness win. Spline runs continuous rAF/WebGL that competes with scroll.
@@ -738,11 +740,20 @@ export function Hero() {
   const handleSplineLoad = (app: any) => {
     splineAppRef.current = app;
     try {
-      // Cap DPR at 1.0 - reduces rendering pixel workload by up to 75% on Retina/High-DPI laptops.
+      // Cap DPR at 1.0 — reduces pixel workload by up to 75% on Retina/High-DPI screens.
       app?._renderer?.setPixelRatio?.(1.0);
       const host = splineHostRef.current;
       if (host) app?.setSize?.(host.clientWidth, host.clientHeight);
+
+      // Skip the built-in camera intro zoom by seeking 3s into the timeline.
+      try {
+        app?.setTime?.(3000);
+        (app as any)?._runtime?.setTime?.(3000);
+      } catch { /* noop */ }
     } catch { /* noop */ }
+
+    // Fade in after a short settle to ensure the seek has taken effect.
+    setTimeout(() => setSplineReady(true), 120);
   };
 
   const handleRobotClick = () => {
@@ -759,7 +770,18 @@ export function Hero() {
       <div className="absolute inset-0 grid-bg opacity-25" />
 
       {/* Spline robot — full hero bleed so it tracks the cursor everywhere */}
-      <div ref={splineHostRef} data-spline-host className="absolute inset-0 z-0 cursor-pointer" style={{ willChange: "transform", contain: "layout" }}>
+      {/* opacity:0 until intro zoom is skipped, then smooth fade-in */}
+      <div
+        ref={splineHostRef}
+        data-spline-host
+        className="absolute inset-0 z-0 cursor-pointer"
+        style={{
+          willChange: "transform",
+          contain: "layout",
+          opacity: splineReady ? 1 : 0,
+          transition: splineReady ? "opacity 0.6s cubic-bezier(0.22,1,0.36,1)" : "none",
+        }}
+      >
         {/* Static backdrop while Spline streams in — same tone so there's no visible pop-in */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,rgba(124,110,255,0.18),transparent_60%)]" />
         <SplineScene
