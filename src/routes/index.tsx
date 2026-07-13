@@ -1366,11 +1366,10 @@ export function Projects() {
 /* ============ JOURNEY ============ */
 export function Journey() {
   const items = [
-    { yr: "2023 – 2027", title: "NMIT Bengaluru", desc: "B.E. Information Science & Engineering · CGPA 7.95" },
-    { yr: "2024 – Present", title: "AI Leader, Rabbitt AI", desc: "Leading AI initiatives and product strategy. Driving technical vision and automation pipelines for intelligent workflow solutions." },
-    { yr: "2023 – Present", title: "Youngest Student Council Member, NMIT", desc: "Contributing to student governance and institutional decision-making. Representing student interests in college-level committees." },
-    { yr: "2023 – 2025", title: "Founder & Event Lead, Adwaitha Club NMIT", desc: "Established 2 institutional MOUs, conducted college-level health camps, volunteered at an AI Summit with Rabbitt AI, organized 5 guest events with end-to-end execution & financial management, and mentored students toward successful placements." },
-    { yr: "2023 – 2024", title: "Digital Marketing Intern, LinkedInforHER", desc: "Created & published professional content across digital platforms. Built automated LinkedIn & YouTube content-posting pipelines using N8N & Antigravity to improve reach & engagement." },
+    { yr: "2023 – 2027", title: "B.E. Information Science & Engineering, NMIT Bengaluru", desc: "CGPA: 7.99" },
+    { yr: "May 2025 – 2026", title: "Development Team Lead — Official College FDP Portal", desc: "Led the development team in building the college’s official Faculty Development Program Portal; coordinated project planning, feature implementation, and faculty collaboration. Delivered a production-ready portal currently under institutional review for deployment." },
+    { yr: "Mar 2024 – Jan 2025", title: "Digital Marketing Intern, LinkedInforHER", desc: "Created and published professional content across digital platforms; built automated LinkedIn and YouTube content-posting pipelines using AI-driven workflow tools (N8N, Antigravity) to improve reach and engagement." },
+    { yr: "Oct 2023 – Mar 2025", title: "Founder & Event Lead, Adwaitha Club NMIT", desc: "Established 2 institutional MOUs and conducted college-level health camps; volunteered at an AI Summit in collaboration with Rabbitt AI. Organized 5 guest events with end-to-end execution and financial management; mentored students toward successful placements." },
     { yr: "2020 – 2022", title: "Pre-University, Siddaganga PU College", desc: "Score: 95%" },
     { yr: "2020", title: "Class X, CBSE", desc: "Score: 91.2%" },
   ];
