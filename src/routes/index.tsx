@@ -1627,7 +1627,7 @@ export function Experience() {
 /* ============ EDUCATION ============ */
 export function Education() {
   const items = [
-    { yr: "2023 – 2027", title: "B.E. Information Science & Engineering", org: "NMIT, Bengaluru", scoreLabel: "CGPA", score: 7.95, max: 10 },
+    { yr: "2023 – 2027", title: "B.E. Information Science & Engineering", org: "NMIT, Bengaluru", scoreLabel: "CGPA", score: 7.99, max: 10 },
     { yr: "2020 – 2022", title: "Pre-University (PU)", org: "Siddaganga PU College", scoreLabel: "Score", score: 95, max: 100 },
     { yr: "2020", title: "Class X (CBSE)", org: "CBSE Board", scoreLabel: "Score", score: 91.2, max: 100 },
   ];
