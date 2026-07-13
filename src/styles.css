@@ -83,6 +83,8 @@
     cursor: auto;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
+    /* Single top-level stacking context — all fixed overlays composite in one pass. */
+    isolation: isolate;
   }
   /* Custom cursor disabled — was causing flicker/lag on some setups. Default cursor is clean and reliable. */
   h1, h2, h3, h4 {
@@ -331,5 +333,24 @@
   section[id] {
     content-visibility: auto;
     contain-intrinsic-size: 1px 800px;
+  }
+}
+
+/* ============ GPU COMPOSITE PROMOTIONS ============
+ * Persistently-animated elements promoted to their own GPU layer so
+ * they never trigger a repaint of the document content beneath them.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .animate-ticker,
+  .animate-ticker-reverse,
+  .animate-spin-slow {
+    backface-visibility: hidden;
+  }
+  .hero-badge::after {
+    will-change: transform;
+    backface-visibility: hidden;
+  }
+  [data-scroll-progress] {
+    will-change: transform;
   }
 }

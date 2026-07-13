@@ -49,6 +49,8 @@ function AuroraBackdrop({ hue = "violet" }: { hue?: "violet" | "gold" | "cyan" }
                        radial-gradient(35% 45% at 80% 20%, ${c[1]}, transparent 70%),
                        radial-gradient(50% 40% at 50% 90%, ${c[2]}, transparent 70%)`,
           animation: "auroraDrift 18s ease-in-out infinite alternate",
+          willChange: "transform",
+          backfaceVisibility: "hidden",
         }}
       />
       <style>{`@keyframes auroraDrift { 0%{transform:translate3d(0,0,0) scale(1);} 50%{transform:translate3d(-3%,2%,0) scale(1.06);} 100%{transform:translate3d(3%,-2%,0) scale(1.02);} }`}</style>
@@ -147,7 +149,10 @@ function OrbitingDots() {
 function CSSMeshBg() {
   // Pure-CSS static mesh — animation removed to keep the compositor free for smooth scrolling.
   return (
-    <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden bg-[#05080F]">
+    <div
+      className="pointer-events-none fixed inset-0 z-0 overflow-hidden bg-[#05080F]"
+      style={{ contain: "strict", willChange: "auto" }}
+    >
       <div
         className="absolute -inset-[20%] opacity-80"
         style={{
@@ -312,11 +317,21 @@ export function useLenis() {
       const gsap = gsapMod.default;
       const ScrollTrigger = stMod.ScrollTrigger;
       gsap.registerPlugin(ScrollTrigger);
-      const instance = new Lenis({ lerp: 0.12, duration: 0.9, smoothWheel: true, wheelMultiplier: 1, touchMultiplier: 1.4 });
+      const instance = new Lenis({
+        lerp: 0.085,
+        duration: 1.1,
+        smoothWheel: true,
+        wheelMultiplier: 0.95,
+        touchMultiplier: 1.4,
+        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        gestureOrientation: "vertical",
+        syncTouch: false,
+      });
       lenis = instance as unknown as typeof lenis;
       instance.on("scroll", ScrollTrigger.update);
       gsap.ticker.add((time) => instance.raf(time * 1000));
       gsap.ticker.lagSmoothing(0);
+      gsap.ticker.fps(120);
     })();
     return () => {
       cancelled = true;
@@ -744,7 +759,7 @@ export function Hero() {
       <div className="absolute inset-0 grid-bg opacity-25" />
 
       {/* Spline robot — full hero bleed so it tracks the cursor everywhere */}
-      <div ref={splineHostRef} data-spline-host className="absolute inset-0 z-0 cursor-pointer">
+      <div ref={splineHostRef} data-spline-host className="absolute inset-0 z-0 cursor-pointer" style={{ willChange: "transform", contain: "layout" }}>
         {/* Static backdrop while Spline streams in — same tone so there's no visible pop-in */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,rgba(124,110,255,0.18),transparent_60%)]" />
         <SplineScene
