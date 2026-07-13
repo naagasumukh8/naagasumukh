@@ -715,38 +715,10 @@ export function Hero() {
     return () => { io.disconnect(); document.removeEventListener("visibilitychange", onVis); };
   }, []);
 
-  // Pause Spline rendering during active scrolling to free up 100% of CPU/GPU for the scroll compositor.
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const host = splineHostRef.current;
-    if (!host) return;
-
-    let scrollTimeout: ReturnType<typeof setTimeout>;
-
-    const handleScrollStart = () => {
-      const app = splineAppRef.current;
-      if (!app) return;
-      try {
-        app.stop?.();
-      } catch { /* noop */ }
-
-      clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(() => {
-        const app = splineAppRef.current;
-        if (app && heroInViewRef.current && !document.hidden) {
-          try {
-            app.play?.();
-          } catch { /* noop */ }
-        }
-      }, 150);
-    };
-
-    window.addEventListener("scroll", handleScrollStart, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", handleScrollStart);
-      clearTimeout(scrollTimeout);
-    };
-  }, []);
+  // NOTE: scroll-based app.stop()/play() was removed — it caused Spline to
+  // show a loading spinner every time the user scrolled back up to the hero.
+  // The IntersectionObserver effect above already pauses Spline correctly when
+  // the hero section leaves the viewport, which is sufficient.
 
   const handleSplineLoad = (app: any) => {
     splineAppRef.current = app;

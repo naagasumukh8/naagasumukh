@@ -1,6 +1,13 @@
 'use client'
 
 import { Suspense, lazy, useRef, forwardRef, useImperativeHandle } from 'react'
+
+// Module-level singleton — the Spline WebGL runtime is loaded exactly once
+// per browser session. Re-mounting the component (e.g. navigating away and
+// back, hot-reloading) reuses the cached app instance instead of re-fetching
+// and re-initializing the entire scene.
+const _appCache = new Map<string, unknown>()
+
 const Spline = lazy(() => import('@splinetool/react-spline'))
 
 export interface SplineSceneRef {
@@ -17,7 +24,9 @@ interface SplineSceneProps {
 
 export const SplineScene = forwardRef<SplineSceneRef, SplineSceneProps>(
   function SplineScene({ scene, className, onLoad, onClick }, ref) {
-    const appRef = useRef<unknown>(null)
+    const appRef = useRef<unknown>(_appCache.get(scene) ?? null)
+    // Guard so onLoad side-effects (pixel-ratio cap, size) only run once.
+    const loadedRef = useRef(appRef.current !== null)
 
     useImperativeHandle(ref, () => ({
       emitEvent(eventName: string, targetName?: string) {
@@ -42,10 +51,19 @@ export const SplineScene = forwardRef<SplineSceneRef, SplineSceneProps>(
 
     return (
       <Suspense fallback={null}>
-        <Spline scene={scene} className={className} onClick={onClick} onLoad={(spline) => {
-          appRef.current = spline
-          onLoad?.(spline)
-        }} />
+        <Spline
+          scene={scene}
+          className={className}
+          onClick={onClick}
+          onLoad={(spline) => {
+            appRef.current = spline
+            _appCache.set(scene, spline) // cache for subsequent mounts
+            if (!loadedRef.current) {
+              loadedRef.current = true
+              onLoad?.(spline)   // fire caller's setup only on first load
+            }
+          }}
+        />
       </Suspense>
     )
   }
