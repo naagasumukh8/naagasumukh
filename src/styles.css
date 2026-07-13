@@ -72,7 +72,8 @@
     border-color: var(--color-border);
   }
   html {
-    scroll-behavior: smooth;
+    /* scroll-behavior: smooth removed — Lenis overrides this and the two
+       conflict, causing double-smoothing jank on anchor jumps. */
     background: #000000;
     overflow-x: hidden;
   }
@@ -83,6 +84,9 @@
     cursor: auto;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
+    /* Create a single top-level stacking context so all fixed overlays
+       (noise, progress bar, cursor) composite in one pass. */
+    isolation: isolate;
   }
   /* Custom cursor disabled — was causing flicker/lag on some setups. Default cursor is clean and reliable. */
   h1, h2, h3, h4 {
@@ -169,11 +173,11 @@
     from { transform: translateX(-50%); }
     to { transform: translateX(0); }
   }
-  .animate-ticker { animation: ticker 40s linear infinite; will-change: transform; transform: translateZ(0); }
-  .animate-ticker-reverse { animation: ticker-reverse 40s linear infinite; will-change: transform; transform: translateZ(0); }
+  .animate-ticker { animation: ticker 40s linear infinite; will-change: transform; transform: translateZ(0); backface-visibility: hidden; }
+  .animate-ticker-reverse { animation: ticker-reverse 40s linear infinite; will-change: transform; transform: translateZ(0); backface-visibility: hidden; }
 
   @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-  .animate-spin-slow { animation: spin-slow 12s linear infinite; will-change: transform; transform: translateZ(0); }
+  .animate-spin-slow { animation: spin-slow 12s linear infinite; will-change: transform; transform: translateZ(0); backface-visibility: hidden; }
 
   @keyframes orbit {
     from { transform: rotate(0deg) translateX(140px) rotate(0deg); }
@@ -331,5 +335,29 @@
   section[id] {
     content-visibility: auto;
     contain-intrinsic-size: 1px 800px;
+  }
+}
+
+/* ============ GPU COMPOSITE PROMOTIONS ============
+ * Persistently-animated background layers promoted to their own GPU layer so
+ * they never force a repaint of the document. Applied only on motion-safe
+ * devices so reduced-motion respects the user pref.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  /* Aurora / mesh backdrop blobs */
+  .aurora-layer {
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+  /* Scroll-progress bars */
+  [data-scroll-progress] {
+    will-change: transform;
+    transform: translateZ(0);
+  }
+  /* Hero animated badge shimmer */
+  .hero-badge::after {
+    will-change: transform;
+    transform: translateZ(0);
   }
 }

@@ -49,6 +49,10 @@ function AuroraBackdrop({ hue = "violet" }: { hue?: "violet" | "gold" | "cyan" }
                        radial-gradient(35% 45% at 80% 20%, ${c[1]}, transparent 70%),
                        radial-gradient(50% 40% at 50% 90%, ${c[2]}, transparent 70%)`,
           animation: "auroraDrift 18s ease-in-out infinite alternate",
+          // GPU layer promotion — keeps aurora animation on its own compositor tile
+          // so it never forces a repaint of the document content above it.
+          willChange: "transform",
+          backfaceVisibility: "hidden",
         }}
       />
       <style>{`@keyframes auroraDrift { 0%{transform:translate3d(0,0,0) scale(1);} 50%{transform:translate3d(-3%,2%,0) scale(1.06);} 100%{transform:translate3d(3%,-2%,0) scale(1.02);} }`}</style>
@@ -147,7 +151,12 @@ function OrbitingDots() {
 function CSSMeshBg() {
   // Pure-CSS static mesh — animation removed to keep the compositor free for smooth scrolling.
   return (
-    <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden bg-[#05080F]">
+    // contain:strict + will-change:auto tells the browser this fixed layer never
+    // changes size/position, so it can be rasterised once and composited cheaply.
+    <div
+      className="pointer-events-none fixed inset-0 z-0 overflow-hidden bg-[#05080F]"
+      style={{ contain: "strict", willChange: "auto" }}
+    >
       <div
         className="absolute -inset-[20%] opacity-80"
         style={{
@@ -312,11 +321,25 @@ export function useLenis() {
       const gsap = gsapMod.default;
       const ScrollTrigger = stMod.ScrollTrigger;
       gsap.registerPlugin(ScrollTrigger);
-      const instance = new Lenis({ lerp: 0.12, duration: 0.9, smoothWheel: true, wheelMultiplier: 1, touchMultiplier: 1.4 });
+      const instance = new Lenis({
+        // Reduced lerp (0.085 vs 0.12) = longer glide = perceptibly smoother.
+        // Duration bumped slightly so deceleration feels premium not abrupt.
+        lerp: 0.085,
+        duration: 1.1,
+        smoothWheel: true,
+        wheelMultiplier: 0.95,   // slight reduction prevents over-scroll on trackpads
+        touchMultiplier: 1.4,
+        // Sync Lenis easing to a natural deceleration curve (matches CSS ease-out).
+        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        gestureOrientation: "vertical",
+        syncTouch: false,         // let native touch scroll stay fast on mobile
+      });
       lenis = instance as unknown as typeof lenis;
       instance.on("scroll", ScrollTrigger.update);
       gsap.ticker.add((time) => instance.raf(time * 1000));
       gsap.ticker.lagSmoothing(0);
+      // Target 120 fps on high-refresh displays — GSAP will cap at actual screen Hz.
+      gsap.ticker.fps(120);
     })();
     return () => {
       cancelled = true;
@@ -744,7 +767,9 @@ export function Hero() {
       <div className="absolute inset-0 grid-bg opacity-25" />
 
       {/* Spline robot — full hero bleed so it tracks the cursor everywhere */}
-      <div ref={splineHostRef} data-spline-host className="absolute inset-0 z-0 cursor-pointer">
+      {/* will-change:transform promotes Spline's WebGL canvas to its own GPU
+          compositor layer, isolating it from document repaints on scroll. */}
+      <div ref={splineHostRef} data-spline-host className="absolute inset-0 z-0 cursor-pointer" style={{ willChange: "transform", contain: "layout" }}>
         {/* Static backdrop while Spline streams in — same tone so there's no visible pop-in */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,rgba(124,110,255,0.18),transparent_60%)]" />
         <SplineScene
@@ -981,7 +1006,10 @@ export function About() {
         <div className="grid gap-10 md:grid-cols-[420px_1fr] md:items-center md:gap-20">
           {/* PORTRAIT */}
           <Reveal>
-            <div className="relative mx-auto h-56 w-56 md:h-[26rem] md:w-[26rem]" style={{ animation: "avatarFloat 6s ease-in-out infinite" }}>
+            {/* will-change:transform promotes the floating avatar to its own
+                GPU layer so the continuous translateY animation never causes
+                a repaint of surrounding content. */}
+            <div className="relative mx-auto h-56 w-56 md:h-[26rem] md:w-[26rem]" style={{ animation: "avatarFloat 6s ease-in-out infinite", willChange: "transform" }}>
               <div className="absolute -inset-6 rounded-full bg-violet/15 blur-[60px] md:-inset-10 md:blur-[90px]" />
               {/* Premium clean static border glow — replacing counter-rotating conic gradients to save GPU performance */}
               <div
