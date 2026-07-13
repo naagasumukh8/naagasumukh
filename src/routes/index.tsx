@@ -1550,57 +1550,37 @@ export function Certs() {
 export function Experience() {
   const items = [
     {
-      role: "AI Leader",
-      org: "Rabbitt AI",
-      yr: "2024 – Present",
-      icon: Briefcase,
-      points: [
-        "Leading AI product strategy and technical vision for intelligent workflow solutions.",
-        "Driving automation pipelines and model integration across the platform.",
-      ],
-    },
-    {
-      role: "Youngest Student Council Member",
-      org: "NMIT",
-      yr: "2023 – Present",
-      icon: Briefcase,
-      points: [
-        "Contributing to student governance and institutional decision-making.",
-        "Representing student interests in college-level committees.",
-      ],
-    },
-    {
-      role: "FDP Project Lead",
-      org: "NMIT",
-      yr: "2025 – Present",
+      role: "Development Team Lead",
+      org: "Official College FDP Portal, NMIT",
+      yr: "May 2025 – 2026",
       icon: Star,
       points: [
-        "Led a cross-functional team to build the college’s official Faculty Development Program (FDP) platform.",
-        "Designed end-to-end system architecture for faculty training, scheduling, and certification tracking.",
-        "Project is under institutional review and slated to become the official FDP solution for the college.",
+        "Led the development team in building the college’s official Faculty Development Program (FDP) Portal.",
+        "Coordinated project planning, feature implementation, and faculty collaboration.",
+        "Delivered a production-ready portal currently under institutional review for deployment.",
+      ],
+    },
+    {
+      role: "Digital Marketing Intern",
+      org: "LinkedInforHER, Bengaluru",
+      yr: "Mar 2024 – Jan 2025",
+      icon: Briefcase,
+      points: [
+        "Created and published professional content across digital platforms.",
+        "Built automated LinkedIn and YouTube content-posting pipelines using AI-driven workflow tools (N8N, Antigravity).",
+        "Improved reach and engagement through AI-driven content optimization.",
       ],
     },
     {
       role: "Founder & Event Lead",
       org: "Adwaitha Club, NMIT",
-      yr: "2023 – 2025",
+      yr: "Oct 2023 – Mar 2025",
       icon: Briefcase,
       points: [
         "Established 2 institutional MOUs and conducted college-level health camps.",
         "Volunteered at an AI Summit in collaboration with Rabbitt AI.",
         "Organized 5 guest events with end-to-end execution and financial management.",
         "Mentored students toward successful placements.",
-      ],
-    },
-    {
-      role: "Digital Marketing Intern",
-      org: "LinkedInforHER, Bengaluru",
-      yr: "2023 – 2024",
-      icon: Briefcase,
-      points: [
-        "Created and published professional content across LinkedIn and YouTube.",
-        "Built automated content-posting pipelines using N8N and Antigravity (AI workflow tools).",
-        "Improved reach and engagement through AI-driven content optimization.",
       ],
     },
   ];
