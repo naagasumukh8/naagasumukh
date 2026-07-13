@@ -983,7 +983,7 @@ export function About() {
     { label: "Statement", value: '"Building real systems, not just demos."', accent: "violet", wide: true, italic: true },
     { label: "LinkedIn Impressions", value: "1M+", sub: "Last 12 months", accent: "gold" },
     { label: "Cleve AI Users", value: "Top 0.095%", sub: "Global rank", accent: "gold" },
-    { label: "CGPA · NMIT", value: "7.95", sub: "B.E. Information Science", accent: "gold" },
+    { label: "CGPA · NMIT", value: "7.99", sub: "B.E. Information Science", accent: "gold" },
     { label: "Projects Shipped", value: "3+", sub: "Production systems", accent: "gold" },
     { label: "Based in", value: "Bengaluru", sub: "Open to roles", accent: "violet" },
   ];
@@ -1048,8 +1048,8 @@ export function About() {
             </Reveal>
             <Reveal delay={160}>
               <p className="mb-8 max-w-xl text-sm leading-relaxed text-muted-soft sm:mb-10 sm:text-base md:text-lg">
-                Information Science &amp; Engineering undergraduate (2023–2027) at NMIT Bengaluru.
-                Building real AI systems — from interview-integrity detection to healthcare operating systems.
+                Information Science &amp; Engineering undergraduate (2023–2027) passionate about developing AI-enabled software and scalable full-stack applications that solve real-world problems.
+                Building real systems — from interview-integrity detection to healthcare operating systems.
                 <span className="text-gold"> 1M+ LinkedIn impressions. Top 0.095% globally.</span>
               </p>
             </Reveal>
@@ -1147,17 +1147,17 @@ export function About() {
 /* ============ SKILLS ============ */
 export function Skills() {
   const row1 = ["Python", "C", "SQL", "R", "Scikit-learn", "Pandas", "NumPy", "NLP", "TF-IDF", "Random Forest"];
-  const row2 = ["Generative AI", "N8N", "Power BI", "Supabase", "React", "TypeScript", "Tailwind", "GitHub", "Jupyter", "Google Colab", "Canva", "Antigravity"];
+  const row2 = ["React", "TypeScript", "Tailwind CSS", "Node.js", "Generative AI", "Supabase", "PostgreSQL", "Git", "GitHub", "Jupyter", "Google Colab", "Power BI", "n8n", "Lovable", "Playwright", "Canva"];
   const skillsTimeline = [
     { id: 1, title: "Python", date: "Core", content: "Primary language for data, ML pipelines, and automation.", category: "Language", icon: Code2, relatedIds: [2, 3, 4], status: "completed" as const, energy: 95 },
-    { id: 2, title: "Scikit-learn", date: "ML", content: "Classical ML — Random Forest, SVMs, regression, clustering.", category: "ML", icon: Atom, relatedIds: [1, 3], status: "completed" as const, energy: 85 },
-    { id: 3, title: "NLP", date: "AI", content: "TF-IDF, transformers, text classification and embeddings.", category: "AI", icon: Brain, relatedIds: [1, 2, 5], status: "completed" as const, energy: 80 },
-    { id: 4, title: "Pandas", date: "Data", content: "Dataframes, ETL, feature engineering at scale.", category: "Data", icon: Database, relatedIds: [1, 7], status: "completed" as const, energy: 90 },
-    { id: 5, title: "GenAI", date: "AI", content: "LLMs, RAG, prompt orchestration, agentic workflows.", category: "AI", icon: Sparkles, relatedIds: [3, 6], status: "in-progress" as const, energy: 88 },
-    { id: 6, title: "N8N", date: "Ops", content: "Low-code automation for AI pipelines and integrations.", category: "Ops", icon: Workflow, relatedIds: [5, 8], status: "in-progress" as const, energy: 70 },
+    { id: 2, title: "Scikit-learn", date: "ML", content: "Classical ML — Random Forest, regression, clustering, and ensemble methods.", category: "ML", icon: Atom, relatedIds: [1, 3], status: "completed" as const, energy: 85 },
+    { id: 3, title: "NLP", date: "AI", content: "TF-IDF, text classification, embeddings, and fraud-detection pipelines.", category: "AI", icon: Brain, relatedIds: [1, 2, 5], status: "completed" as const, energy: 80 },
+    { id: 4, title: "Pandas", date: "Data", content: "Dataframes, ETL, feature engineering, and business storytelling.", category: "Data", icon: Database, relatedIds: [1, 7], status: "completed" as const, energy: 90 },
+    { id: 5, title: "GenAI", date: "AI", content: "LLMs, prompt orchestration, and AI-enabled software workflows.", category: "AI", icon: Sparkles, relatedIds: [3, 6], status: "in-progress" as const, energy: 88 },
+    { id: 6, title: "n8n", date: "Ops", content: "Low-code automation for LinkedIn/YouTube content pipelines and integrations.", category: "Ops", icon: Workflow, relatedIds: [5, 8], status: "in-progress" as const, energy: 70 },
     { id: 7, title: "Power BI", date: "BI", content: "Dashboards and storytelling with business data.", category: "BI", icon: BarChart, relatedIds: [4, 8], status: "completed" as const, energy: 75 },
-    { id: 8, title: "Supabase", date: "Stack", content: "Postgres, auth, edge functions for full-stack apps.", category: "Stack", icon: Boxes, relatedIds: [6, 7, 9], status: "in-progress" as const, energy: 78 },
-    { id: 9, title: "React", date: "Web", content: "Component-driven UIs with TypeScript + Tailwind.", category: "Web", icon: Code2, relatedIds: [8], status: "completed" as const, energy: 82 },
+    { id: 8, title: "Supabase", date: "Stack", content: "Postgres, auth, and RLS for full-stack apps.", category: "Stack", icon: Boxes, relatedIds: [6, 7, 9], status: "in-progress" as const, energy: 78 },
+    { id: 9, title: "React", date: "Web", content: "Component-driven UIs with TypeScript and Tailwind CSS.", category: "Web", icon: Code2, relatedIds: [8], status: "completed" as const, energy: 82 },
   ];
 
   const Ticker = ({ items, reverse }: { items: string[]; reverse?: boolean }) => (
@@ -1230,7 +1230,7 @@ export function Projects() {
     {
       n: "01",
       name: "SacchAI",
-      desc: "Browser extension for real-time detection of unauthorized AI assistance during online interviews — monitors behavioural signals, clipboard activity, tab-switching and speech/response patterns. Custom ensemble classifier generates recruiter-facing reports with genuineness scores, suspicious-activity flags and plagiarism analysis.",
+      desc: "AI-powered browser extension that detects unauthorized AI assistance during online interviews by analyzing clipboard activity, tab switching, speech patterns, and user behavior. An ensemble ML pipeline assesses candidate authenticity and generates recruiter reports with risk scores, behavioral insights, and plagiarism analysis.",
       badge: "88.4% accuracy",
       tags: ["JavaScript", "TypeScript", "React", "Chrome APIs", "Python", "Scikit-learn", "Node.js", "REST APIs"],
       link: "https://github.com/naagasumukh8",
@@ -1240,7 +1240,7 @@ export function Projects() {
     {
       n: "02",
       name: "MediConnect",
-      desc: "Full-stack HealthcareOS: multi-hospital management, role-based access, appointment scheduling, digital prescriptions, inter-department referrals, pharmacy inventory and AI-assisted patient support. Automated follow-ups, shared medical memory, family accounts and secure file storage via Supabase RLS, validated end-to-end with Playwright + TypeScript.",
+      desc: "AI-powered hospital management platform supporting multi-hospital operations, appointment scheduling, digital prescriptions, pharmacy inventory, referrals, and role-based access control. Includes AI-assisted patient support, Google Calendar scheduling, secure document storage, and family account management using Supabase Row-Level Security.",
       badge: "Live product",
       tags: ["React", "TypeScript", "Tailwind", "Supabase RLS", "Google Calendar API", "Playwright"],
       link: "https://easyhospital.lovable.app",
@@ -1250,7 +1250,7 @@ export function Projects() {
     {
       n: "03",
       name: "JobShield — AI-Powered Fake Job Detection",
-      desc: "Final-year project. Multi-stage fraud detector: NLP + ML on job posts, recruiter verification via email domains, WHOIS and company sites. Explainable verdicts — Likely Genuine, Suspicious, or High Scam Risk.",
+      desc: "Final-year project. NLP-based platform that identifies fraudulent job postings by analyzing job descriptions, recruiter information, and company credibility indicators. Generates explainable fraud risk assessments classifying postings as Genuine, Suspicious, or High Scam Risk using machine learning techniques.",
       badge: "Multi-level verification",
       tags: ["Python", "Scikit-learn", "spaCy", "BeautifulSoup", "WHOIS", "Pandas", "TF-IDF", "Random Forest"],
       link: "https://github.com/naagasumukh8/Job_Verify_FYP",
@@ -1366,11 +1366,10 @@ export function Projects() {
 /* ============ JOURNEY ============ */
 export function Journey() {
   const items = [
-    { yr: "2023 – 2027", title: "NMIT Bengaluru", desc: "B.E. Information Science & Engineering · CGPA 7.95" },
-    { yr: "2024 – Present", title: "AI Leader, Rabbitt AI", desc: "Leading AI initiatives and product strategy. Driving technical vision and automation pipelines for intelligent workflow solutions." },
-    { yr: "2023 – Present", title: "Youngest Student Council Member, NMIT", desc: "Contributing to student governance and institutional decision-making. Representing student interests in college-level committees." },
-    { yr: "2023 – 2025", title: "Founder & Event Lead, Adwaitha Club NMIT", desc: "Established 2 institutional MOUs, conducted college-level health camps, volunteered at an AI Summit with Rabbitt AI, organized 5 guest events with end-to-end execution & financial management, and mentored students toward successful placements." },
-    { yr: "2023 – 2024", title: "Digital Marketing Intern, LinkedInforHER", desc: "Created & published professional content across digital platforms. Built automated LinkedIn & YouTube content-posting pipelines using N8N & Antigravity to improve reach & engagement." },
+    { yr: "2023 – 2027", title: "B.E. Information Science & Engineering, NMIT Bengaluru", desc: "CGPA: 7.99" },
+    { yr: "May 2025 – 2026", title: "Development Team Lead — Official College FDP Portal", desc: "Led the development team in building the college’s official Faculty Development Program Portal; coordinated project planning, feature implementation, and faculty collaboration. Delivered a production-ready portal currently under institutional review for deployment." },
+    { yr: "Mar 2024 – Jan 2025", title: "Digital Marketing Intern, LinkedInforHER", desc: "Created and published professional content across digital platforms; built automated LinkedIn and YouTube content-posting pipelines using AI-driven workflow tools (N8N, Antigravity) to improve reach and engagement." },
+    { yr: "Oct 2023 – Mar 2025", title: "Founder & Event Lead, Adwaitha Club NMIT", desc: "Established 2 institutional MOUs and conducted college-level health camps; volunteered at an AI Summit in collaboration with Rabbitt AI. Organized 5 guest events with end-to-end execution and financial management; mentored students toward successful placements." },
     { yr: "2020 – 2022", title: "Pre-University, Siddaganga PU College", desc: "Score: 95%" },
     { yr: "2020", title: "Class X, CBSE", desc: "Score: 91.2%" },
   ];
@@ -1551,57 +1550,37 @@ export function Certs() {
 export function Experience() {
   const items = [
     {
-      role: "AI Leader",
-      org: "Rabbitt AI",
-      yr: "2024 – Present",
-      icon: Briefcase,
-      points: [
-        "Leading AI product strategy and technical vision for intelligent workflow solutions.",
-        "Driving automation pipelines and model integration across the platform.",
-      ],
-    },
-    {
-      role: "Youngest Student Council Member",
-      org: "NMIT",
-      yr: "2023 – Present",
-      icon: Briefcase,
-      points: [
-        "Contributing to student governance and institutional decision-making.",
-        "Representing student interests in college-level committees.",
-      ],
-    },
-    {
-      role: "FDP Project Lead",
-      org: "NMIT",
-      yr: "2025 – Present",
+      role: "Development Team Lead",
+      org: "Official College FDP Portal, NMIT",
+      yr: "May 2025 – 2026",
       icon: Star,
       points: [
-        "Led a cross-functional team to build the college’s official Faculty Development Program (FDP) platform.",
-        "Designed end-to-end system architecture for faculty training, scheduling, and certification tracking.",
-        "Project is under institutional review and slated to become the official FDP solution for the college.",
+        "Led the development team in building the college’s official Faculty Development Program (FDP) Portal.",
+        "Coordinated project planning, feature implementation, and faculty collaboration.",
+        "Delivered a production-ready portal currently under institutional review for deployment.",
+      ],
+    },
+    {
+      role: "Digital Marketing Intern",
+      org: "LinkedInforHER, Bengaluru",
+      yr: "Mar 2024 – Jan 2025",
+      icon: Briefcase,
+      points: [
+        "Created and published professional content across digital platforms.",
+        "Built automated LinkedIn and YouTube content-posting pipelines using AI-driven workflow tools (N8N, Antigravity).",
+        "Improved reach and engagement through AI-driven content optimization.",
       ],
     },
     {
       role: "Founder & Event Lead",
       org: "Adwaitha Club, NMIT",
-      yr: "2023 – 2025",
+      yr: "Oct 2023 – Mar 2025",
       icon: Briefcase,
       points: [
         "Established 2 institutional MOUs and conducted college-level health camps.",
         "Volunteered at an AI Summit in collaboration with Rabbitt AI.",
         "Organized 5 guest events with end-to-end execution and financial management.",
         "Mentored students toward successful placements.",
-      ],
-    },
-    {
-      role: "Digital Marketing Intern",
-      org: "LinkedInforHER, Bengaluru",
-      yr: "2023 – 2024",
-      icon: Briefcase,
-      points: [
-        "Created and published professional content across LinkedIn and YouTube.",
-        "Built automated content-posting pipelines using N8N and Antigravity (AI workflow tools).",
-        "Improved reach and engagement through AI-driven content optimization.",
       ],
     },
   ];
@@ -1648,7 +1627,7 @@ export function Experience() {
 /* ============ EDUCATION ============ */
 export function Education() {
   const items = [
-    { yr: "2023 – 2027", title: "B.E. Information Science & Engineering", org: "NMIT, Bengaluru", scoreLabel: "CGPA", score: 7.95, max: 10 },
+    { yr: "2023 – 2027", title: "B.E. Information Science & Engineering", org: "NMIT, Bengaluru", scoreLabel: "CGPA", score: 7.99, max: 10 },
     { yr: "2020 – 2022", title: "Pre-University (PU)", org: "Siddaganga PU College", scoreLabel: "Score", score: 95, max: 100 },
     { yr: "2020", title: "Class X (CBSE)", org: "CBSE Board", scoreLabel: "Score", score: 91.2, max: 100 },
   ];
@@ -2157,7 +2136,8 @@ export function Achievements() {
   const linkedinPosts: FeedPost[] = [
     { tag: "Profile", title: "Naaga Sumukh B S", meta: "AI / ML student", body: "Information Science & Engineering undergraduate at NMIT (2023–2027). Strong foundation in Python, SQL, R, and data analysis with hands-on projects and applied AI experience. Open to ML / AI internship roles.", href: "https://linkedin.com/in/naaga-sumukh-b-s-326588281" },
     { tag: "Achievement", title: "1M+ impressions · Top 0.095% globally", meta: "Cleve AI · 2024", body: "Achieved 1M+ impressions on LinkedIn and ranked among the top 0.095% users globally in 2024 according to Cleve AI.", href: "https://linkedin.com/in/naaga-sumukh-b-s-326588281" },
-    { tag: "Experience", title: "Digital Marketing Intern, LinkedInforHER", meta: "2023 – 2024", body: "Created and published professional content across digital platforms. Built automated LinkedIn and YouTube content-posting pipelines using AI-driven workflow tools (N8N, Antigravity) to improve reach and engagement.", href: "https://linkedin.com/in/naaga-sumukh-b-s-326588281" },
+    { tag: "Experience", title: "Development Team Lead — Official College FDP Portal", meta: "May 2025 – 2026", body: "Led the development team in building the college’s official Faculty Development Program Portal. Coordinated project planning, feature implementation, and faculty collaboration; delivered a production-ready portal under institutional review.", href: "https://linkedin.com/in/naaga-sumukh-b-s-326588281" },
+    { tag: "Experience", title: "Digital Marketing Intern, LinkedInforHER", meta: "Mar 2024 – Jan 2025", body: "Created and published professional content across digital platforms. Built automated LinkedIn and YouTube content-posting pipelines using AI-driven workflow tools (N8N, Antigravity) to improve reach and engagement.", href: "https://linkedin.com/in/naaga-sumukh-b-s-326588281" },
     { tag: "Connect", title: "Open to ML / AI internships", meta: "Bengaluru", body: "Seeking Machine Learning / AI internship roles. Passionate about building real-world AI solutions, leveraging generative AI tools, and contributing to impactful, data-driven systems.", href: "https://linkedin.com/in/naaga-sumukh-b-s-326588281" },
   ];
 
