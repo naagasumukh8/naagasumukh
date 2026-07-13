@@ -170,11 +170,11 @@ function CSSMeshBg() {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Naaga Sumukh B S — AI/ML Engineer | Bengaluru" },
-      { name: "description", content: "Portfolio of Naaga Sumukh B S — AI/ML engineer building intelligent systems. NMIT Bengaluru, 2023–2027." },
+      { title: "Naaga Sumukh B S - AI/ML Engineer | Bengaluru" },
+      { name: "description", content: "Portfolio of Naaga Sumukh B S - AI/ML engineer building intelligent systems. NMIT Bengaluru, 2023–2027." },
       { name: "theme-color", content: "#07121F" },
-      { property: "og:title", content: "Naaga Sumukh B S — AI/ML Engineer" },
-      { property: "og:description", content: "Building intelligent systems. AI · ML · Automation · Leadership." },
+      { property: "og:title", content: "Naaga Sumukh B S - AI/ML Engineer | Bengaluru" },
+      { property: "og:description", content: "Portfolio of Naaga Sumukh B S - AI/ML engineer building intelligent systems. NMIT Bengaluru, 2023–2027." },
       { property: "og:image", content: portrait.url },
       { property: "og:url", content: "https://naagasumukh.engineer/" },
       { name: "twitter:image", content: portrait.url },
