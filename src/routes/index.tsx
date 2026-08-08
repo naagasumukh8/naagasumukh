@@ -1643,16 +1643,10 @@ export function Certs() {
       <div className="relative z-10 mx-auto max-w-[1100px]">
         <Reveal><SectionLabel num="06" text="Credentials" /></Reveal>
         <Reveal delay={100}>
-          <h2 className="mb-3 font-display text-4xl font-bold text-body md:text-6xl">
+          <h2 className="mb-10 font-display text-4xl font-bold text-body md:text-6xl">
             Built on <span className="text-violet">verified learning</span>.
           </h2>
         </Reveal>
-        <Reveal delay={150}>
-          <p className="mb-10 text-sm text-muted-soft">
-            Drag or use arrow keys to explore — {certSlides.length} certificates.
-          </p>
-        </Reveal>
-
         <Reveal delay={200}>
           <CoverflowCarousel
             slides={certSlides}
