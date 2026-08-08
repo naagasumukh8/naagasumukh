@@ -19,13 +19,13 @@ export function SplashGate({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (typeof window === "undefined") return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const seen = sessionStorage.getItem("splash:v6") === "1";
+    const seen = sessionStorage.getItem("splash:v7") === "1";
     if (reduced || seen) {
       setPhase("done");
       return;
     }
-    sessionStorage.setItem("splash:v6", "1");
-    const DURATION = 5200;
+    sessionStorage.setItem("splash:v7", "1");
+    const DURATION = 2500;
     const t = setTimeout(() => setPhase("exiting"), DURATION);
     return () => clearTimeout(t);
   }, []);
@@ -70,7 +70,7 @@ export function SplashGate({ children }: { children: ReactNode }) {
                 <div className="mt-4 h-px w-56 overflow-hidden bg-white/15 md:w-72">
                   <div
                     className="h-full origin-left bg-white"
-                    style={{ animation: "splashProgress 5.2s linear forwards" }}
+                    style={{ animation: "splashProgress 2.5s linear forwards" }}
                   />
                 </div>
                 <div className="font-mono text-[10px] uppercase tracking-[0.4em] text-white/80">

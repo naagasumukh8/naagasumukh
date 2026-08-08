@@ -7,6 +7,7 @@ import sachhaiVideo from "@/assets/sachhai-demo.mp4.asset.json";
 import { Spotlight } from "@/components/ui/spotlight";
 import { GooeyText } from "@/components/ui/gooey-text-morphing";
 import DisplayCards from "@/components/ui/display-cards";
+import { CoverflowCarousel, type CoverflowSlide } from "@/components/ui/coverflow-carousel";
 import { ContainerScroll } from "@/components/ui/container-scroll-animation";
 import { Card } from "@/components/ui/card";
 import { HeavyGate } from "@/components/HeavyGate";
@@ -1549,37 +1550,79 @@ export function Recognition() {
   );
 }
 
-/* ============ CERTS — stacked display cards with sparkles ============ */
+/* ============ CERTS — Coverflow 3D carousel ============ */
 export function Certs() {
-  const certCards = [
+  /**
+   * Certificate slides — drag/flick or use arrow keys to browse.
+   * To use real images: place files in /public/certs/ and swap the src
+   * values to e.g. "/certs/canva-marketing.jpg"
+   */
+  const certSlides: CoverflowSlide[] = [
     {
-      icon: <GraduationCap className="size-4 text-white" />,
-      title: "ML Specialization",
-      description: "Stanford · Coursera",
-      date: "Course Certificate",
-      iconClassName: "text-indigo-300",
-      titleClassName: "text-white",
-      className:
-        "[grid-area:stack] hover:-translate-y-10 before:absolute before:w-[100%] before:outline-1 before:rounded-xl before:outline-border before:h-[100%] before:content-[''] before:bg-blend-overlay before:bg-background/50 grayscale-[100%] hover:before:opacity-0 before:transition-opacity before:duration-700 hover:grayscale-0 before:left-0 before:top-0",
+      src: "/certs/canva-marketing.png",
+      alt: "Canva Design School — Marketing with Canva certificate",
+      title: "Marketing with Canva",
+      subtitle: "Canva Design School",
+      meta: [
+        { label: "Issued", value: "Apr 22, 2025" },
+        { label: "Credential", value: "7fbe59" },
+        { label: "Presented by", value: "The Canva Team" },
+      ],
     },
     {
-      icon: <Award className="size-4 text-white" />,
-      title: "Generative AI Track",
-      description: "Credly · Industry",
-      date: "Credential",
-      iconClassName: "text-zinc-300",
-      titleClassName: "text-white",
-      className:
-        "[grid-area:stack] translate-x-12 translate-y-10 hover:-translate-y-1 before:absolute before:w-[100%] before:outline-1 before:rounded-xl before:outline-border before:h-[100%] before:content-[''] before:bg-blend-overlay before:bg-background/50 grayscale-[100%] hover:before:opacity-0 before:transition-opacity before:duration-700 hover:grayscale-0 before:left-0 before:top-0",
+      src: "/certs/stanford-ml.png",
+      alt: "Stanford University — Machine Learning Specialization certificate",
+      title: "Machine Learning Specialization",
+      subtitle: "Stanford University · Coursera",
+      meta: [
+        { label: "Issued", value: "Sep 12, 2023" },
+        { label: "Courses", value: "3 of 3" },
+        { label: "Instructor", value: "Andrew Ng" },
+      ],
     },
     {
-      icon: <BarChart3 className="size-4 text-white" />,
-      title: "Power BI Essentials",
-      description: "Simplilearn",
-      date: "Verified",
-      iconClassName: "text-blue-300",
-      titleClassName: "text-white",
-      className: "[grid-area:stack] translate-x-24 translate-y-20 hover:translate-y-10",
+      src: "/certs/google-cloud-genai.png",
+      alt: "Google Cloud Career Launchpad — Generative AI Track certificate",
+      title: "Google Cloud Career Launchpad",
+      subtitle: "Generative AI Track · Google Cloud",
+      meta: [
+        { label: "Issued", value: "Jun 7, 2025" },
+        { label: "Certificate", value: "MZvQ7BLY" },
+        { label: "Expires", value: "Never" },
+      ],
+    },
+    {
+      src: "/certs/powerbi.png",
+      alt: "Microsoft × Simplilearn — Power BI for Beginners certificate",
+      title: "Power BI for Beginners",
+      subtitle: "Microsoft × Simplilearn · SkillUp",
+      meta: [
+        { label: "Issued", value: "Jan 21, 2026" },
+        { label: "Code", value: "9743014" },
+        { label: "Presenter", value: "Krishna Kumar, CEO" },
+      ],
+    },
+    {
+      src: "/certs/nmit-participation.png",
+      alt: "NMIT — Certificate of Participation, Skills and Personality Development",
+      title: "Certificate of Participation",
+      subtitle: "Nitte Meenakshi Institute of Technology",
+      meta: [
+        { label: "Program", value: "Skills & Personality Dev" },
+        { label: "Initiative", value: "AICTE Collaboration" },
+        { label: "By", value: "Dr. H.C. Nagaraj" },
+      ],
+    },
+    {
+      src: "/certs/nmit-appreciation.png",
+      alt: "NMIT Faculty Development Cell — Certificate of Appreciation for dashboard development",
+      title: "Certificate of Appreciation",
+      subtitle: "NMIT Faculty Development Cell",
+      meta: [
+        { label: "For", value: "Dashboard Dev & Viz" },
+        { label: "Place", value: "Bengaluru" },
+        { label: "By", value: "Dr. H. Nagaraj, Principal" },
+      ],
     },
   ];
 
@@ -1588,26 +1631,47 @@ export function Certs() {
       id="certs"
       className="relative overflow-hidden bg-surface px-5 py-24 sm:px-6 sm:py-20 md:px-12 md:py-24"
     >
-      {/* Subtle radial vignette only — sparkles canvas removed for perf */}
+      {/* Subtle radial glow */}
       <div
         className="pointer-events-none absolute inset-0 z-0"
         style={{
           background:
-            "radial-gradient(ellipse at center, rgba(124,110,255,0.08) 0%, transparent 60%)",
+            "radial-gradient(ellipse at center, rgba(124,110,255,0.10) 0%, transparent 60%)",
         }}
       />
 
       <div className="relative z-10 mx-auto max-w-[1100px]">
-        <div className="mb-14 flex items-end justify-between">
-          <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#5a5a5a]">Certifications</div>
-          <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#2e2e2e]">03 verified</div>
-        </div>
+        <Reveal><SectionLabel num="06" text="Credentials" /></Reveal>
+        <Reveal delay={100}>
+          <h2 className="mb-3 font-display text-4xl font-bold text-body md:text-6xl">
+            Built on <span className="text-violet">verified learning</span>.
+          </h2>
+        </Reveal>
+        <Reveal delay={150}>
+          <p className="mb-10 text-sm text-muted-soft">
+            Drag or use arrow keys to explore — {certSlides.length} certificates.
+          </p>
+        </Reveal>
 
-        <div className="flex min-h-[420px] w-full items-center justify-center">
-          <div className="w-full max-w-3xl">
-            <DisplayCards cards={certCards} />
-          </div>
-        </div>
+        <Reveal delay={200}>
+          <CoverflowCarousel
+            slides={certSlides}
+            cardWidth="clamp(260px, 38vw, 480px)"
+            cardHeight="clamp(146px, 21.4vw, 270px)"
+            rotate={40}
+            depth={0.55}
+            perspective={3.5}
+            falloff={0.52}
+            fade={0.08}
+            gap={0.06}
+            loop
+            showCaption
+            showPagination
+            showNavigation
+            label="My certifications"
+            cardClassName="rounded-xl"
+          />
+        </Reveal>
       </div>
     </section>
   );
