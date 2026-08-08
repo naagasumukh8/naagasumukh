@@ -685,7 +685,7 @@ export function NoiseOverlay() {
   return (
     <div
       className="pointer-events-none fixed inset-0 z-[9999]"
-      style={{ backgroundImage: `url("${svg}")`, opacity: 0.03, mixBlendMode: "overlay" }}
+      style={{ backgroundImage: `url("${svg}")`, opacity: 0.02 }}
       aria-hidden
     />
   );

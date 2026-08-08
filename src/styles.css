@@ -150,9 +150,8 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    opacity: 0.05;
+    opacity: 0.03;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    mix-blend-mode: overlay;
   }
 
   @keyframes glitch {
@@ -306,33 +305,28 @@
 }
 
 /* Contact rows — hover expand + violet wash (desktop). Mobile keeps tap-spring. */
+/* Contact rows — GPU transform scale on hover instead of layout-reflowing padding changes */
 @media (hover: hover) {
   .glass-row.contact-row {
     padding-top: 1.5rem; padding-bottom: 1.5rem;
-    transition: padding 280ms cubic-bezier(0.4,0,0.2,1),
+    transition: transform 0.35s cubic-bezier(0.16,1,0.3,1),
                 background 280ms cubic-bezier(0.4,0,0.2,1),
-                transform 0.35s cubic-bezier(0.16,1,0.3,1),
                 border-color 0.35s, box-shadow 0.35s;
   }
   .glass-row.contact-row:hover {
-    padding-top: 1.95rem; padding-bottom: 1.95rem;
+    transform: translateY(-2px) scale(1.01);
     background: linear-gradient(180deg, rgba(124,110,255,0.10) 0%, rgba(124,110,255,0.04) 100%) !important;
   }
 }
 
-/* Mobile-specific suppressions removed — phone now matches desktop version. */
-
-
 /* ============ DESKTOP SCROLL PERFORMANCE ============
- * content-visibility:auto lets the browser skip layout/paint for off-screen
- * sections entirely — biggest single win for scroll smoothness on long pages.
- * contain-intrinsic-size gives the scrollbar a stable height before render.
+ * contain: layout paint style prevents layout re-calculation during scroll,
+ * keeping the document height rock-solid and smooth.
  */
 @media (min-width: 768px) {
   main > section,
   section[id] {
-    content-visibility: auto;
-    contain-intrinsic-size: 1px 800px;
+    contain: layout paint style;
   }
 }
 
