@@ -1332,7 +1332,7 @@ export function Projects() {
       tags: ["React", "TypeScript", "Tailwind", "Supabase RLS", "Google Calendar API", "Playwright"],
       link: "https://easyhospital.lovable.app",
       cta: "Visit live site",
-      media: { kind: "iframe" as const, src: "https://easyhospital.lovable.app" },
+      media: { kind: "image" as const, src: "/mediconnect-preview.png" },
     },
     {
       n: "03",
@@ -1373,6 +1373,13 @@ export function Projects() {
                 <div className="relative aspect-video w-full overflow-hidden bg-black/40">
                   {p.media.kind === "video" && (
                     <LazyVideo src={p.media.src} className="h-full w-full object-cover" />
+                  )}
+                  {p.media.kind === "image" && (
+                    <img
+                      src={p.media.src}
+                      alt={p.name}
+                      className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                    />
                   )}
                   {p.media.kind === "iframe" && (
                     <EasyHospitalPreview src={p.media.src} title={p.name} />
