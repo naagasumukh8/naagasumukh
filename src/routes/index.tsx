@@ -318,10 +318,11 @@ export function useLenis() {
       const ScrollTrigger = stMod.ScrollTrigger;
       gsap.registerPlugin(ScrollTrigger);
       const instance = new Lenis({
-        lerp: 0.085,
-        duration: 1.1,
+        // Fast responsive lerp matching phone native scroll feel
+        lerp: 0.14,
+        duration: 0.6,
         smoothWheel: true,
-        wheelMultiplier: 0.95,
+        wheelMultiplier: 1.0,
         touchMultiplier: 1.4,
         easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         gestureOrientation: "vertical",
@@ -1233,6 +1234,82 @@ export function Skills() {
   );
 }
 
+function EasyHospitalPreview({ src, title }: { src: string; title: string }) {
+  const [interactive, setInteractive] = useState(false);
+
+  return (
+    <div className="relative h-full w-full overflow-hidden bg-gradient-to-br from-[#0B1A2E] via-[#07121F] to-[#0D1D33] p-3 flex flex-col justify-between">
+      {/* Mock Browser URL Bar Header */}
+      <div className="flex items-center justify-between rounded-t-xl bg-black/50 px-3 py-1.5 border-b border-white/10 text-[11px] font-mono text-muted-soft">
+        <div className="flex items-center gap-1.5">
+          <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f56]" />
+          <span className="h-2.5 w-2.5 rounded-full bg-[#ffbd2e]" />
+          <span className="h-2.5 w-2.5 rounded-full bg-[#27c93f]" />
+        </div>
+        <div className="flex items-center gap-1.5 rounded-md bg-white/5 px-2.5 py-0.5 text-[10px] text-white/80 border border-white/5">
+          <span className="text-emerald-400">🔒</span> easyhospital.lovable.app
+        </div>
+        <div className="flex items-center gap-1 text-[10px] font-mono text-emerald-400">
+          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" /> LIVE
+        </div>
+      </div>
+
+      {/* Main Container */}
+      <div className="relative flex-1 my-1.5 overflow-hidden rounded-xl border border-white/10 bg-[#060D18]">
+        {interactive ? (
+          <iframe
+            src={src}
+            title={title}
+            loading="lazy"
+            sandbox="allow-scripts allow-same-origin allow-popups"
+            className="h-full w-full border-0 origin-top-left scale-[0.75]"
+            style={{ width: "133.3%", height: "133.3%" }}
+          />
+        ) : (
+          <div className="relative flex h-full w-full flex-col justify-between p-4 bg-[radial-gradient(ellipse_at_top_right,rgba(124,110,255,0.18),transparent_70%)]">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <div className="grid h-8 w-8 place-items-center rounded-lg bg-violet/20 text-violet font-bold text-sm shadow-[0_0_15px_rgba(124,110,255,0.3)]">
+                  🏥
+                </div>
+                <div>
+                  <div className="font-display text-sm font-bold text-white">MediConnect OS</div>
+                  <div className="font-mono text-[9px] text-muted-soft">Healthcare Operating System</div>
+                </div>
+              </div>
+              <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 font-mono text-[9px] text-emerald-400">
+                ● Live System
+              </span>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2 my-2">
+              <div className="rounded-xl border border-white/10 bg-white/[0.03] p-2.5 backdrop-blur-sm">
+                <div className="font-mono text-[9px] uppercase tracking-wider text-gold">Appointments</div>
+                <div className="font-display text-xs font-semibold text-white mt-0.5">Google Calendar Sync</div>
+              </div>
+              <div className="rounded-xl border border-white/10 bg-white/[0.03] p-2.5 backdrop-blur-sm">
+                <div className="font-mono text-[9px] uppercase tracking-wider text-violet">Security</div>
+                <div className="font-display text-xs font-semibold text-white mt-0.5">Supabase RLS Enforced</div>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between pt-2 border-t border-white/5">
+              <div className="font-mono text-[9px] text-muted-soft">Multi-Hospital &amp; Rx Workflows</div>
+              <button
+                type="button"
+                onClick={() => setInteractive(true)}
+                className="rounded-full border border-violet/40 bg-violet/15 px-3 py-1 font-mono text-[10px] text-violet hover:bg-violet hover:text-white transition-all active:scale-95 shadow-[0_0_12px_rgba(124,110,255,0.25)]"
+              >
+                Load Live App ⚡
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 /* ============ PROJECTS ============ */
 export function Projects() {
   const projects = [
@@ -1297,25 +1374,7 @@ export function Projects() {
                     <LazyVideo src={p.media.src} className="h-full w-full object-cover" />
                   )}
                   {p.media.kind === "iframe" && (
-                    <HeavyGate
-                      desktopOnly
-                      rootMargin="300px"
-                      className="h-full w-full"
-                      fallback={
-                        <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-violet/20 to-gold/10">
-                          <span className="font-display text-6xl font-bold text-white/10">{p.n}</span>
-                        </div>
-                      }
-                    >
-                      <iframe
-                        src={p.media.src}
-                        title={p.name}
-                        loading="lazy"
-                        sandbox="allow-scripts allow-same-origin allow-popups"
-                        className="pointer-events-none h-full w-full origin-top-left scale-[0.65] border-0"
-                        style={{ width: "153.8%", height: "153.8%" }}
-                      />
-                    </HeavyGate>
+                    <EasyHospitalPreview src={p.media.src} title={p.name} />
                   )}
                   {p.media.kind === "none" && (
                     <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-violet/20 to-gold/10">

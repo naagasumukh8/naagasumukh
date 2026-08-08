@@ -8,12 +8,8 @@ export function DesktopRecommendation() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    const isMobile = window.matchMedia("(max-width: 767px)").matches;
-    const dismissed = sessionStorage.getItem(STORAGE_KEY);
-    if (!isMobile || dismissed) return;
-    const t = window.setTimeout(() => setOpen(true), 1400);
-    return () => window.clearTimeout(t);
+    // Disabled auto popup to align phone and desktop experience seamlessly
+    return;
   }, []);
 
   const dismiss = () => {
