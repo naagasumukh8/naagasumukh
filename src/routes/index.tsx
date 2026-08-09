@@ -103,7 +103,7 @@ function SectionBackdrop({ variant }: { variant: "paths" | "dots" | "aurora-viol
 /* Heavy WebGL/canvas components — code-split & mounted only when in view via <HeavyGate>.
    ShaderAnimation, SpiralAnimation and MeshGradientBg were replaced with CSS-only
    alternatives below to keep the main thread free (Spline robot stays as the hero effect). */
-import { SplineScene } from "@/components/ui/splite";
+import { adoptSplineNode, releaseSplineNode, setSplineHandlers, getSplineApp, isSplineLoaded, emitSplineEvent } from "@/components/ui/splite";
 
 /* ============ LIGHTWEIGHT CSS EFFECTS (replace heavy WebGL backdrops) ============ */
 
@@ -698,46 +698,11 @@ export function NoiseOverlay() {
 /* ============ HERO ============ */
 export function Hero() {
   const splineHostRef = useRef<HTMLDivElement>(null);
-  const splineSceneRef = useRef<{ emitEvent: (eventName: string, targetName?: string) => void; getApp: () => unknown } | null>(null);
-  const splineAppRef = useRef<any>(null);
+  const splineAppRef = useRef<any>(getSplineApp());
   const heroInViewRef = useRef(true);
   const [wave, setWave] = useState(false);
-  // Robot stays hidden until intro zoom is skipped, then fades in cleanly.
-  const [splineReady, setSplineReady] = useState(false);
-
-  // Pause Spline's render loop when hero scrolls out of view — biggest desktop
-  // smoothness win. Spline runs continuous rAF/WebGL that competes with scroll.
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const host = splineHostRef.current;
-    if (!host || typeof IntersectionObserver === "undefined") return;
-    const io = new IntersectionObserver((entries) => {
-      const visible = entries.some((e) => e.isIntersecting);
-      heroInViewRef.current = visible;
-      const app = splineAppRef.current;
-      if (!app) return;
-      try {
-        if (visible) app.play?.();
-        else app.stop?.();
-      } catch { /* runtime may not expose */ }
-    }, { rootMargin: "100px" });
-    io.observe(host);
-    const onVis = () => {
-      const app = splineAppRef.current;
-      if (!app) return;
-      try {
-        if (document.hidden || !heroInViewRef.current) app.stop?.();
-        else app.play?.();
-      } catch { /* noop */ }
-    };
-    document.addEventListener("visibilitychange", onVis);
-    return () => { io.disconnect(); document.removeEventListener("visibilitychange", onVis); };
-  }, []);
-
-  // NOTE: scroll-based app.stop()/play() was removed — it caused Spline to
-  // show a loading spinner every time the user scrolled back up to the hero.
-  // The IntersectionObserver effect above already pauses Spline correctly when
-  // the hero section leaves the viewport, which is sufficient.
+  // Already-loaded robot (returning to home) shows instantly — no fade, no flash.
+  const [splineReady, setSplineReady] = useState(() => isSplineLoaded());
 
   const handleSplineLoad = (app: any) => {
     splineAppRef.current = app;
@@ -753,26 +718,62 @@ export function Hero() {
         (app as any)?._runtime?.setTime?.(3000);
       } catch { /* noop */ }
     } catch { /* noop */ }
-
-    // Fade in after a short settle to ensure the seek has taken effect.
-    setTimeout(() => setSplineReady(true), 120);
+    setSplineReady(true);
   };
 
   const handleRobotClick = () => {
     setWave(true);
-    try {
-      splineSceneRef.current?.emitEvent("click");
-    } catch { /* scene may not have a click event */ }
+    emitSplineEvent("click");
     setTimeout(() => setWave(false), 2500);
   };
+
+  // Adopt the persistent robot node into this hero, release it on unmount.
+  useEffect(() => {
+    setSplineHandlers({ onLoad: handleSplineLoad, onClick: handleRobotClick });
+    adoptSplineNode(splineHostRef.current);
+    return () => {
+      setSplineHandlers({});
+      releaseSplineNode();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Pause Spline's render loop when hero scrolls out of view — biggest desktop
+  // smoothness win. Spline runs continuous rAF/WebGL that competes with scroll.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const host = splineHostRef.current;
+    if (!host || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver((entries) => {
+      const visible = entries.some((e) => e.isIntersecting);
+      heroInViewRef.current = visible;
+      const app = splineAppRef.current ?? getSplineApp();
+      if (!app) return;
+      try {
+        if (visible) app.play?.();
+        else app.stop?.();
+      } catch { /* runtime may not expose */ }
+    }, { rootMargin: "100px" });
+    io.observe(host);
+    const onVis = () => {
+      const app = splineAppRef.current ?? getSplineApp();
+      if (!app) return;
+      try {
+        if (document.hidden || !heroInViewRef.current) app.stop?.();
+        else app.play?.();
+      } catch { /* noop */ }
+    };
+    document.addEventListener("visibilitychange", onVis);
+    return () => { io.disconnect(); document.removeEventListener("visibilitychange", onVis); };
+  }, []);
 
   return (
     <section id="hero" className="relative flex min-h-screen items-center overflow-hidden">
       {/* Backdrop: grid + static radial gradients */}
       <div className="absolute inset-0 grid-bg opacity-25" />
 
-      {/* Spline robot — full hero bleed so it tracks the cursor everywhere */}
-      {/* opacity:0 until intro zoom is skipped, then smooth fade-in */}
+      {/* Persistent Spline robot is moved into this host — it is never
+          unmounted, so returning to home shows it instantly. */}
       <div
         ref={splineHostRef}
         data-spline-host
@@ -786,13 +787,7 @@ export function Hero() {
       >
         {/* Static backdrop while Spline streams in — same tone so there's no visible pop-in */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,rgba(124,110,255,0.18),transparent_60%)]" />
-        <SplineScene
-          ref={splineSceneRef}
-          scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-          className="absolute inset-0 h-full w-full"
-          onLoad={handleSplineLoad}
-          onClick={handleRobotClick}
-        />
+
         {/* Speech bubble */}
         <div
           className="pointer-events-none absolute right-[10vw] top-[22vh] z-20 transition-all duration-500"

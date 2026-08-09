@@ -14,6 +14,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { PageTransition } from "../components/PageTransition";
 import { TopNav } from "../components/TopNav";
 import { SplashGate } from "../components/SplashGate";
+import { PersistentSpline } from "../components/ui/splite";
 
 
 
@@ -161,6 +162,9 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <SplashGate>
         <TopNav />
+        {/* Robot lives here for the whole session — never remounted, so it
+            never "loads" again when returning to the home page. */}
+        <PersistentSpline scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode" />
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
         <PageTransition>
           <Outlet />
