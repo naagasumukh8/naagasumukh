@@ -1381,9 +1381,6 @@ export function Projects() {
                       className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
                     />
                   )}
-                  {p.media.kind === "iframe" && (
-                    <EasyHospitalPreview src={p.media.src} title={p.name} />
-                  )}
                   {p.media.kind === "none" && (
                     <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-violet/20 to-gold/10">
                       <span className="font-display text-8xl font-bold text-white/10">{p.n}</span>
