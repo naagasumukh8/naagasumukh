@@ -14,6 +14,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { PageTransition } from "../components/PageTransition";
 import { TopNav } from "../components/TopNav";
 import { SplashGate } from "../components/SplashGate";
+import { PersistentSpline } from "../components/ui/splite";
 
 
 
