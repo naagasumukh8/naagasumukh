@@ -103,7 +103,7 @@ function SectionBackdrop({ variant }: { variant: "paths" | "dots" | "aurora-viol
 /* Heavy WebGL/canvas components — code-split & mounted only when in view via <HeavyGate>.
    ShaderAnimation, SpiralAnimation and MeshGradientBg were replaced with CSS-only
    alternatives below to keep the main thread free (Spline robot stays as the hero effect). */
-import { SplineScene } from "@/components/ui/splite";
+import { adoptSplineNode, releaseSplineNode, setSplineHandlers, getSplineApp, isSplineLoaded, emitSplineEvent } from "@/components/ui/splite";
 
 /* ============ LIGHTWEIGHT CSS EFFECTS (replace heavy WebGL backdrops) ============ */
 
