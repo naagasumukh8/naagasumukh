@@ -3,7 +3,7 @@ import { useEffect, useRef, useState, type MouseEvent, type ReactNode } from "re
 import { createPortal } from "react-dom";
 import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
 import portrait from "@/assets/portrait-avatar.jpg.asset.json";
-import sachhaiVideo from "@/assets/sachhai-demo.mp4.asset.json";
+import sachhaiVideo from "@/assets/sachhai-demo-10s.mp4.asset.json";
 import { Spotlight } from "@/components/ui/spotlight";
 import { GooeyText } from "@/components/ui/gooey-text-morphing";
 import DisplayCards from "@/components/ui/display-cards";
@@ -1380,9 +1380,6 @@ export function Projects() {
                       alt={p.name}
                       className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
                     />
-                  )}
-                  {p.media.kind === "iframe" && (
-                    <EasyHospitalPreview src={p.media.src} title={p.name} />
                   )}
                   {p.media.kind === "none" && (
                     <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-violet/20 to-gold/10">
