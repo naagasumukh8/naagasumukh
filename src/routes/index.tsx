@@ -1399,7 +1399,17 @@ export function Projects() {
                       <span key={t} className="rounded-full border border-violet/25 bg-violet/10 px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-body">{t}</span>
                     ))}
                   </div>
-                  {p.cta === "Watch demo" && p.media.kind === "video" ? (
+                  {p.cta === "Watch demo" && p.demoLink ? (
+                    <a
+                      href={p.demoLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Watch SacchAI demo in a new tab"
+                      className="mt-auto inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full border border-violet/40 bg-violet/10 px-5 py-2.5 text-sm font-semibold text-body transition-colors hover:bg-violet hover:text-white"
+                    >
+                      {p.cta} <span aria-hidden>↗</span>
+                    </a>
+                  ) : p.cta === "Watch demo" && p.media.kind === "video" ? (
                     <button
                       type="button"
                       onClick={() => setDemoOpen(true)}
