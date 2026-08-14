@@ -1317,6 +1317,7 @@ export function Projects() {
       tags: ["JavaScript", "TypeScript", "React", "Chrome APIs", "Python", "Scikit-learn", "Node.js", "REST APIs"],
       link: "https://github.com/naagasumukh8",
       cta: "Watch demo",
+      demoLink: "https://drive.google.com/file/d/1KAX9Or3DpEa6JxhMd44y79XlYJalki71/view?usp=drivesdk",
       media: { kind: "video" as const, src: sachhaiVideo.url },
     },
     {
